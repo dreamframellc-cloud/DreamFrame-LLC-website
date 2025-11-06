@@ -92,6 +92,8 @@ correct_credentials.json
 *.md
 !README.md
 !RENDER_SETUP.md
+!RENDER_DEPLOY_NOW.md
+!ENV_VARS_CHECKLIST.md
 
 # Lock files
 uv.lock

@@ -1,17 +1,29 @@
 services:
   - type: web
-    name: dreamframe-llc
+    name: dreamframe-website
     env: python
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn --config gunicorn.conf.py wsgi_simple:application
     envVars:
       - key: FLASK_ENV
         value: production
-      - key: PYTHONUNBUFFERED
-        value: 1
-
-databases:
-  - name: dreamframe-db
-    databaseName: dreamframe
-    user: dreamframe
-
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: DATABASE_URL
+        sync: false  # Set this manually in Render dashboard
+      - key: SESSION_SECRET
+        generateValue: true  # Render will generate this
+      - key: OPENAI_API_KEY
+        sync: false  # Set this manually
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_PUBLISHABLE_KEY
+        sync: false
+      - key: SENDGRID_API_KEY
+        sync: false
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: GOOGLE_APPLICATION_CREDENTIALS
+        sync: false
