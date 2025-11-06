@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Link - Real MP4 Video Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        h1 {
+            margin-bottom: 30px;
+            color: #ffffff;
+        }
+        .video-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            margin: 10px;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        .direct-link {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            word-break: break-all;
+            font-family: monospace;
+            border: 2px solid #4CAF50;
+        }
+        .success {
+            color: #4CAF50;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        video {
+            max-width: 100%;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success">✅ Video Ready!</div>
+        <h1>Real MP4 Video Test</h1>
+        
+        <div class="video-info">
+            <h3>Video Details</h3>
+            <p><strong>Title:</strong> Real MP4 Video Test</p>
+            <p><strong>Format:</strong> Web-Compatible MP4</p>
+            <p><strong>Size:</strong> 1.4MB</p>
+            <p><strong>Duration:</strong> 5 seconds</p>
+            <p><strong>Quality:</strong> 1200x1200, 30fps</p>
+        </div>
+
+        <div class="direct-link">
+            <strong>Direct Video Link:</strong><br>
+            <span id="downloadUrl">Loading...</span>
+        </div>
+
+        <a href="/completed_videos/compatible_real_mp4_test_1754060792.mp4" class="download-btn" download>
+            📥 Download Video
+        </a>
+
+        <a href="/completed_videos/compatible_real_mp4_test_1754060792.mp4" class="download-btn" target="_blank">
+            ▶️ Play Video
+        </a>
+
+        <div style="margin-top: 30px;">
+            <h3>Video Preview</h3>
+            <video controls preload="metadata" width="400">
+                <source src="/completed_videos/compatible_real_mp4_test_1754060792.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <div style="margin-top: 20px; font-size: 14px; opacity: 0.8;">
+            <p>This is a real MP4 video file with H.264 encoding for universal compatibility.</p>
+            <p>Video ID: 16 | Generated: Web-Compatible MP4 - H.264/AAC encoding</p>
+        </div>
+    </div>
+
+    <script>
+        // Update the video URL with current domain
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentDomain = window.location.origin;
+            const videoUrl = currentDomain + '/completed_videos/compatible_real_mp4_test_1754060792.mp4';
+            document.getElementById('downloadUrl').textContent = videoUrl;
+            
+            // Update all relative links to use current domain
+            const links = document.querySelectorAll('a[href^="/"]');
+            links.forEach(link => {
+                link.href = currentDomain + link.getAttribute('href');
+            });
+        });
+    </script>
+</body>
+</html>

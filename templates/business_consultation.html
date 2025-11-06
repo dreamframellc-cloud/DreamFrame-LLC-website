@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Consultation - DreamFrame LLC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=20250621music">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/service-navigation.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Floating Chatbot -->
+    <script src="{{ url_for('static', filename='js/floating-chatbot.js') }}"></script>
+    <style>
+        /* Professional Business Service Cards */
+        .professional-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .professional-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 20px;
+            padding: 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            position: relative;
+            height: auto;
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 140px;
+            overflow: hidden;
+            border-radius: 20px 20px 0 0;
+            position: relative;
+        }
+
+        .card-image svg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .professional-card:hover .card-image svg {
+            transform: scale(1.05);
+        }
+
+        .professional-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            padding: 20px 25px 15px;
+            text-align: center;
+            position: relative;
+        }
+
+        .service-icon.professional-icon {
+            background: linear-gradient(135deg, #ff6b35 0%, #00ffff 100%);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 24px;
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .professional-card:hover .service-icon.professional-icon {
+            transform: scale(1.1);
+            box-shadow: 0 12px 30px rgba(255, 107, 53, 0.4);
+        }
+
+        .card-content {
+            padding: 0 25px 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-content h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .card-content p {
+            color: #5a6c7d;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .service-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .feature-tag.professional-tag {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(0, 255, 255, 0.1));
+            color: #ff6b35;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .professional-card:hover .feature-tag.professional-tag {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.2), rgba(0, 255, 255, 0.2));
+            border-color: rgba(255, 107, 53, 0.4);
+        }
+
+        .card-footer {
+            padding: 20px 25px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 249, 250, 0.9));
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .service-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ff6b35;
+        }
+
+        .service-cta {
+            background: linear-gradient(135deg, #ff6b35 0%, #00ffff 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .service-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+            color: white;
+        }
+
+        /* Override existing grid for professional layout */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        /* Pay Now Section Enhancements */
+        .deposit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255, 107, 53, 0.2);
+            border-color: rgba(255, 107, 53, 0.3);
+        }
+        
+        .pay-now-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .pay-now-section h2 {
+                font-size: 2rem !important;
+            }
+            .pay-now-section p {
+                font-size: 1rem !important;
+            }
+            .deposit-options {
+                grid-template-columns: 1fr !important;
+                gap: 20px !important;
+            }
+            .trust-badges > div {
+                flex-direction: column !important;
+                gap: 15px !important;
+            }
+        }
+
+    </style>
+
+    <!-- Meta Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+       fbq('init', '1234567890123456');  // <-- Your Pixel ID
+       fbq('track', 'PageView');
+    </script>
+    <!-- End Meta Pixel Code -->
+
+    <!-- GA4 base tag -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      gtag('js', new Date());
+      // Replace with your GA4 Measurement ID
+      gtag('config', 'G-XXXXXXXXXX', { send_page_view: true });
+    </script>
+</head>
+<body>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 20000; max-width: 600px; width: 90%;">
+                {% for category, message in messages %}
+                    <div id="flashMessage" style="padding: 15px 20px; margin: 10px 0; border-radius: 8px; font-size: 16px; text-align: center; font-weight: 600; box-shadow: 0 5px 15px rgba(0,0,0,0.3); {% if category == 'success' %}background: #d4edda; color: #155724; border: 2px solid #c3e6cb;{% else %}background: #f8d7da; color: #721c24; border: 2px solid #f5c6cb;{% endif %}">
+                        {{ message }}
+                        <button onclick="this.parentElement.style.display='none'" style="background: none; border: none; color: inherit; font-size: 18px; font-weight: bold; float: right; cursor: pointer; margin-left: 10px;">&times;</button>
+                    </div>
+                {% endfor %}
+            </div>
+            <script>
+                setTimeout(function() {
+                    const flashMsg = document.getElementById('flashMessage');
+                    if (flashMsg) {
+                        flashMsg.style.opacity = '0';
+                        flashMsg.style.transition = 'opacity 0.5s ease';
+                        setTimeout(() => flashMsg.style.display = 'none', 500);
+                    }
+                }, 5000);
+            </script>
+        {% endif %}
+    {% endwith %}
+    
+    <div class="gradient-bg">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="container">
+                <div class="brand-container">
+                    <div class="brand-text">DreamFrame</div>
+                    <div class="glowing-star">★</div>
+                    <div class="brand-text">LLC</div>
+                </div>
+                
+                <!-- Language Menu (DreamFrame LLC) -->
+                <nav class="df-lang" aria-label="Language selector">
+                    <div class="df-lang-menu" role="menu">
+                        <button class="df-lang-btn" type="button" aria-haspopup="true" aria-expanded="false">
+                            <span class="df-lang-icon" aria-hidden="true">🌐</span>
+                            <span class="df-lang-label">Language</span>
+                            <svg class="df-caret" viewBox="0 0 10 6" aria-hidden="true">
+                                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" />
+                            </svg>
+                        </button>
+
+                        <ul class="df-lang-list" role="menu" aria-label="Languages">
+                            {% for code, name in language_names.items() %}
+                                <li role="none"><a role="menuitem" hreflang="{{ code }}" lang="{{ code }}" href="{{ url_for('set_language', language=code) }}">{{ name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </nav>
+
+            </div>
+        </header>
+        
+        <!-- Navigation Tabs -->
+        <nav class="main-nav">
+            <div class="nav-container">
+                <!-- Mobile Hamburger Menu Button -->
+                <button class="mobile-nav-toggle" id="mobileNavToggle">
+                    <i class="fas fa-bars" style="margin-right: 10px;"></i>
+                    <span class="toggle-text">Service Navigation</span>
+                </button>
+                
+                <div class="nav-tabs" id="navTabs">
+                    <a href="{{ url_for('home') }}" class="nav-tab">{{ get_text('nav_video_music') }}</a>
+                    <a href="{{ url_for('website_development') }}" class="nav-tab">{{ get_text('nav_website_dev') }}</a>
+                    <a href="{{ url_for('business_consultation') }}" class="nav-tab active">{{ get_text('nav_business') }}</a>
+                    <a href="{{ url_for('cybersecurity_services') }}" class="nav-tab">{{ get_text('nav_cybersecurity') }}</a>
+                    <a href="{{ url_for('agentic_ai_services') }}" class="nav-tab">{{ get_text('nav_ai_agents') }}</a>
+                    <a href="{{ url_for('services_overview') }}" class="nav-tab">{{ get_text('nav_advertising') }}</a>
+                </div>
+            </div>
+        </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" style="background: linear-gradient(135deg, #2d1b69 0%, #11998e 50%, #38ef7d 100%);">
+        <div class="hero-content">
+            <h1>Business Consultation Services</h1>
+            <p>Strategic guidance to accelerate your business growth</p>
+            <div class="hero-buttons">
+                <a href="#services" class="cta-button primary">View Services</a>
+                <a href="#contact" class="cta-button secondary">Schedule Consultation</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section" id="services">
+        <div class="container">
+            <div class="section-header">
+                <h2>Consultation Services</h2>
+                <p>Expert guidance across all aspects of business development</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card professional-card">
+                    <div class="card-image">
+                        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="strategyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:0.1" />
+                                    <stop offset="100%" style="stop-color:#00ffff;stop-opacity:0.1" />
+                                </linearGradient>
+                            </defs>
+                            <rect width="400" height="200" fill="url(#strategyGrad)"/>
+                            <!-- Strategy chart background -->
+                            <rect x="50" y="40" width="300" height="120" rx="8" fill="#2c3e50" stroke="#ff6b35" stroke-width="2"/>
+                            <rect x="55" y="45" width="290" height="110" fill="#ecf0f1"/>
+                            
+                            <!-- Growth chart -->
+                            <polyline points="70,130 100,115 130,100 160,85 190,70 220,55 250,45 280,35 310,25" 
+                                      fill="none" stroke="#ff6b35" stroke-width="4"/>
+                            <polyline points="70,140 100,135 130,125 160,120 190,110 220,105 250,95 280,90 310,80" 
+                                      fill="none" stroke="#00ffff" stroke-width="3"/>
+                            
+                            <!-- Data points -->
+                            <circle cx="70" cy="130" r="4" fill="#ff6b35"/>
+                            <circle cx="130" cy="100" r="4" fill="#ff6b35"/>
+                            <circle cx="190" cy="70" r="4" fill="#ff6b35"/>
+                            <circle cx="250" cy="45" r="4" fill="#ff6b35"/>
+                            <circle cx="310" cy="25" r="4" fill="#ff6b35"/>
+                            
+                            <!-- Market indicators -->
+                            <rect x="70" y="50" width="15" height="3" fill="#27ae60"/>
+                            <text x="90" y="55" font-family="Arial" font-size="8" fill="#2c3e50">Market Share</text>
+                            
+                            <rect x="70" y="60" width="12" height="3" fill="#f39c12"/>
+                            <text x="90" y="65" font-family="Arial" font-size="8" fill="#2c3e50">Competition</text>
+                            
+                            <rect x="70" y="70" width="18" height="3" fill="#e74c3c"/>
+                            <text x="90" y="75" font-family="Arial" font-size="8" fill="#2c3e50">Growth Rate</text>
+                            
+                            <!-- Target icon -->
+                            <circle cx="340" cy="80" r="20" fill="#ff6b35" opacity="0.2"/>
+                            <circle cx="340" cy="80" r="15" fill="none" stroke="#ff6b35" stroke-width="2"/>
+                            <circle cx="340" cy="80" r="10" fill="none" stroke="#ff6b35" stroke-width="2"/>
+                            <circle cx="340" cy="80" r="5" fill="none" stroke="#ff6b35" stroke-width="2"/>
+                            <circle cx="340" cy="80" r="2" fill="#ff6b35"/>
+                        </svg>
+                    </div>
+
+                    <div class="card-content">
+                        <h3>Business Strategy</h3>
+                        <p>Develop comprehensive business strategies, market analysis, and growth plans. We help you identify opportunities and create roadmaps for sustainable success.</p>
+                        <div class="service-features">
+                            <span class="feature-tag professional-tag">Market Analysis</span>
+                            <span class="feature-tag professional-tag">Growth Planning</span>
+                            <span class="feature-tag professional-tag">Competitive Research</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="service-price">$200/hour</div>
+                        <a href="#contact" class="service-cta">Get Quote</a>
+                    </div>
+                </div>
+                
+                <div class="service-card professional-card">
+                    <div class="card-image">
+                        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="startupGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#00ffff;stop-opacity:0.1" />
+                                    <stop offset="100%" style="stop-color:#ff6b35;stop-opacity:0.1" />
+                                </linearGradient>
+                            </defs>
+                            <rect width="400" height="200" fill="url(#startupGrad)"/>
+                            
+                            <!-- Rocket launch -->
+                            <path d="M 180 160 L 190 120 L 200 80 L 210 40 L 220 20 L 210 15 L 200 20 L 190 40 L 180 80 L 170 120 Z" fill="#ff6b35"/>
+                            <path d="M 185 155 L 190 130 L 195 105 L 200 80 L 205 55 L 210 30 L 205 25 L 200 30 L 195 55 L 190 80 L 185 105 Z" fill="#e74c3c"/>
+                            
+                            <!-- Rocket flames -->
+                            <path d="M 175 160 L 185 170 L 195 175 L 205 170 L 215 160 L 205 165 L 195 168 L 185 165 Z" fill="#f39c12"/>
+                            <path d="M 180 165 L 190 175 L 200 178 L 210 175 L 200 173 L 190 170 Z" fill="#e67e22"/>
+                            
+                            <!-- Rocket windows -->
+                            <circle cx="195" cy="50" r="8" fill="#00ffff"/>
+                            <circle cx="195" cy="70" r="6" fill="#ecf0f1"/>
+                            
+                            <!-- Launch platform -->
+                            <rect x="120" y="150" width="150" height="20" fill="#2c3e50"/>
+                            <rect x="125" y="155" width="140" height="10" fill="#34495e"/>
+                            
+                            <!-- Support towers -->
+                            <rect x="140" y="120" width="8" height="30" fill="#95a5a6"/>
+                            <rect x="250" y="120" width="8" height="30" fill="#95a5a6"/>
+                            
+                            <!-- Funding chart -->
+                            <rect x="40" y="40" width="100" height="80" rx="6" fill="#2c3e50" stroke="#00ffff" stroke-width="2"/>
+                            <rect x="45" y="45" width="90" height="70" fill="#ecf0f1"/>
+                            
+                            <!-- Funding stages -->
+                            <rect x="50" y="55" width="20" height="10" fill="#27ae60"/>
+                            <text x="75" y="62" font-family="Arial" font-size="8" fill="#2c3e50">Seed</text>
+                            
+                            <rect x="50" y="70" width="35" height="10" fill="#f39c12"/>
+                            <text x="90" y="77" font-family="Arial" font-size="8" fill="#2c3e50">Series A</text>
+                            
+                            <rect x="50" y="85" width="50" height="10" fill="#e74c3c"/>
+                            <text x="105" y="92" font-family="Arial" font-size="8" fill="#2c3e50">Series B</text>
+                            
+                            <!-- MVP prototype -->
+                            <rect x="280" y="50" width="80" height="60" rx="6" fill="#2c3e50" stroke="#ff6b35" stroke-width="2"/>
+                            <rect x="285" y="55" width="70" height="50" fill="#ecf0f1"/>
+                            <text x="320" y="70" text-anchor="middle" font-family="Arial" font-size="10" font-weight="bold" fill="#ff6b35">MVP</text>
+                            <rect x="290" y="75" width="15" height="10" fill="#00ffff"/>
+                            <rect x="310" y="75" width="15" height="10" fill="#ff6b35"/>
+                            <rect x="330" y="75" width="15" height="10" fill="#27ae60"/>
+                            <rect x="290" y="90" width="25" height="8" fill="#95a5a6"/>
+                            <rect x="320" y="90" width="20" height="8" fill="#95a5a6"/>
+                        </svg>
+                    </div>
+
+                    <div class="card-content">
+                        <h3>Startup Guidance</h3>
+                        <p>From idea to launch, we guide startups through every phase. Business model development, funding strategies, and operational planning.</p>
+                        <div class="service-features">
+                            <span class="feature-tag professional-tag">Business Models</span>
+                            <span class="feature-tag professional-tag">Funding Strategy</span>
+                            <span class="feature-tag professional-tag">MVP Development</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="service-price">$250/hour</div>
+                        <a href="#contact" class="service-cta">Get Quote</a>
+                    </div>
+                </div>
+                
+                <div class="service-card professional-card">
+                    <div class="card-image">
+                        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="marketingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:0.1" />
+                                    <stop offset="100%" style="stop-color:#00ffff;stop-opacity:0.1" />
+                                </linearGradient>
+                            </defs>
+                            <rect width="400" height="200" fill="url(#marketingGrad)"/>
+                            
+                            <!-- Brand identity center -->
+                            <circle cx="200" cy="100" r="40" fill="#2c3e50" stroke="#ff6b35" stroke-width="3"/>
+                            <circle cx="200" cy="100" r="30" fill="#ecf0f1"/>
+                            <text x="200" y="105" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#ff6b35">BRAND</text>
+                            
+                            <!-- Marketing channels -->
+                            <!-- Social Media -->
+                            <rect x="80" y="40" width="60" height="40" rx="6" fill="#2c3e50" stroke="#00ffff" stroke-width="2"/>
+                            <rect x="85" y="45" width="50" height="30" fill="#ecf0f1"/>
+                            <text x="110" y="57" text-anchor="middle" font-family="Arial" font-size="8" fill="#ff6b35">Social</text>
+                            <text x="110" y="67" text-anchor="middle" font-family="Arial" font-size="8" fill="#ff6b35">Media</text>
+                            <path d="M140 60 L160 80" stroke="#00ffff" stroke-width="2"/>
+                            
+                            <!-- Email Marketing -->
+                            <rect x="260" y="40" width="60" height="40" rx="6" fill="#2c3e50" stroke="#00ffff" stroke-width="2"/>
+                            <rect x="265" y="45" width="50" height="30" fill="#ecf0f1"/>
+                            <text x="290" y="57" text-anchor="middle" font-family="Arial" font-size="8" fill="#ff6b35">Email</text>
+                            <text x="290" y="67" text-anchor="middle" font-family="Arial" font-size="8" fill="#ff6b35">Marketing</text>
+                            <path d="M260 60 L240 80" stroke="#00ffff" stroke-width="2"/>
+                            
+                            <!-- Content Strategy -->
+                            <rect x="80" y="120" width="60" height="40" rx="6" fill="#2c3e50" stroke="#00ffff" stroke-width="2"/>
+                            <rect x="85" y="125" width="50" height="30" fill="#ecf0f1"/>
+                            <text x="110" y="137" text-anchor="middle" font-family="Arial" font-size="8" fill="#ff6b35">Content</text>
+                            <text x="110" y="147" text-anchor="middle" font-family="Arial" font-size="8" fill="#ff6b35">Strategy</text>
+                            <path d="M140 140 L160 120" stroke="#00ffff" stroke-width="2"/>
+                            
+                            <!-- SEO/SEM -->
+                            <rect x="260" y="120" width="60" height="40" rx="6" fill="#2c3e50" stroke="#00ffff" stroke-width="2"/>
+                            <rect x="265" y="125" width="50" height="30" fill="#ecf0f1"/>
+                            <text x="290" y="137" text-anchor="middle" font-family="Arial" font-size="8" fill="#ff6b35">SEO</text>
+                            <text x="290" y="147" text-anchor="middle" font-family="Arial" font-size="8" fill="#ff6b35">SEM</text>
+                            <path d="M260 140 L240 120" stroke="#00ffff" stroke-width="2"/>
+                            
+                            <!-- Analytics dashboard -->
+                            <rect x="30" y="80" width="40" height="40" rx="4" fill="#2c3e50" stroke="#27ae60" stroke-width="2"/>
+                            <rect x="35" y="85" width="30" height="30" fill="#ecf0f1"/>
+                            <!-- Chart bars -->
+                            <rect x="38" y="105" width="4" height="8" fill="#27ae60"/>
+                            <rect x="44" y="100" width="4" height="13" fill="#f39c12"/>
+                            <rect x="50" y="95" width="4" height="18" fill="#e74c3c"/>
+                            <rect x="56" y="90" width="4" height="23" fill="#00ffff"/>
+                            
+                            <!-- Target audience -->
+                            <circle cx="350" cy="100" r="25" fill="#ff6b35" opacity="0.2"/>
+                            <path d="M 340 90 L 345 95 L 355 85 L 360 90 L 355 95 L 345 105 L 340 100 Z" fill="#ff6b35"/>
+                            <circle cx="350" cy="100" r="3" fill="#fff"/>
+                        </svg>
+                    </div>
+
+                    <div class="card-content">
+                        <h3>Marketing & Branding</h3>
+                        <p>Build strong brand identity and effective marketing strategies. Digital marketing, content strategy, and customer acquisition planning.</p>
+                        <div class="service-features">
+                            <span class="feature-tag professional-tag">Brand Development</span>
+                            <span class="feature-tag professional-tag">Digital Marketing</span>
+                            <span class="feature-tag professional-tag">Content Strategy</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="service-price">$180/hour</div>
+                        <a href="#contact" class="service-cta">Get Quote</a>
+                    </div>
+                </div>
+                
+                <div class="service-card professional-card">
+                    <div class="card-image">
+                        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="opsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#00ffff;stop-opacity:0.1" />
+                                    <stop offset="100%" style="stop-color:#ff6b35;stop-opacity:0.1" />
+                                </linearGradient>
+                            </defs>
+                            <rect width="400" height="200" fill="url(#opsGrad)"/>
+                            
+                            <!-- Process flow -->
+                            <rect x="40" y="80" width="60" height="40" rx="20" fill="#2c3e50" stroke="#ff6b35" stroke-width="2"/>
+                            <text x="70" y="105" text-anchor="middle" font-family="Arial" font-size="10" fill="#ecf0f1">Input</text>
+                            
+                            <!-- Arrow 1 -->
+                            <path d="M100 100 L130 100" stroke="#00ffff" stroke-width="3" marker-end="url(#arrowhead1)"/>
+                            
+                            <!-- Automation gear -->
+                            <circle cx="150" cy="100" r="25" fill="#2c3e50" stroke="#ff6b35" stroke-width="2"/>
+                            <path d="M 140 100 L 145 95 L 155 95 L 160 100 L 155 105 L 145 105 Z" fill="#00ffff"/>
+                            <circle cx="150" cy="100" r="8" fill="#ecf0f1"/>
+                            <text x="150" y="104" text-anchor="middle" font-family="Arial" font-size="6" fill="#2c3e50">AUTO</text>
+                            
+                            <!-- Arrow 2 -->
+                            <path d="M175 100 L205 100" stroke="#00ffff" stroke-width="3" marker-end="url(#arrowhead1)"/>
+                            
+                            <!-- Processing -->
+                            <rect x="220" y="70" width="60" height="60" rx="6" fill="#2c3e50" stroke="#00ffff" stroke-width="2"/>
+                            <rect x="225" y="75" width="50" height="50" fill="#ecf0f1"/>
+                            <rect x="230" y="85" width="15" height="8" fill="#ff6b35"/>
+                            <rect x="250" y="85" width="15" height="8" fill="#27ae60"/>
+                            <rect x="230" y="100" width="20" height="8" fill="#00ffff"/>
+                            <rect x="255" y="100" width="10" height="8" fill="#f39c12"/>
+                            <rect x="230" y="115" width="25" height="8" fill="#e74c3c"/>
+                            
+                            <!-- Arrow 3 -->
+                            <path d="M280 100 L310 100" stroke="#00ffff" stroke-width="3" marker-end="url(#arrowhead1)"/>
+                            
+                            <!-- Output -->
+                            <rect x="320" y="80" width="60" height="40" rx="20" fill="#2c3e50" stroke="#27ae60" stroke-width="2"/>
+                            <text x="350" y="105" text-anchor="middle" font-family="Arial" font-size="10" fill="#ecf0f1">Output</text>
+                            
+                            <!-- Efficiency metrics -->
+                            <rect x="50" y="30" width="120" height="40" rx="6" fill="#2c3e50" stroke="#27ae60" stroke-width="2"/>
+                            <rect x="55" y="35" width="110" height="30" fill="#ecf0f1"/>
+                            <text x="110" y="45" text-anchor="middle" font-family="Arial" font-size="8" fill="#27ae60">Efficiency: +65%</text>
+                            <text x="110" y="55" text-anchor="middle" font-family="Arial" font-size="8" fill="#ff6b35">Cost Reduction: 40%</text>
+                            
+                            <!-- Workflow optimization -->
+                            <rect x="230" y="140" width="120" height="40" rx="6" fill="#2c3e50" stroke="#f39c12" stroke-width="2"/>
+                            <rect x="235" y="145" width="110" height="30" fill="#ecf0f1"/>
+                            <text x="290" y="155" text-anchor="middle" font-family="Arial" font-size="8" fill="#f39c12">Workflow Optimized</text>
+                            <text x="290" y="165" text-anchor="middle" font-family="Arial" font-size="8" fill="#e74c3c">Time Saved: 50%</text>
+                            
+                            <defs>
+                                <marker id="arrowhead1" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                                    <polygon points="0 0, 10 3.5, 0 7" fill="#00ffff"/>
+                                </marker>
+                            </defs>
+                        </svg>
+                    </div>
+
+                    <div class="card-content">
+                        <h3>Operations Optimization</h3>
+                        <p>Streamline business operations for maximum efficiency. Process improvement, automation strategies, and workflow optimization.</p>
+                        <div class="service-features">
+                            <span class="feature-tag professional-tag">Process Improvement</span>
+                            <span class="feature-tag professional-tag">Automation</span>
+                            <span class="feature-tag professional-tag">Workflow Design</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="service-price">$220/hour</div>
+                        <a href="#contact" class="service-cta">Get Quote</a>
+                    </div>
+                </div>
+                
+                <div class="service-card professional-card">
+                    <div class="card-image">
+                        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="financeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:0.1" />
+                                    <stop offset="100%" style="stop-color:#00ffff;stop-opacity:0.1" />
+                                </linearGradient>
+                            </defs>
+                            <rect width="400" height="200" fill="url(#financeGrad)"/>
+                            
+                            <!-- Financial dashboard -->
+                            <rect x="40" y="40" width="150" height="120" rx="8" fill="#2c3e50" stroke="#ff6b35" stroke-width="2"/>
+                            <rect x="45" y="50" width="140" height="100" fill="#ecf0f1"/>
+                            
+                            <!-- Revenue chart -->
+                            <text x="115" y="65" text-anchor="middle" font-family="Arial" font-size="10" font-weight="bold" fill="#ff6b35">Revenue Forecast</text>
+                            <rect x="55" y="75" width="8" height="20" fill="#27ae60"/>
+                            <rect x="68" y="70" width="8" height="25" fill="#27ae60"/>
+                            <rect x="81" y="65" width="8" height="30" fill="#27ae60"/>
+                            <rect x="94" y="60" width="8" height="35" fill="#27ae60"/>
+                            <rect x="107" y="55" width="8" height="40" fill="#27ae60"/>
+                            <rect x="120" y="50" width="8" height="45" fill="#27ae60"/>
+                            <rect x="133" y="45" width="8" height="50" fill="#27ae60"/>
+                            <rect x="146" y="40" width="8" height="55" fill="#27ae60"/>
+                            <rect x="159" y="35" width="8" height="60" fill="#27ae60"/>
+                            <rect x="172" y="30" width="8" height="65" fill="#27ae60"/>
+                            
+                            <!-- Budget allocation pie chart -->
+                            <circle cx="120" cy="120" r="20" fill="#f39c12"/>
+                            <path d="M 120 100 L 120 120 L 138 114 A 20 20 0 0 0 120 100" fill="#ff6b35"/>
+                            <path d="M 120 120 L 138 114 L 132 137 A 20 20 0 0 0 120 120" fill="#00ffff"/>
+                            <path d="M 120 120 L 132 137 L 102 126 A 20 20 0 0 0 120 120" fill="#e74c3c"/>
+                            
+                            <!-- Cash flow analysis -->
+                            <rect x="210" y="50" width="150" height="100" rx="8" fill="#2c3e50" stroke="#00ffff" stroke-width="2"/>
+                            <rect x="215" y="55" width="140" height="90" fill="#ecf0f1"/>
+                            
+                            <text x="285" y="70" text-anchor="middle" font-family="Arial" font-size="10" font-weight="bold" fill="#00ffff">Cash Flow</text>
+                            
+                            <!-- Cash flow line -->
+                            <polyline points="225,120 240,110 255,105 270,115 285,95 300,90 315,100 330,85 345,90" 
+                                      fill="none" stroke="#00ffff" stroke-width="3"/>
+                            
+                            <!-- Positive/negative indicators -->
+                            <rect x="225" y="80" width="6" height="15" fill="#27ae60"/>
+                            <rect x="240" y="85" width="6" height="10" fill="#27ae60"/>
+                            <rect x="255" y="82" width="6" height="13" fill="#27ae60"/>
+                            <rect x="270" y="88" width="6" height="7" fill="#e74c3c"/>
+                            <rect x="285" y="78" width="6" height="17" fill="#27ae60"/>
+                            <rect x="300" y="75" width="6" height="20" fill="#27ae60"/>
+                            <rect x="315" y="83" width="6" height="12" fill="#27ae60"/>
+                            <rect x="330" y="72" width="6" height="23" fill="#27ae60"/>
+                            <rect x="345" y="76" width="6" height="19" fill="#27ae60"/>
+                            
+                            <!-- Investment portfolio -->
+                            <rect x="220" y="120" width="50" height="20" fill="#2c3e50" stroke="#27ae60" stroke-width="1"/>
+                            <text x="245" y="132" text-anchor="middle" font-family="Arial" font-size="8" fill="#ecf0f1">Portfolio</text>
+                            
+                            <rect x="280" y="120" width="50" height="20" fill="#2c3e50" stroke="#f39c12" stroke-width="1"/>
+                            <text x="305" y="132" text-anchor="middle" font-family="Arial" font-size="8" fill="#ecf0f1">ROI: 15%</text>
+                        </svg>
+                    </div>
+
+                    <div class="card-content">
+                        <h3>Financial Planning</h3>
+                        <p>Financial modeling, budgeting, and investment planning. We help you make informed financial decisions and optimize cash flow.</p>
+                        <div class="service-features">
+                            <span class="feature-tag professional-tag">Financial Modeling</span>
+                            <span class="feature-tag professional-tag">Budget Planning</span>
+                            <span class="feature-tag professional-tag">Cash Flow Analysis</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="service-price">$300/hour</div>
+                        <a href="#contact" class="service-cta">Get Quote</a>
+                    </div>
+                </div>
+                
+                <div class="service-card professional-card">
+                    <div class="card-image">
+                        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="teamGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#00ffff;stop-opacity:0.1" />
+                                    <stop offset="100%" style="stop-color:#ff6b35;stop-opacity:0.1" />
+                                </linearGradient>
+                            </defs>
+                            <rect width="400" height="200" fill="url(#teamGrad)"/>
+                            
+                            <!-- Organizational chart -->
+                            <!-- Leadership level -->
+                            <rect x="170" y="30" width="60" height="40" rx="6" fill="#2c3e50" stroke="#ff6b35" stroke-width="2"/>
+                            <rect x="175" y="35" width="50" height="30" fill="#ecf0f1"/>
+                            <text x="200" y="48" text-anchor="middle" font-family="Arial" font-size="8" fill="#ff6b35">CEO</text>
+                            <text x="200" y="58" text-anchor="middle" font-family="Arial" font-size="8" fill="#ff6b35">Leadership</text>
+                            
+                            <!-- Connection lines -->
+                            <path d="M200 70 L200 90" stroke="#00ffff" stroke-width="2"/>
+                            <path d="M150 100 L250 100" stroke="#00ffff" stroke-width="2"/>
+                            <path d="M130 100 L130 110" stroke="#00ffff" stroke-width="2"/>
+                            <path d="M200 100 L200 110" stroke="#00ffff" stroke-width="2"/>
+                            <path d="M270 100 L270 110" stroke="#00ffff" stroke-width="2"/>
+                            
+                            <!-- Department heads -->
+                            <rect x="100" y="110" width="60" height="30" rx="4" fill="#2c3e50" stroke="#00ffff" stroke-width="2"/>
+                            <rect x="105" y="115" width="50" height="20" fill="#ecf0f1"/>
+                            <text x="130" y="127" text-anchor="middle" font-family="Arial" font-size="7" fill="#00ffff">Marketing</text>
+                            
+                            <rect x="170" y="110" width="60" height="30" rx="4" fill="#2c3e50" stroke="#00ffff" stroke-width="2"/>
+                            <rect x="175" y="115" width="50" height="20" fill="#ecf0f1"/>
+                            <text x="200" y="127" text-anchor="middle" font-family="Arial" font-size="7" fill="#00ffff">Operations</text>
+                            
+                            <rect x="240" y="110" width="60" height="30" rx="4" fill="#2c3e50" stroke="#00ffff" stroke-width="2"/>
+                            <rect x="245" y="115" width="50" height="20" fill="#ecf0f1"/>
+                            <text x="270" y="127" text-anchor="middle" font-family="Arial" font-size="7" fill="#00ffff">Tech</text>
+                            
+                            <!-- Team members -->
+                            <circle cx="80" cy="165" r="12" fill="#27ae60"/>
+                            <circle cx="110" cy="165" r="12" fill="#27ae60"/>
+                            <circle cx="140" cy="165" r="12" fill="#27ae60"/>
+                            
+                            <circle cx="180" cy="165" r="12" fill="#f39c12"/>
+                            <circle cx="200" cy="165" r="12" fill="#f39c12"/>
+                            <circle cx="220" cy="165" r="12" fill="#f39c12"/>
+                            
+                            <circle cx="250" cy="165" r="12" fill="#e74c3c"/>
+                            <circle cx="280" cy="165" r="12" fill="#e74c3c"/>
+                            <circle cx="310" cy="165" r="12" fill="#e74c3c"/>
+                            
+                            <!-- Hiring pipeline -->
+                            <rect x="30" y="40" width="100" height="80" rx="6" fill="#2c3e50" stroke="#27ae60" stroke-width="2"/>
+                            <rect x="35" y="45" width="90" height="70" fill="#ecf0f1"/>
+                            <text x="80" y="55" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#27ae60">Hiring Pipeline</text>
+                            
+                            <rect x="40" y="65" width="20" height="8" fill="#00ffff"/>
+                            <text x="65" y="71" font-family="Arial" font-size="6" fill="#2c3e50">Candidates: 45</text>
+                            
+                            <rect x="40" y="78" width="15" height="8" fill="#f39c12"/>
+                            <text x="60" y="84" font-family="Arial" font-size="6" fill="#2c3e50">Interviews: 12</text>
+                            
+                            <rect x="40" y="91" width="8" height="8" fill="#27ae60"/>
+                            <text x="53" y="97" font-family="Arial" font-size="6" fill="#2c3e50">Offers: 3</text>
+                            
+                            <rect x="40" y="104" width="5" height="8" fill="#e74c3c"/>
+                            <text x="50" y="110" font-family="Arial" font-size="6" fill="#2c3e50">Hired: 2</text>
+                            
+                            <!-- Training program -->
+                            <rect x="320" y="40" width="60" height="60" rx="6" fill="#2c3e50" stroke="#f39c12" stroke-width="2"/>
+                            <rect x="325" y="45" width="50" height="50" fill="#ecf0f1"/>
+                            <text x="350" y="55" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#f39c12">Training</text>
+                            
+                            <!-- Training modules -->
+                            <rect x="330" y="65" width="15" height="6" fill="#ff6b35"/>
+                            <rect x="350" y="65" width="15" height="6" fill="#00ffff"/>
+                            <rect x="330" y="75" width="20" height="6" fill="#27ae60"/>
+                            <rect x="330" y="85" width="25" height="6" fill="#e74c3c"/>
+                        </svg>
+                    </div>
+
+                    <div class="card-content">
+                        <h3>Team Development</h3>
+                        <p>Build and optimize your team structure. Hiring strategies, organizational design, and leadership development programs.</p>
+                        <div class="service-features">
+                            <span class="feature-tag professional-tag">Hiring Strategy</span>
+                            <span class="feature-tag professional-tag">Team Structure</span>
+                            <span class="feature-tag professional-tag">Leadership Training</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="service-price">$190/hour</div>
+                        <a href="#contact" class="service-cta">Get Quote</a>
+                    </div>
+                </div>
+                
+                <div class="service-card professional-card">
+                    <div class="card-image">
+                        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="adGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:0.1" />
+                                    <stop offset="100%" style="stop-color:#00ffff;stop-opacity:0.1" />
+                                </linearGradient>
+                            </defs>
+                            <rect width="400" height="200" fill="url(#adGrad)"/>
+                            
+                            <!-- Advertisement billboard -->
+                            <rect x="50" y="40" width="300" height="120" rx="8" fill="#2c3e50" stroke="#ff6b35" stroke-width="3"/>
+                            <rect x="55" y="45" width="290" height="110" fill="#ecf0f1"/>
+                            
+                            <!-- Billboard content -->
+                            <rect x="70" y="60" width="80" height="30" fill="#ff6b35"/>
+                            <text x="110" y="78" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#fff">BRAND</text>
+                            
+                            <!-- Ad copy lines -->
+                            <rect x="70" y="100" width="120" height="6" fill="#00ffff"/>
+                            <rect x="70" y="115" width="100" height="6" fill="#00ffff"/>
+                            <rect x="70" y="130" width="90" height="6" fill="#00ffff"/>
+                            
+                            <!-- Call-to-action button -->
+                            <rect x="220" y="110" width="80" height="25" rx="12" fill="#27ae60" stroke="#fff" stroke-width="2"/>
+                            <text x="260" y="126" text-anchor="middle" font-family="Arial" font-size="10" font-weight="bold" fill="#fff">CALL NOW!</text>
+                            
+                            <!-- Media channels -->
+                            <!-- TV Screen -->
+                            <rect x="30" y="170" width="60" height="25" rx="4" fill="#2c3e50" stroke="#00ffff" stroke-width="2"/>
+                            <rect x="35" y="175" width="50" height="15" fill="#ecf0f1"/>
+                            <text x="60" y="185" text-anchor="middle" font-family="Arial" font-size="8" fill="#ff6b35">TV</text>
+                            
+                            <!-- Social Media -->
+                            <circle cx="130" cy="182" r="15" fill="#2c3e50" stroke="#00ffff" stroke-width="2"/>
+                            <circle cx="130" cy="182" r="10" fill="#ecf0f1"/>
+                            <text x="130" y="185" text-anchor="middle" font-family="Arial" font-size="6" fill="#ff6b35">SOCIAL</text>
+                            
+                            <!-- Print Media -->
+                            <rect x="170" y="170" width="40" height="25" rx="2" fill="#2c3e50" stroke="#00ffff" stroke-width="2"/>
+                            <rect x="175" y="175" width="30" height="15" fill="#ecf0f1"/>
+                            <text x="190" y="185" text-anchor="middle" font-family="Arial" font-size="8" fill="#ff6b35">PRINT</text>
+                            
+                            <!-- Digital Display -->
+                            <rect x="230" y="170" width="50" height="25" rx="4" fill="#2c3e50" stroke="#00ffff" stroke-width="2"/>
+                            <rect x="235" y="175" width="40" height="15" fill="#ecf0f1"/>
+                            <text x="255" y="185" text-anchor="middle" font-family="Arial" font-size="8" fill="#ff6b35">DIGITAL</text>
+                            
+                            <!-- Radio Wave -->
+                            <circle cx="320" cy="182" r="12" fill="none" stroke="#27ae60" stroke-width="2"/>
+                            <circle cx="320" cy="182" r="8" fill="none" stroke="#27ae60" stroke-width="2"/>
+                            <circle cx="320" cy="182" r="4" fill="none" stroke="#27ae60" stroke-width="2"/>
+                            <circle cx="320" cy="182" r="2" fill="#27ae60"/>
+                            
+                            <!-- Performance metrics -->
+                            <rect x="360" y="50" width="30" height="100" rx="4" fill="#2c3e50" stroke="#27ae60" stroke-width="2"/>
+                            <rect x="365" y="55" width="20" height="90" fill="#ecf0f1"/>
+                            <rect x="368" y="130" width="4" height="12" fill="#27ae60"/>
+                            <rect x="374" y="120" width="4" height="22" fill="#f39c12"/>
+                            <rect x="380" y="110" width="4" height="32" fill="#e74c3c"/>
+                            <text x="375" y="70" text-anchor="middle" font-family="Arial" font-size="6" fill="#ff6b35">ROI</text>
+                        </svg>
+                    </div>
+
+                    <div class="card-content">
+                        <h3>Advertisement Creation</h3>
+                        <p>Professional advertisement design and campaign development. Multi-channel advertising strategies including digital, print, TV, radio, and social media campaigns.</p>
+                        <div class="service-features">
+                            <span class="feature-tag professional-tag">Creative Design</span>
+                            <span class="feature-tag professional-tag">Multi-Channel Campaigns</span>
+                            <span class="feature-tag professional-tag">ROI Optimization</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="service-price">$220/hour</div>
+                        <a href="#contact" class="service-cta">Get Quote</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Expertise Areas -->
+    <section class="expertise-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Areas of Expertise</h2>
+                <p>Industry knowledge and specialized consulting areas</p>
+            </div>
+            
+            <div class="expertise-grid">
+                <div class="expertise-card">
+                    <div class="expertise-icon">
+                        <svg class="fast-spin-star star-orange" style="width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                    </div>
+                    <h3>Technology Startups</h3>
+                    <p>Product development, technical strategy, and scaling technology businesses in competitive markets.</p>
+                </div>
+                
+                <div class="expertise-card">
+                    <div class="expertise-icon">
+                        <svg class="fast-spin-star star-orange" style="width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                    </div>
+                    <h3>E-Commerce</h3>
+                    <p>Online retail strategies, marketplace optimization, and customer acquisition for e-commerce businesses.</p>
+                </div>
+                
+                <div class="expertise-card">
+                    <div class="expertise-icon">
+                        <svg class="fast-spin-star star-orange" style="width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                    </div>
+                    <h3>Creative Industries</h3>
+                    <p>Media, entertainment, and creative services business development and monetization strategies.</p>
+                </div>
+                
+                <div class="expertise-card">
+                    <div class="expertise-icon">
+                        <svg class="fast-spin-star star-orange" style="width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                    </div>
+                    <h3>Service Businesses</h3>
+                    <p>Professional services, consulting firms, and service-based business optimization and growth.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Consultation Process</h2>
+                <p>Structured approach for delivering actionable business insights</p>
+            </div>
+            
+            <div class="process-timeline">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Initial Assessment</h3>
+                        <p>Comprehensive analysis of your current business situation, challenges, and opportunities. We understand your goals and constraints.</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Strategic Planning</h3>
+                        <p>Developing customized strategies and action plans based on your specific needs and market conditions.</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Implementation Support</h3>
+                        <p>Guidance during strategy execution, milestone tracking, and continuous optimization based on results.</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Ongoing Partnership</h3>
+                        <p>Long-term business partnership with regular check-ins, strategy adjustments, and continued growth support.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Consultation Packages</h2>
+                <p>Choose the level of support that matches your needs</p>
+            </div>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Strategy Session</h3>
+                        <div class="price">$500</div>
+                        <p>Single focused consultation session</p>
+                    </div>
+                    <div class="pricing-features">
+                        <div class="feature"><svg class="twinkling-star star-blue" style="width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg> 2-hour consultation</div>
+                        <div class="feature"><svg class="twinkling-star star-blue" style="width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg> Problem analysis</div>
+                        <div class="feature"><svg class="twinkling-star star-blue" style="width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg> Action recommendations</div>
+                        <div class="feature"><svg class="twinkling-star star-blue" style="width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg> Follow-up summary</div>
+                        <div class="feature"><svg class="twinkling-star star-blue" style="width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg> Resource recommendations</div>
+                    </div>
+                    <a href="#contact" class="pricing-button">Book Session</a>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <div class="pricing-header">
+                        <h3>Business Analysis</h3>
+                        <div class="price">$2,500</div>
+                        <p>Comprehensive business review and strategy</p>
+                    </div>
+                    <div class="pricing-features">
+                        <div class="feature"><svg class="twinkling-star star-blue" style="width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg> Complete business audit</div>
+                        <div class="feature"><svg class="twinkling-star star-blue" style="width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg> Market analysis</div>
+                        <div class="feature"><svg class="twinkling-star star-blue" style="width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg> Strategic plan</div>
+                        <div class="feature"><svg class="twinkling-star star-blue" style="width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg> Implementation roadmap</div>
+                        <div class="feature"><svg class="twinkling-star star-blue" style="width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg> 90-day follow-up support</div>
+                    </div>
+                    <a href="#contact" class="pricing-button">Get Started</a>
+                </div>
+                
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Ongoing Partnership</h3>
+                        <div class="price">$5,000/mo</div>
+                        <p>Continuous strategic guidance and support</p>
+                    </div>
+                    <div class="pricing-features">
+                        <div class="feature"><svg class="twinkling-star star-blue" style="width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg> Monthly strategy sessions</div>
+                        <div class="feature"><svg class="twinkling-star star-blue" style="width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg> Quarterly business reviews</div>
+                        <div class="feature"><svg class="twinkling-star star-blue" style="width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg> Unlimited email support</div>
+                        <div class="feature"><svg class="twinkling-star star-blue" style="width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg> Priority access</div>
+                        <div class="feature"><svg class="twinkling-star star-blue" style="width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg> Custom reporting</div>
+                    </div>
+                    <a href="#contact" class="pricing-button">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Client Success Stories</h2>
+                <p>Real results from our business consultation services</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"DreamFrame's strategic guidance helped us pivot our business model and increase revenue by 300% in just six months. Their insights were game-changing."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <strong>Sarah Chen</strong>
+                        <span>CEO, TechStart Solutions</span>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"The operational optimization recommendations streamlined our processes and reduced costs by 40%. Exceptional consulting with measurable results."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <strong>Michael Rodriguez</strong>
+                        <span>Founder, GreenLogistics</span>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"From startup idea to successful launch in 8 months. DreamFrame's guidance was invaluable in avoiding common pitfalls and accelerating growth."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <strong>Jennifer Park</strong>
+                        <span>Co-founder, CreativeSpace</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2>Schedule Your Consultation</h2>
+                <p>Ready to accelerate your business growth?</p>
+            </div>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Get Started Today</h3>
+                    <p>Transform your business with expert strategic guidance and proven methodologies.</p>
+                    
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <i class="fas fa-envelope"></i>
+                            <span>hello@dreamframellc.com</span>
+                        </div>
+                        <div class="contact-method">
+                            <i class="fas fa-calendar"></i>
+                            <span>Flexible scheduling available</span>
+                        </div>
+                    </div>
+                    
+                    <div class="consultation-note">
+                        <h4>What to Expect</h4>
+                        <ul>
+                            <li>Initial consultation within 24 hours</li>
+                            <li>Customized strategy recommendations</li>
+                            <li>Actionable implementation plans</li>
+                            <li>Ongoing support and guidance</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="contact-form-container">
+                    <form class="contact-form" id="consultationContactForm">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="company">Company</label>
+                            <input type="text" id="company" name="company" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="consultation_type">Consultation Type</label>
+                            <select id="consultation_type" name="consultation_type">
+                                <option value="strategy_session">Strategy Session</option>
+                                <option value="business_analysis">Business Analysis</option>
+                                <option value="ongoing_partnership">Ongoing Partnership</option>
+                                <option value="startup_guidance">Startup Guidance</option>
+                                <option value="operations_optimization">Operations Optimization</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="industry">Industry</label>
+                            <select id="industry" name="industry">
+                                <option value="technology">Technology</option>
+                                <option value="ecommerce">E-Commerce</option>
+                                <option value="creative">Creative Industries</option>
+                                <option value="services">Professional Services</option>
+                                <option value="manufacturing">Manufacturing</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Business Challenge</label>
+                            <textarea id="message" name="message" rows="5" placeholder="Describe your current business challenges, goals, and what you'd like to achieve from our consultation..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-button">
+                            <i class="fas fa-calendar-plus"></i>
+                            Schedule Consultation
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pay Now Deposit Section -->
+    <section class="pay-now-section" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 60px 0; margin-bottom: 0; position: relative; z-index: 1; width: 100%; display: block;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <div class="pay-now-header" style="text-align: center; margin-bottom: 40px;">
+                <h2 style="color: #fff; font-size: 2.5rem; margin-bottom: 15px; font-weight: 700;">
+                    <i class="fas fa-chart-line" style="color: #ff6b35; margin-right: 15px;"></i>
+                    Accelerate Your Business Growth
+                </h2>
+                <p style="color: #b8c2cc; font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+                    Invest in expert business consultation to unlock your company's full potential. Strategic guidance that delivers results.
+                </p>
+            </div>
+            
+            <div class="deposit-options" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 900px; margin: 0 auto;">
+                <!-- Business Strategy Deposit -->
+                <div class="deposit-card" style="background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); border-radius: 15px; padding: 30px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; transition: all 0.3s ease;">
+                    <div class="deposit-icon" style="margin-bottom: 20px;">
+                        <i class="fas fa-rocket" style="color: #00ffff; font-size: 3rem;"></i>
+                    </div>
+                    <h3 style="color: #fff; font-size: 1.5rem; margin-bottom: 15px;">Business Strategy Package</h3>
+                    <p style="color: #b8c2cc; margin-bottom: 25px; line-height: 1.6;">
+                        Comprehensive business analysis and strategic planning. Includes growth roadmap and implementation guide.
+                    </p>
+                    <div class="price" style="margin-bottom: 25px;">
+                        <span style="color: #ff6b35; font-size: 2rem; font-weight: 700;">$300</span>
+                        <span style="color: #b8c2cc; font-size: 1rem;">.00 USD</span>
+                    </div>
+                    <form action="{{ url_for('create_checkout_session') }}" method="POST" style="margin: 0;">
+                        <input type="hidden" name="service_type" value="business_strategy_deposit">
+                        <input type="hidden" name="amount" value="30000">
+                        <input type="hidden" name="description" value="Business Strategy Package Deposit">
+                        <button type="submit" class="pay-now-btn" style="background: linear-gradient(135deg, #ff6b35 0%, #ff8e53 100%); color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; width: 100%; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;">
+                            <i class="fas fa-lock" style="margin-right: 10px;"></i>
+                            Secure Strategy Package
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Business Consultation Deposit -->
+                <div class="deposit-card" style="background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); border-radius: 15px; padding: 30px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; transition: all 0.3s ease;">
+                    <div class="deposit-icon" style="margin-bottom: 20px;">
+                        <i class="fas fa-handshake" style="color: #00ffff; font-size: 3rem;"></i>
+                    </div>
+                    <h3 style="color: #fff; font-size: 1.5rem; margin-bottom: 15px;">Business Consultation</h3>
+                    <p style="color: #b8c2cc; margin-bottom: 25px; line-height: 1.6;">
+                        One-on-one consultation session with business expert. Tailored advice for your specific challenges.
+                    </p>
+                    <div class="price" style="margin-bottom: 25px;">
+                        <span style="color: #ff6b35; font-size: 2rem; font-weight: 700;">$50</span>
+                        <span style="color: #b8c2cc; font-size: 1rem;">.00 USD</span>
+                    </div>
+                    <form action="{{ url_for('create_checkout_session') }}" method="POST" style="margin: 0;">
+                        <input type="hidden" name="service_type" value="business_consultation_deposit">
+                        <input type="hidden" name="amount" value="5000">
+                        <input type="hidden" name="description" value="Business Consultation Deposit">
+                        <button type="submit" class="pay-now-btn" style="background: linear-gradient(135deg, #00ffff 0%, #40e0d0 100%); color: #1a1a2e; border: none; padding: 15px 30px; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; width: 100%; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;">
+                            <i class="fas fa-calendar-check" style="margin-right: 10px;"></i>
+                            Book Consultation
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Security Trust Badges -->
+            <div class="trust-badges" style="text-align: center; margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                <div style="display: flex; justify-content: center; align-items: center; gap: 30px; flex-wrap: wrap;">
+                    <div class="trust-badge" style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-shield-alt" style="color: #27ae60; font-size: 1.5rem;"></i>
+                        <span style="color: #b8c2cc; font-size: 0.95rem;">SSL Secured</span>
+                    </div>
+                    <div class="trust-badge" style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fab fa-stripe" style="color: #6772e5; font-size: 1.5rem;"></i>
+                        <span style="color: #b8c2cc; font-size: 0.95rem;">Stripe Protected</span>
+                    </div>
+                    <div class="trust-badge" style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-credit-card" style="color: #ff6b35; font-size: 1.5rem;"></i>
+                        <span style="color: #b8c2cc; font-size: 0.95rem;">All Cards Accepted</span>
+                    </div>
+                </div>
+                <p style="color: #95a5a6; font-size: 0.85rem; margin-top: 15px; font-style: italic;">
+                    Your payment information is processed securely. We do not store credit card details.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>DreamFrame LLC</h3>
+                    <p>Strategic business consultation services for accelerated growth and success.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#services">Business Consultation</a></li>
+                        <li><a href="{{ url_for('website_development') }}">Web Development</a></li>
+                        <li><a href="{{ url_for('home') }}">Video Production</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>hello@dreamframellc.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 DreamFrame LLC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Contact form handling
+        document.getElementById('consultationContactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            
+            try {
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scheduling...';
+                submitButton.disabled = true;
+                
+                const response = await fetch('/contact', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    submitButton.innerHTML = '<svg class="twinkling-star star-blue" style="width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg> Request Sent!';
+                    this.reset();
+                    setTimeout(() => {
+                        submitButton.innerHTML = originalText;
+                        submitButton.disabled = false;
+                    }, 3000);
+                } else {
+                    throw new Error('Failed to send request');
+                }
+            } catch (error) {
+                submitButton.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error - Try Again';
+                setTimeout(() => {
+                    submitButton.innerHTML = originalText;
+                    submitButton.disabled = false;
+                }, 3000);
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+    
+    <!-- Mobile Navigation Script -->
+    <script src="{{ url_for('static', filename='js/mobile-navigation.js') }}"></script>
+</body>
+</html>

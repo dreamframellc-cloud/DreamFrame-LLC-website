@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant - DreamFrame LLC</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #ff6b35;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .chat-container {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+        }
+        .chat-messages {
+            min-height: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+        .message {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+        .user-message {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            margin-left: auto;
+            text-align: right;
+        }
+        .ai-message {
+            background: rgba(255,255,255,0.1);
+            border-left: 4px solid #00ffff;
+        }
+        .input-container {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+        }
+        #userInput {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid rgba(255,107,53,0.3);
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 16px;
+            resize: vertical;
+            min-height: 50px;
+        }
+        #userInput:focus {
+            outline: none;
+            border-color: #ff6b35;
+            box-shadow: 0 0 10px rgba(255,107,53,0.3);
+        }
+        #sendButton {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        #sendButton:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,107,53,0.4);
+        }
+        #sendButton:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            color: #00ffff;
+            font-style: italic;
+            margin: 10px 0;
+        }
+        .nav-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #ff6b35;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 2px solid #ff6b35;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover {
+            background: #ff6b35;
+            color: white;
+        }
+        .error-message {
+            color: #ff4444;
+            background: rgba(255,68,68,0.1);
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 4px solid #ff4444;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="nav-link">← Back to Home</a>
+    
+    <div class="container">
+        <h1>🤖 DreamFrame AI Assistant</h1>
+        
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai-message">
+                    <strong>AI Assistant:</strong> Hello! I'm your DreamFrame AI assistant. I can help you with questions about our video production services, pricing, technical support, and more. What would you like to know?
+                </div>
+            </div>
+            
+            <div class="loading" id="loading">🤖 AI is thinking...</div>
+            
+            <div class="input-container">
+                <textarea id="userInput" placeholder="Ask me about DreamFrame services, video production, pricing, or anything else..."></textarea>
+                <button id="sendButton" onclick="askGPT()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        let isProcessing = false;
+
+        // Handle Enter key for sending message
+        document.getElementById("userInput").addEventListener("keydown", function(event) {
+            if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
+                askGPT();
+            }
+        });
+
+        async function askGPT() {
+            if (isProcessing) return;
+            
+            const userMessage = document.getElementById("userInput").value.trim();
+            if (!userMessage) return;
+            
+            isProcessing = true;
+            const sendButton = document.getElementById("sendButton");
+            const loading = document.getElementById("loading");
+            const chatMessages = document.getElementById("chatMessages");
+            
+            // Disable button and show loading
+            sendButton.disabled = true;
+            sendButton.textContent = "Sending...";
+            loading.style.display = "block";
+            
+            // Add user message to chat
+            addMessage(userMessage, "user");
+            document.getElementById("userInput").value = "";
+            
+            try {
+                // Send request to your Flask backend instead of directly to OpenAI
+                const response = await axios.post("/api/chat", {
+                    message: userMessage
+                }, {
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+                
+                const aiResponse = response.data.response || "I'm sorry, I couldn't process your request.";
+                addMessage(aiResponse, "ai");
+                
+            } catch (error) {
+                console.error("Chat error:", error);
+                let errorMessage = "I'm sorry, there was an error processing your request. ";
+                
+                if (error.response?.status === 401) {
+                    errorMessage += "API authentication failed.";
+                } else if (error.response?.status === 429) {
+                    errorMessage += "Too many requests. Please try again later.";
+                } else if (!navigator.onLine) {
+                    errorMessage += "Please check your internet connection.";
+                } else {
+                    errorMessage += "Please try again or contact support.";
+                }
+                
+                addMessage(errorMessage, "error");
+            } finally {
+                // Re-enable button and hide loading
+                isProcessing = false;
+                sendButton.disabled = false;
+                sendButton.textContent = "Send";
+                loading.style.display = "none";
+            }
+        }
+        
+        function addMessage(message, type) {
+            const chatMessages = document.getElementById("chatMessages");
+            const messageDiv = document.createElement("div");
+            messageDiv.className = "message";
+            
+            if (type === "user") {
+                messageDiv.className += " user-message";
+                messageDiv.innerHTML = `<strong>You:</strong> ${message}`;
+            } else if (type === "error") {
+                messageDiv.className += " error-message";
+                messageDiv.innerHTML = `<strong>Error:</strong> ${message}`;
+            } else {
+                messageDiv.className += " ai-message";
+                messageDiv.innerHTML = `<strong>AI Assistant:</strong> ${message}`;
+            }
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Video Upload</title>
+    <style>
+        body { 
+            font-family: Arial; 
+            background: #1a1a2e; 
+            color: white; 
+            padding: 40px; 
+            text-align: center; 
+        }
+        .upload-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 15px;
+        }
+        input[type="file"] {
+            padding: 15px;
+            margin: 20px 0;
+            background: white;
+            color: black;
+            border-radius: 8px;
+            border: none;
+            width: 100%;
+        }
+        button {
+            background: #00ffff;
+            color: black;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #00cccc;
+        }
+        .progress {
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-container">
+        <h1>🎬 Video Upload</h1>
+        
+        <form id="uploadForm" action="/simple-video-process" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="token" value="{{ request.args.get('token') }}">
+            
+            <p>Select your video file:</p>
+            <input type="file" name="video_file" accept="video/*" required>
+            
+            <br><br>
+            <button type="submit">🚀 UPLOAD VIDEO</button>
+        </form>
+        
+        <div class="progress" id="progress">
+            <p>Uploading... Please wait.</p>
+        </div>
+        
+        <p style="margin-top: 30px;">
+            <a href="/admin/token-dashboard?token={{ request.args.get('token') }}" style="color: #00ffff;">← Back to Dashboard</a>
+        </p>
+    </div>
+    
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function() {
+            document.getElementById('progress').style.display = 'block';
+        });
+    </script>
+</body>
+</html>

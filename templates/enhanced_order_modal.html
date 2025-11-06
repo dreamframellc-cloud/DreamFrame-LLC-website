@@ -1,0 +1,112 @@
+<!-- Enhanced Order Modal -->
+<div class="modal fade" id="orderModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Order <span id="selectedService"></span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="orderForm">
+                    <input type="hidden" id="serviceType" name="service_type">
+                    
+                    <!-- Customer Information -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="customerName" class="form-label">Full Name *</label>
+                            <input type="text" class="form-control" id="customerName" name="name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="customerEmail" class="form-label">Email Address *</label>
+                            <input type="email" class="form-control" id="customerEmail" name="email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <label for="timeline" class="form-label">Preferred Timeline</label>
+                            <select class="form-select" id="timeline" name="timeline">
+                                <option value="">Select timeline</option>
+                                <option value="asap">ASAP</option>
+                                <option value="1_week">Within 1 week</option>
+                                <option value="2_weeks">Within 2 weeks</option>
+                                <option value="1_month">Within 1 month</option>
+                                <option value="flexible">Flexible</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Project Details -->
+                    <div class="mb-4">
+                        <label for="projectDescription" class="form-label">Project Description *</label>
+                        <textarea class="form-control" id="projectDescription" name="message" rows="4" 
+                                placeholder="Tell us about your project, vision, and any specific requirements..." required></textarea>
+                    </div>
+                    
+                    <!-- File Upload -->
+                    <div class="mb-4">
+                        <label for="fileUpload" class="form-label">Upload Materials (Optional)</label>
+                        <input type="file" class="form-control" id="fileUpload" name="files" multiple 
+                               accept="video/*,image/*,.pdf,.doc,.docx">
+                        <div class="form-text">Upload photos, videos, or documents related to your project</div>
+                    </div>
+                    
+                    <!-- Additional Services -->
+                    <div class="mb-4">
+                        <label class="form-label">Additional Services</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="rushDelivery" name="rush_delivery">
+                            <label class="form-check-label" for="rushDelivery">
+                                Rush Delivery (+$100)
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="extraRevisions" name="extra_revisions">
+                            <label class="form-check-label" for="extraRevisions">
+                                Extra Revisions (+$50)
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="sourceFiles" name="source_files">
+                            <label class="form-check-label" for="sourceFiles">
+                                Source Files (+$25)
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Order Summary -->
+                    <div class="card bg-light mb-4">
+                        <div class="card-body">
+                            <h6>Order Summary</h6>
+                            <div class="d-flex justify-content-between">
+                                <span id="baseServiceName">Service</span>
+                                <span id="baseServicePrice">$0</span>
+                            </div>
+                            <div id="additionalServices"></div>
+                            <hr>
+                            <div class="d-flex justify-content-between fw-bold">
+                                <span>Total</span>
+                                <span id="totalPrice">$0</span>
+                            </div>
+                            <small class="text-muted">Estimated delivery: <span id="estimatedDelivery"></span></small>
+                        </div>
+                    </div>
+                    
+                    <!-- Terms and Conditions -->
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                        <label class="form-check-label" for="agreeTerms">
+                            I agree to the <a href="#" target="_blank">Terms and Conditions</a> *
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="proceedToPayment">
+                    Proceed to Payment
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Live Photos - DreamFrame LLC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=20250621livephotos">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .upload-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .upload-form {
+            text-align: center;
+        }
+        .drag-drop-area {
+            margin: 30px 0;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 3px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .drag-drop-area:hover, .drag-drop-area.dragover {
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .upload-btn {
+            background: white;
+            color: black;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 20px 10px;
+        }
+        .upload-btn:hover {
+            background: rgba(255, 255, 255, 0.8);
+        }
+        .file-list {
+            margin: 20px 0;
+            text-align: left;
+            max-height: 200px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+        }
+        .file-item {
+            color: white;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .file-item:last-child {
+            border-bottom: none;
+        }
+        .message {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+        .success { background: rgba(0, 255, 0, 0.2); color: #90EE90; }
+        .error { background: rgba(255, 0, 0, 0.2); color: #FFB6C1; }
+        .info-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .info-box h3 {
+            color: white;
+            margin-bottom: 10px;
+        }
+        .info-box ul {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg">
+        <header class="main-header">
+            <div class="container">
+                <div class="brand-container">
+                    <a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 10px;">
+                        <div class="brand-text">DreamFrame</div>
+                        <div class="glowing-star">★</div>
+                        <div class="brand-suffix">LLC</div>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <div class="upload-container">
+            <h1 style="text-align: center; color: white; margin-bottom: 20px;">Upload Live Photos</h1>
+            <p style="text-align: center; color: rgba(255, 255, 255, 0.8); margin-bottom: 30px;">
+                Transform your iPhone Live Photos into professional video content. Upload multiple files at once.
+            </p>
+            
+            <div class="info-box">
+                <h3>What are Live Photos?</h3>
+                <ul>
+                    <li>Short video clips captured with iPhone camera (usually 3 seconds)</li>
+                    <li>Contain both a still image (HEIC/JPEG) and motion video (MOV)</li>
+                    <li>Perfect source material for VideoGrams and social media content</li>
+                    <li>Can be enhanced into professional video productions</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h3>Supported Formats:</h3>
+                <ul>
+                    <li><strong>HEIC/HEIF</strong> - iPhone Live Photo images</li>
+                    <li><strong>MOV</strong> - iPhone Live Photo videos</li>
+                    <li><strong>JPG/JPEG</strong> - Standard photos from Live Photos</li>
+                </ul>
+            </div>
+            
+            <div class="upload-form">
+                <div class="message" id="message"></div>
+                
+                <form id="livephotoUploadForm" enctype="multipart/form-data">
+                    <div class="drag-drop-area" id="dragDropArea">
+                        <div style="font-size: 3rem; margin-bottom: 20px;">📱</div>
+                        <h3 style="color: white; margin-bottom: 15px;">Drag & Drop Live Photos Here</h3>
+                        <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 20px;">or click to browse files</p>
+                        <input type="file" id="livephotoFiles" name="livephoto_files" multiple accept=".heic,.heif,.mov,.jpg,.jpeg" style="display: none;">
+                        <p style="color: rgba(255, 255, 255, 0.5); font-size: 0.9rem;">Select multiple files from your iPhone</p>
+                    </div>
+                    
+                    <div class="file-list" id="fileList" style="display: none;">
+                        <h4 style="color: white; margin-bottom: 10px;">Selected Files:</h4>
+                        <div id="selectedFiles"></div>
+                    </div>
+                    
+                    <button type="submit" class="upload-btn" id="uploadBtn" style="display: none;">
+                        📤 Upload Live Photos
+                    </button>
+                    <a href="{{ url_for('home') }}" class="upload-btn" style="text-decoration: none; display: inline-block;">
+                        🏠 Back to Home
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dragDropArea = document.getElementById('dragDropArea');
+        const fileInput = document.getElementById('livephotoFiles');
+        const fileList = document.getElementById('fileList');
+        const selectedFiles = document.getElementById('selectedFiles');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const messageDiv = document.getElementById('message');
+
+        // Click to browse files
+        dragDropArea.addEventListener('click', () => fileInput.click());
+
+        // Drag and drop functionality
+        dragDropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dragDropArea.classList.add('dragover');
+        });
+
+        dragDropArea.addEventListener('dragleave', () => {
+            dragDropArea.classList.remove('dragover');
+        });
+
+        dragDropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dragDropArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        });
+
+        // File input change
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+            if (files.length === 0) return;
+
+            selectedFiles.innerHTML = '';
+            let validFiles = 0;
+
+            for (let file of files) {
+                const fileName = file.name.toLowerCase();
+                const isValid = fileName.endsWith('.heic') || fileName.endsWith('.heif') || 
+                               fileName.endsWith('.mov') || fileName.endsWith('.jpg') || 
+                               fileName.endsWith('.jpeg');
+
+                if (isValid) {
+                    validFiles++;
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'file-item';
+                    fileItem.innerHTML = `
+                        <strong>${file.name}</strong> 
+                        <span style="color: rgba(255,255,255,0.6);">(${(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+                    `;
+                    selectedFiles.appendChild(fileItem);
+                }
+            }
+
+            if (validFiles > 0) {
+                fileList.style.display = 'block';
+                uploadBtn.style.display = 'inline-block';
+                showMessage(`${validFiles} Live Photo files ready to upload`, 'success');
+            } else {
+                showMessage('No valid Live Photo files selected', 'error');
+            }
+        }
+
+        // Form submission
+        document.getElementById('livephotoUploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            const files = fileInput.files;
+            
+            if (files.length === 0) {
+                showMessage('Please select Live Photo files first', 'error');
+                return;
+            }
+            
+            // Append all files
+            for (let i = 0; i < files.length; i++) {
+                formData.append('livephoto_files', files[i]);
+            }
+            
+            // Show loading
+            showMessage('Uploading Live Photos...', 'success');
+            uploadBtn.disabled = true;
+            uploadBtn.textContent = 'Uploading...';
+            
+            fetch('/upload-livephotos', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage(data.message, 'success');
+                    // Clear form
+                    fileInput.value = '';
+                    fileList.style.display = 'none';
+                    uploadBtn.style.display = 'none';
+                } else {
+                    showMessage(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                showMessage('Upload failed: ' + error.message, 'error');
+            })
+            .finally(() => {
+                uploadBtn.disabled = false;
+                uploadBtn.textContent = '📤 Upload Live Photos';
+            });
+        });
+
+        function showMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = 'message ' + type;
+            messageDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

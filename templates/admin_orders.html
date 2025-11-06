@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management - DreamFrame LLC Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 15px;
+        }
+        
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .analytics-card {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .analytics-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00ff88;
+        }
+        
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .orders-table th,
+        .orders-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .orders-table th {
+            background: rgba(255,255,255,0.1);
+            font-weight: bold;
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .status-pending { background: #ffc107; color: #000; }
+        .status-paid { background: #28a745; color: #fff; }
+        .status-in_production { background: #007bff; color: #fff; }
+        .status-review { background: #fd7e14; color: #fff; }
+        .status-completed { background: #00ff88; color: #000; }
+        .status-cancelled { background: #dc3545; color: #fff; }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-small {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.8rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+        }
+        
+        .btn-update { background: #007bff; }
+        .btn-message { background: #28a745; }
+        
+        .demo-section {
+            background: rgba(255,193,7,0.1);
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .demo-controls {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="admin-container">
+            <h1><i class="fas fa-cogs"></i> Order Management Dashboard</h1>
+            
+            <!-- Demo Section -->
+            <div class="demo-section">
+                <h2><i class="fas fa-flask"></i> Demo Mode</h2>
+                <p>Testing AI transaction management system. Orders will process without payment until Stripe is configured.</p>
+                <div class="demo-controls">
+                    <button onclick="createDemoOrder()" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Create Demo Order
+                    </button>
+                    <button onclick="testAIResponse()" class="btn btn-secondary">
+                        <i class="fas fa-robot"></i> Test AI Response
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Analytics -->
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <div class="analytics-value">{{ analytics.total_orders }}</div>
+                    <div>Total Orders</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-value">${{ "%.2f"|format(analytics.total_revenue) }}</div>
+                    <div>Total Revenue</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-value">${{ "%.2f"|format(analytics.average_order_value) }}</div>
+                    <div>Average Order</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-value">{{ analytics.status_distribution.get('completed', 0) }}</div>
+                    <div>Completed</div>
+                </div>
+            </div>
+            
+            <!-- Orders Table -->
+            <h2>Recent Orders</h2>
+            {% if orders %}
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Service</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order_id, order in orders.items() %}
+                    <tr>
+                        <td>{{ order.order_id }}</td>
+                        <td>
+                            <div>{{ order.customer_name }}</div>
+                            <small style="color: #aaa;">{{ order.customer_email }}</small>
+                        </td>
+                        <td>{{ order.service_type.value.replace('_', ' ').title() }}</td>
+                        <td>${{ "%.2f"|format(order.amount / 100) }}</td>
+                        <td>
+                            <span class="status-badge status-{{ order.status.value }}">
+                                {{ order.status.value.replace('_', ' ').title() }}
+                            </span>
+                        </td>
+                        <td>{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-small btn-update" onclick="updateOrderStatus('{{ order.order_id }}')">
+                                    <i class="fas fa-edit"></i> Update
+                                </button>
+                                <button class="btn-small btn-message" onclick="sendAIMessage('{{ order.order_id }}')">
+                                    <i class="fas fa-comment"></i> Message
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div style="text-align: center; padding: 2rem; color: #aaa;">
+                <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <p>No orders yet. Use the demo controls to create test orders.</p>
+            </div>
+            {% endif %}
+            
+            <div style="margin-top: 2rem; text-align: center;">
+                <a href="{{ url_for('pricing') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Pricing
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function createDemoOrder() {
+            const demoData = {
+                name: 'Demo Customer',
+                email: 'demo@example.com',
+                requirements: {
+                    description: 'Demo video project for testing AI transaction system',
+                    timeline: 'standard'
+                }
+            };
+            
+            fetch('/order/videogram', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(demoData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert('Demo order created with simulated payment: ' + data.error);
+                } else {
+                    alert('Demo order created successfully!');
+                }
+                setTimeout(() => location.reload(), 1000);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Demo order processing completed');
+                setTimeout(() => location.reload(), 1000);
+            });
+        }
+        
+        function testAIResponse() {
+            const orderId = prompt('Enter order ID to test AI response (or leave empty for demo):');
+            const message = prompt('Enter test message:', 'What is the status of my order?');
+            
+            if (!message) return;
+            
+            fetch('/customer-message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    order_id: orderId || 'DEMO_ORDER',
+                    message: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('AI Response: ' + data.ai_response);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('AI response test completed');
+            });
+        }
+        
+        function updateOrderStatus(orderId) {
+            const newStatus = prompt('Enter new status (pending, paid, in_production, review, completed, cancelled):');
+            if (!newStatus) return;
+            
+            const message = prompt('Optional update message:');
+            
+            fetch('/admin/update-order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    order_id: orderId,
+                    status: newStatus,
+                    message: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Order updated successfully!\\nAI Message: ' + data.ai_message);
+                    location.reload();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Update completed');
+            });
+        }
+        
+        function sendAIMessage(orderId) {
+            const message = prompt('Send AI message to customer:', 'Your order is progressing well!');
+            if (!message) return;
+            
+            fetch('/customer-message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    order_id: orderId,
+                    message: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('AI processed message: ' + data.ai_response);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Message sent');
+            });
+        }
+    </script>
+</body>
+</html>

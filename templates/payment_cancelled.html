@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Cancelled | DreamFrame LLC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .cancelled-container {
+            max-width: 600px;
+            margin: 3rem auto;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            color: white;
+        }
+        
+        .cancelled-icon {
+            font-size: 4rem;
+            color: #ffa500;
+            margin-bottom: 1rem;
+        }
+        
+        .cancelled-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #ffa500;
+        }
+        
+        .message-box {
+            background: rgba(255, 165, 0, 0.1);
+            border: 2px solid rgba(255, 165, 0, 0.3);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+        
+        .help-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: left;
+        }
+        
+        .help-section h3 {
+            color: white;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .help-section ul {
+            margin: 1rem 0;
+        }
+        
+        .help-section li {
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .action-buttons {
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            margin: 0.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .contact-info {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+        
+        .alternative-payment {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+    </style>
+
+    <!-- Meta Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+       fbq('init', '1234567890123456');  // <-- Your Pixel ID
+       fbq('track', 'PageView');
+    </script>
+    <!-- End Meta Pixel Code -->
+
+    <!-- GA4 base tag -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      gtag('js', new Date());
+      // Replace with your GA4 Measurement ID
+      gtag('config', 'G-XXXXXXXXXX', { send_page_view: true });
+    </script>
+</head>
+<body>
+    <div class="cancelled-container">
+        <div class="cancelled-icon">⚠️</div>
+        <h1 class="cancelled-title">Payment Cancelled</h1>
+        
+        <div class="message-box">
+            <p style="font-size: 1.2rem; margin-bottom: 1rem;">
+                Your payment was cancelled and no charges were made to your card.
+            </p>
+            <p style="color: rgba(255, 255, 255, 0.8);">
+                {% if service_type and service_type != 'unknown' %}
+                Your {{ service_type.replace('_', ' ').title() }} service order was not completed.
+                {% else %}
+                Your service order was not completed.
+                {% endif %}
+            </p>
+        </div>
+        
+        <div class="help-section">
+            <h3>What Can You Do Now?</h3>
+            <ul>
+                <li><strong>Try Again:</strong> Return to the pricing page and restart your order</li>
+                <li><strong>Different Payment Method:</strong> Use a different card or payment option</li>
+                <li><strong>Contact Support:</strong> We're here to help with any payment issues</li>
+                <li><strong>Browse Services:</strong> Explore our other video production options</li>
+            </ul>
+        </div>
+        
+        <div class="alternative-payment">
+            <h3 style="color: white; margin-bottom: 1rem;">Need Help with Payment?</h3>
+            <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: 1rem;">
+                We accept all major credit cards, PayPal, and can work with you on custom payment arrangements for larger projects.
+            </p>
+            <p style="color: rgba(255, 255, 255, 0.8);">
+                Contact us directly and we'll find a payment solution that works for you!
+            </p>
+        </div>
+        
+        <div class="action-buttons">
+            {% if service_type and service_type != 'unknown' %}
+            <a href="{{ url_for('stripe_payment_page', service_type=service_type) }}" class="btn btn-primary">
+                Try Payment Again
+            </a>
+            {% endif %}
+            <a href="{{ url_for('pricing') }}" class="btn btn-secondary">View Advertisement Creation</a>
+            <a href="{{ url_for('home') }}" class="btn btn-secondary">Return Home</a>
+        </div>
+        
+        <div class="contact-info">
+            <h4 style="color: white; margin-bottom: 1rem;">Need Assistance?</h4>
+            <p style="color: rgba(255, 255, 255, 0.8);">
+                Our support team is ready to help with any questions or payment issues:<br>
+                <strong>Email:</strong> DreamFrameLLC@gmail.com<br>
+                <strong>Response Time:</strong> Usually within 2 hours<br>
+                <strong>Availability:</strong> 7 days a week
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // Optional: Track cancelled payments for analytics
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'checkout_cancelled', {
+                'service_type': '{{ service_type or "unknown" }}',
+                'step': 'payment_page'
+            });
+        }
+        
+        // Log for debugging (remove in production)
+        console.log('Payment cancelled for service:', '{{ service_type or "unknown" }}');
+    </script>
+</body>
+</html>

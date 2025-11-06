@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📹 Video Projects - DreamFrame LLC</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+        
+        .stat-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid #4facfe;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #4facfe;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .stat-description {
+            font-size: 0.9rem;
+            color: #999;
+        }
+        
+        .projects-section {
+            padding: 30px;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #4facfe;
+            padding-bottom: 10px;
+        }
+        
+        .project-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        
+        .project-header {
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+        }
+        
+        .project-title {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        
+        .customer-name {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .project-body {
+            padding: 20px;
+        }
+        
+        .project-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .info-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #4facfe;
+        }
+        
+        .info-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            font-size: 1rem;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .status-new { background: #fff3cd; color: #856404; }
+        .status-working { background: #d4edda; color: #155724; }
+        .status-review { background: #cce5ff; color: #004085; }
+        .status-done { background: #d1ecf1; color: #0c5460; }
+        
+        .project-type-badge {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+        
+        .description-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #28a745;
+        }
+        
+        .description-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .files-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .file-item {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .no-projects {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        
+        .no-projects-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .refresh-btn {
+            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .admin-actions {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: center;
+        }
+        
+        .clear-data-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .clear-data-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+        
+        .logout-btn {
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(116, 185, 255, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📹 Video Projects Dashboard</h1>
+            <p>Manage all customer video requests in one simple place</p>
+        </div>
+        
+        <div class="admin-actions">
+            <button class="clear-data-btn" onclick="clearTestData()">🗑️ Clear All Test Data</button>
+            <a href="/price-optimizer" class="clear-data-btn" style="background: linear-gradient(45deg, #667eea 0%, #764ba2 100%); text-decoration: none;">🎯 Price Optimizer</a>
+            <a href="/admin/projects" class="clear-data-btn" style="background: linear-gradient(45deg, #00ff00, #00cc00); text-decoration: none;">🤖 Project Management</a>
+            <a href="/admin/completed-videos" class="clear-data-btn" style="background: linear-gradient(45deg, #ff6b00, #ff8f00); text-decoration: none;">🎥 Completed Videos</a>
+            <a href="/admin/logout" class="logout-btn">🚪 Logout</a>
+        </div>
+        
+        <!-- Completed Videos Quick Access -->
+        <div style="text-align: center; margin: 20px 0; padding: 20px; background: rgba(255, 107, 0, 0.1); border-radius: 15px; border: 2px solid #ff6b00;">
+            <h3 style="color: #ff6b00; margin-bottom: 15px;">🎬 Quick Access: Completed Videos</h3>
+            <p style="margin-bottom: 20px; color: #666;">View your 2 completed AI-generated videos</p>
+            <a href="/admin/completed-videos" style="background: linear-gradient(45deg, #ff6b00, #ff8f00); color: white; text-decoration: none; padding: 15px 30px; border-radius: 25px; font-weight: bold; display: inline-block; box-shadow: 0 5px 15px rgba(255, 107, 0, 0.3);">
+                🎥 VIEW COMPLETED VIDEOS
+            </a>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number">{{ analytics.total_projects or 0 }}</div>
+                <div class="stat-label">Total Projects</div>
+                <div class="stat-description">All video requests received</div>
+            </div>
+            
+            <div class="stat-box">
+                <div class="stat-number">{{ analytics.status_breakdown.pending or 0 }}</div>
+                <div class="stat-label">New Requests</div>
+                <div class="stat-description">Waiting to start work</div>
+            </div>
+            
+            <div class="stat-box">
+                <div class="stat-number">{{ analytics.status_breakdown.in_progress or 0 }}</div>
+                <div class="stat-label">Currently Working</div>
+                <div class="stat-description">Videos being created</div>
+            </div>
+            
+            <div class="stat-box">
+                <div class="stat-number">{{ analytics.status_breakdown.completed or 0 }}</div>
+                <div class="stat-label">Finished</div>
+                <div class="stat-description">Ready for delivery</div>
+            </div>
+        </div>
+        
+        <div class="projects-section">
+            <h2 class="section-title">📋 Customer Projects</h2>
+            
+            {% if projects %}
+                {% for project in projects %}
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-title">{{ project.project_title }}</div>
+                        <div class="customer-name">👤 {{ project.customer_name }}</div>
+                    </div>
+                    
+                    <div class="project-body">
+                        <div class="project-info">
+                            <div class="info-item">
+                                <div class="info-label">Status</div>
+                                <div class="info-value">
+                                    {% if project.status.value == 'pending' %}
+                                        <span class="status-badge status-new">🆕 New Request</span>
+                                    {% elif project.status.value == 'in_progress' %}
+                                        <span class="status-badge status-working">⚡ Working On It</span>
+                                    {% elif project.status.value == 'review' %}
+                                        <span class="status-badge status-review">👀 Being Reviewed</span>
+                                    {% elif project.status.value == 'completed' %}
+                                        <span class="status-badge status-done">✅ Finished</span>
+                                    {% else %}
+                                        <span class="status-badge">{{ project.status.value.replace('_', ' ').title() }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="info-item">
+                                <div class="info-label">Video Type</div>
+                                <div class="info-value">
+                                    <span class="project-type-badge">
+                                        {% if project.project_type.value == 'videogram' %}
+                                            📱 VideoGram (5-second clip)
+                                        {% elif project.project_type.value == 'family_memory' %}
+                                            👨‍👩‍👧‍👦 Family Memories
+                                        {% elif project.project_type.value == 'military_tribute' %}
+                                            🇺🇸 Military Tribute
+                                        {% elif project.project_type.value == 'wedding_story' %}
+                                            💒 Wedding Story
+                                        {% elif project.project_type.value == 'quick_clip' %}
+                                            ⚡ Quick Clip
+                                        {% else %}
+                                            🎬 {{ project.project_type.value.replace('_', ' ').title() }}
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="info-item">
+                                <div class="info-label">Contact</div>
+                                <div class="info-value">
+                                    📧 {{ project.customer_email }}<br>
+                                    {% if project.customer_phone %}📞 {{ project.customer_phone }}{% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="info-item">
+                                <div class="info-label">Received</div>
+                                <div class="info-value">📅 {{ project.created_at.strftime('%B %d, %Y at %I:%M %p') }}</div>
+                            </div>
+                        </div>
+                        
+                        {% if project.project_description %}
+                        <div class="description-box">
+                            <div class="description-title">📝 What they want:</div>
+                            <div>{{ project.project_description }}</div>
+                        </div>
+                        {% endif %}
+                        
+                        {% if project.special_requests %}
+                        <div class="description-box">
+                            <div class="description-title">💭 Special requests:</div>
+                            <div>{{ project.special_requests }}</div>
+                        </div>
+                        {% endif %}
+                        
+                        {% if project.uploaded_files %}
+                        <div class="files-list">
+                            <strong>📎 Files uploaded:</strong>
+                            {% for file in project.uploaded_files %}
+                                <div class="file-item">
+                                    📄 {{ file.original_filename }}
+                                    <small>({{ (file.file_size / 1024 / 1024) | round(1) }} MB)</small>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-projects">
+                    <div class="no-projects-icon">📹</div>
+                    <h3>No video projects yet</h3>
+                    <p>When customers submit video requests, they'll appear here</p>
+                    <button class="refresh-btn" onclick="window.location.reload()">🔄 Check for new projects</button>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <script>
+        function clearTestData() {
+            if (confirm('⚠️ Are you sure you want to clear ALL test data?\n\nThis will permanently delete:\n• All customer projects\n• All uploaded files\n• All project data\n\nThis action cannot be undone!')) {
+                fetch('/admin/clear-test-data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('✅ All test data cleared successfully!');
+                        window.location.reload();
+                    } else {
+                        alert('❌ Error: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    alert('❌ Network error: ' + error);
+                });
+            }
+        }
+    </script>
+</body>
+</html>

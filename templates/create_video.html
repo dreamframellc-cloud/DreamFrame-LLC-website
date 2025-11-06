@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Professional Video - DreamFrame</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .video-creation-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            color: white;
+        }
+        
+        .creation-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .creation-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-family: 'Papyrus', fantasy;
+        }
+        
+        .creation-header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+        
+        .speed-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .video-form {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+        }
+        
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+        
+        .example-prompts {
+            margin-bottom: 1rem;
+        }
+        
+        .example-prompts h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .prompt-examples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .prompt-example {
+            background: rgba(255,255,255,0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .prompt-example:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        .create-button {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .create-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .create-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .progress-container {
+            display: none;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .progress-text {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .result-container {
+            display: none;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .success-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .result-details {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            text-align: left;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .create-another-btn {
+            margin-top: 1rem;
+            padding: 0.8rem 2rem;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .create-another-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .video-creation-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .creation-header h1 {
+                font-size: 2rem;
+            }
+            
+            .video-form {
+                padding: 1.5rem;
+            }
+            
+            .prompt-examples {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="video-creation-container">
+        <div class="creation-header">
+            <h1>Create Professional Video</h1>
+            <p class="subtitle">Powered by Google VEO 3 AI Technology</p>
+            <div class="speed-badge">⚡ Ultra-Fast Generation: Under 1 Second</div>
+        </div>
+        
+        <form class="video-form" id="videoForm">
+            <div class="form-group">
+                <label for="customerName">Your Name (Optional)</label>
+                <input type="text" id="customerName" name="customerName" placeholder="Enter your name">
+            </div>
+            
+            <div class="form-group">
+                <label for="videoPrompt">Video Description *</label>
+                <div class="example-prompts">
+                    <h3>Quick Examples (Click to Use):</h3>
+                    <div class="prompt-examples">
+                        <span class="prompt-example" onclick="setPrompt('A golden sunset over a peaceful mountain lake with gentle ripples')">Golden Sunset Lake</span>
+                        <span class="prompt-example" onclick="setPrompt('A magical forest with sunbeams filtering through ancient trees')">Enchanted Forest</span>
+                        <span class="prompt-example" onclick="setPrompt('An eagle soaring majestically over snow-capped mountain peaks')">Majestic Eagle</span>
+                        <span class="prompt-example" onclick="setPrompt('A field of wildflowers swaying in a gentle summer breeze')">Wildflower Meadow</span>
+                        <span class="prompt-example" onclick="setPrompt('A cozy coffee shop on a rainy day with warm lighting')">Cozy Coffee Shop</span>
+                    </div>
+                </div>
+                <textarea id="videoPrompt" name="videoPrompt" placeholder="Describe your video... Be creative! Example: 'A peaceful garden with butterflies dancing among colorful flowers, soft morning light, cinematic'" required></textarea>
+            </div>
+            
+            <button type="submit" class="create-button" id="createBtn">
+                <span class="loading-spinner" id="loadingSpinner"></span>
+                <span id="buttonText">🎬 Create Professional Video</span>
+            </button>
+        </form>
+        
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-text" id="progressText">Generating your professional video...</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+        
+        <div class="result-container" id="resultContainer">
+            <div class="success-icon">🎉</div>
+            <h2 id="resultTitle">Video Generated Successfully!</h2>
+            <p id="resultMessage"></p>
+            
+            <div class="result-details" id="resultDetails">
+                <div class="detail-row">
+                    <span>Customer:</span>
+                    <span id="detailCustomer"></span>
+                </div>
+                <div class="detail-row">
+                    <span>Operation ID:</span>
+                    <span id="detailOperationId"></span>
+                </div>
+                <div class="detail-row">
+                    <span>Generation Time:</span>
+                    <span id="detailTime"></span>
+                </div>
+                <div class="detail-row">
+                    <span>Status:</span>
+                    <span id="detailStatus"></span>
+                </div>
+            </div>
+            
+            <button class="create-another-btn" onclick="createAnother()">Create Another Video</button>
+        </div>
+    </div>
+
+    <script>
+        function setPrompt(prompt) {
+            document.getElementById('videoPrompt').value = prompt;
+        }
+        
+        function createAnother() {
+            document.getElementById('videoForm').style.display = 'block';
+            document.getElementById('progressContainer').style.display = 'none';
+            document.getElementById('resultContainer').style.display = 'none';
+            document.getElementById('videoForm').reset();
+            document.getElementById('createBtn').disabled = false;
+            document.getElementById('buttonText').textContent = '🎬 Create Professional Video';
+        }
+        
+        document.getElementById('videoForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const customerName = document.getElementById('customerName').value.trim() || 'Customer';
+            const videoPrompt = document.getElementById('videoPrompt').value.trim();
+            
+            if (!videoPrompt) {
+                alert('Please provide a video description');
+                return;
+            }
+            
+            // Show loading state
+            const createBtn = document.getElementById('createBtn');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const buttonText = document.getElementById('buttonText');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            createBtn.disabled = true;
+            loadingSpinner.style.display = 'inline-block';
+            buttonText.textContent = 'Generating Video...';
+            progressContainer.style.display = 'block';
+            
+            // Animate progress bar
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 20;
+                if (progress > 90) progress = 90;
+                progressFill.style.width = progress + '%';
+            }, 100);
+            
+            try {
+                const response = await fetch('/api/create-video', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        customer_name: customerName,
+                        prompt: videoPrompt
+                    })
+                });
+                
+                const result = await response.json();
+                
+                clearInterval(progressInterval);
+                progressFill.style.width = '100%';
+                
+                setTimeout(() => {
+                    document.getElementById('videoForm').style.display = 'none';
+                    progressContainer.style.display = 'none';
+                    
+                    const resultContainer = document.getElementById('resultContainer');
+                    
+                    if (result.success) {
+                        document.getElementById('resultTitle').textContent = 'Video Generated Successfully!';
+                        document.getElementById('resultMessage').textContent = result.message;
+                        
+                        document.getElementById('detailCustomer').textContent = result.customer_name;
+                        document.getElementById('detailOperationId').textContent = result.operation_id;
+                        document.getElementById('detailTime').textContent = result.completion_time.toFixed(3) + ' seconds';
+                        document.getElementById('detailStatus').textContent = result.status;
+                        
+                        resultContainer.style.display = 'block';
+                    } else {
+                        document.getElementById('resultTitle').textContent = 'Generation Error';
+                        document.getElementById('resultMessage').textContent = result.error || 'Video generation failed';
+                        document.getElementById('resultDetails').style.display = 'none';
+                        resultContainer.style.display = 'block';
+                    }
+                }, 1000);
+                
+            } catch (error) {
+                clearInterval(progressInterval);
+                
+                setTimeout(() => {
+                    document.getElementById('videoForm').style.display = 'none';
+                    progressContainer.style.display = 'none';
+                    
+                    document.getElementById('resultTitle').textContent = 'Connection Error';
+                    document.getElementById('resultMessage').textContent = 'Unable to connect to video generation service';
+                    document.getElementById('resultDetails').style.display = 'none';
+                    document.getElementById('resultContainer').style.display = 'block';
+                }, 1000);
+            }
+        });
+        
+        // Auto-focus on prompt field
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('videoPrompt').focus();
+        });
+    </script>
+</body>
+</html>

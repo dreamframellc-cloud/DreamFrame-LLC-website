@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Marketing (SEM, SEO, SMM) – DreamFrame LLC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=20250621music">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="gradient-bg">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="container">
+                <div class="brand-container">
+                    <div class="brand-text">DreamFrame</div>
+                    <div class="glowing-star">★</div>
+                    <div class="brand-text">LLC</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="main-nav">
+            <div class="nav-container">
+                <div class="nav-tabs">
+                    <a href="{{ url_for('home') }}" class="nav-tab">Video Production</a>
+                    <a href="{{ url_for('website_development') }}" class="nav-tab">Website and App Development</a>
+                    <a href="{{ url_for('business_consultation') }}" class="nav-tab">Business Consultation</a>
+                    <a href="{{ url_for('services_overview') }}" class="nav-tab">Advertisement Creation</a>
+                </div>
+            </div>
+        </nav>
+    <!-- Hero Section -->
+    <section class="hero digital-marketing-hero">
+        <div class="hero-content">
+            <h1>Digital Marketing</h1>
+            <p class="tagline">Full‑Scale Visibility</p>
+            <p>Drive traffic, convert leads and build relationships through targeted search and social strategies.</p>
+        </div>
+    </section>
+
+    <!-- Overview -->
+    <section class="content">
+        <h2>Digital Marketing Simplified</h2>
+        <p>The digital landscape is full of acronyms, but our job is to simplify them for you and deliver results. Our digital marketing specialists optimise your content, manage ad budgets and connect you with customers wherever they spend their time online.</p>
+
+        <h3>Our Services</h3>
+        <ul>
+            <li><strong>Search Engine Marketing (SEM):</strong> Cross‑platform visibility using Google Ads and display advertising to promote your products and content.</li>
+            <li><strong>Search Engine Optimization (SEO):</strong> Keyword research, on‑page optimisation and technical tuning to improve your rankings and drive organic traffic.</li>
+            <li><strong>Social Media Marketing (SMM):</strong> Social strategy, content creation and community management across platforms like Facebook, Instagram, LinkedIn and X.</li>
+            <li><strong>Pay‑Per‑Click Advertising (PPC):</strong> Targeted ad campaigns with detailed monitoring to ensure ads are placed in front of the right people at the right time.</li>
+        </ul>
+
+        <p>Let us demystify digital marketing and put your business in front of the customers who matter most.</p>
+        
+        <div class="pricing-section">
+            <h3>Digital Marketing Packages</h3>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h4>Marketing Strategy</h4>
+                    <p class="price">$150</p>
+                    <p>Complete digital marketing audit and strategy development</p>
+                    <form action="/create-checkout-session" method="POST" class="payment-form">
+                        <input type="hidden" name="price_id" value="price_marketing_strategy">
+                        <input type="hidden" name="service_name" value="Marketing Strategy">
+                        <button type="submit" class="pay-now-btn">Get Started</button>
+                    </form>
+                </div>
+                <div class="pricing-card">
+                    <h4>Full Campaign</h4>
+                    <p class="price">$500</p>
+                    <p>Complete SEM, SEO, and SMM campaign setup and management</p>
+                    <form action="/create-checkout-session" method="POST" class="payment-form">
+                        <input type="hidden" name="price_id" value="price_digital_campaign">
+                        <input type="hidden" name="service_name" value="Digital Marketing Campaign">
+                        <button type="submit" class="pay-now-btn">Launch Campaign</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="contact-section">
+            <a href="/contact" class="btn secondary">Contact Us for Custom Quote</a>
+        </div>
+    </section>
+    </div>
+</body>
+</html>

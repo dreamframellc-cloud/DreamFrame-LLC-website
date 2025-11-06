@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic AI & AI Agent Workforce - DreamFrame LLC</title>
+    <meta name="description" content="Transform your business with intelligent AI agents and autonomous workforce solutions. DreamFrame LLC delivers cutting-edge agentic AI systems for automation and productivity.">
+    <meta name="keywords" content="agentic AI, AI agents, autonomous systems, AI workforce, business automation, intelligent automation, AI solutions">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/service-navigation.css') }}">
+    
+    <!-- Floating Chatbot -->
+    <script src="{{ url_for('static', filename='js/floating-chatbot.js') }}"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .main-header {
+            background: rgba(26, 26, 46, 0.95);
+            padding: 15px 0;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .brand-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .brand-text {
+            font-family: 'Papyrus', fantasy;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff6b35;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .glowing-star {
+            font-size: 2rem;
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+            animation: starGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes starGlow {
+            from { text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 15px #00ffff; }
+            to { text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff; }
+        }
+
+        /* Navigation */
+        .main-nav {
+            background: rgba(26, 26, 46, 0.95);
+            padding: 15px 0;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .nav-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 20px;
+            max-width: 1000px;
+            width: 100%;
+            justify-content: center;
+        }
+        
+
+        .nav-tab {
+            color: #fff !important;
+            text-decoration: none !important;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 107, 53, 0.3);
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            backdrop-filter: blur(5px);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 50px;
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+        }
+
+        .nav-tab:hover {
+            background: linear-gradient(135deg, #f7931e, #ff8c42);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.6);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            border-color: rgba(255, 107, 53, 0.6);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.8);
+            transform: translateY(-3px);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
+            padding: 80px 0;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ff6b35, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: #b8c2cc;
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+            line-height: 1.6;
+        }
+
+        /* Services Grid */
+        .services-section {
+            padding: 80px 0;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.2);
+            border-color: rgba(255, 107, 53, 0.3);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #ff6b35;
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .service-description {
+            color: #b8c2cc;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .service-price {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #00ffff;
+            margin-bottom: 20px;
+        }
+
+        .service-btn {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .service-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 107, 53, 0.3);
+        }
+
+        /* Section Headers */
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #b8c2cc;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .nav-tabs {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(6, 1fr);
+                max-width: 400px;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Meta Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+       fbq('init', '1234567890123456');  // <-- Your Pixel ID
+       fbq('track', 'PageView');
+    </script>
+    <!-- End Meta Pixel Code -->
+
+    <!-- GA4 base tag -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      gtag('js', new Date());
+      // Replace with your GA4 Measurement ID
+      gtag('config', 'G-XXXXXXXXXX', { send_page_view: true });
+    </script>
+</head>
+<body>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 20000; max-width: 600px; width: 90%;">
+                {% for category, message in messages %}
+                    <div id="flashMessage" style="padding: 15px 20px; margin: 10px 0; border-radius: 8px; font-size: 16px; text-align: center; font-weight: 600; box-shadow: 0 5px 15px rgba(0,0,0,0.3); {% if category == 'success' %}background: #d4edda; color: #155724; border: 2px solid #c3e6cb;{% else %}background: #f8d7da; color: #721c24; border: 2px solid #f5c6cb;{% endif %}">
+                        {{ message }}
+                        <button onclick="this.parentElement.style.display='none'" style="background: none; border: none; color: inherit; font-size: 18px; font-weight: bold; float: right; cursor: pointer; margin-left: 10px;">&times;</button>
+                    </div>
+                {% endfor %}
+            </div>
+            <script>
+                setTimeout(function() {
+                    const flashMsg = document.getElementById('flashMessage');
+                    if (flashMsg) {
+                        flashMsg.style.opacity = '0';
+                        flashMsg.style.transition = 'opacity 0.5s ease';
+                        setTimeout(() => flashMsg.style.display = 'none', 500);
+                    }
+                }, 5000);
+            </script>
+        {% endif %}
+    {% endwith %}
+    
+    <div class="gradient-bg">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="container">
+                <div class="brand-container">
+                    <div class="brand-text">DreamFrame</div>
+                    <div class="glowing-star">★</div>
+                    <div class="brand-text">LLC</div>
+                </div>
+                
+                <!-- Language Menu (DreamFrame LLC) -->
+                <nav class="df-lang" aria-label="Language selector">
+                    <div class="df-lang-menu" role="menu">
+                        <button class="df-lang-btn" type="button" aria-haspopup="true" aria-expanded="false">
+                            <span class="df-lang-icon" aria-hidden="true">🌐</span>
+                            <span class="df-lang-label">Language</span>
+                            <svg class="df-caret" viewBox="0 0 10 6" aria-hidden="true">
+                                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" />
+                            </svg>
+                        </button>
+
+                        <ul class="df-lang-list" role="menu" aria-label="Languages">
+                            {% for code, name in language_names.items() %}
+                                <li role="none"><a role="menuitem" hreflang="{{ code }}" lang="{{ code }}" href="{{ url_for('set_language', language=code) }}">{{ name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </nav>
+
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="main-nav">
+            <div class="nav-container">
+                <!-- Mobile Hamburger Menu Button -->
+                <button class="mobile-nav-toggle" id="mobileNavToggle">
+                    <i class="fas fa-bars" style="margin-right: 10px;"></i>
+                    <span class="toggle-text">Service Navigation</span>
+                </button>
+                
+                <div class="nav-tabs" id="navTabs">
+                    <a href="{{ url_for('home') }}" class="nav-tab">{{ get_text('nav_video_music') }}</a>
+                    <a href="{{ url_for('website_development') }}" class="nav-tab">{{ get_text('nav_website_dev') }}</a>
+                    <a href="{{ url_for('business_consultation') }}" class="nav-tab">{{ get_text('nav_business') }}</a>
+                    <a href="{{ url_for('cybersecurity_services') }}" class="nav-tab">{{ get_text('nav_cybersecurity') }}</a>
+                    <a href="{{ url_for('agentic_ai_services') }}" class="nav-tab active">{{ get_text('nav_ai_agents') }}</a>
+                    <a href="{{ url_for('services_overview') }}" class="nav-tab">{{ get_text('nav_advertising') }}</a>
+                </div>
+            </div>
+        </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">Agentic AI & AI Agent Workforce</h1>
+            <p class="hero-subtitle">
+                Transform your business operations with intelligent autonomous agents that work 24/7. 
+                Our cutting-edge agentic AI solutions automate complex workflows, enhance productivity, 
+                and create scalable digital workforces tailored to your specific needs.
+            </p>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">AI Agent Solutions</h2>
+                <p class="section-subtitle">
+                    Comprehensive autonomous AI systems designed to revolutionize your business operations
+                </p>
+            </div>
+            
+            <div class="services-grid">
+                <!-- Customer Service AI Agent -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="spinning-star">★</span>
+                    </div>
+                    <h3 class="service-title">Customer Service AI Agent</h3>
+                    <p class="service-description">
+                        Deploy intelligent conversational agents that handle customer inquiries, support tickets, 
+                        and provide 24/7 assistance with natural language understanding and response generation.
+                    </p>
+                    <div class="service-price">Starting at $2,500/month</div>
+                    <form action="{{ url_for('create_checkout_session') }}" method="POST" style="margin: 0;">
+                        <input type="hidden" name="service_type" value="customer_service_ai">
+                        <input type="hidden" name="amount" value="250000">
+                        <input type="hidden" name="description" value="Customer Service AI Agent - Monthly Subscription">
+                        <button type="submit" class="service-btn">Deploy Agent</button>
+                    </form>
+                </div>
+
+                <!-- Sales Automation Agent -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="spinning-star">★</span>
+                    </div>
+                    <h3 class="service-title">Sales Automation Agent</h3>
+                    <p class="service-description">
+                        Intelligent sales agents that qualify leads, nurture prospects, schedule meetings, 
+                        and manage your entire sales pipeline with advanced CRM integration and analytics.
+                    </p>
+                    <div class="service-price">Starting at $3,500/month</div>
+                    <form action="{{ url_for('create_checkout_session') }}" method="POST" style="margin: 0;">
+                        <input type="hidden" name="service_type" value="sales_automation_ai">
+                        <input type="hidden" name="amount" value="350000">
+                        <input type="hidden" name="description" value="Sales Automation Agent - Monthly Subscription">
+                        <button type="submit" class="service-btn">Deploy Agent</button>
+                    </form>
+                </div>
+
+                <!-- Data Analysis Agent -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="spinning-star">★</span>
+                    </div>
+                    <h3 class="service-title">Data Analysis Agent</h3>
+                    <p class="service-description">
+                        Autonomous data scientists that analyze business metrics, generate insights, 
+                        create reports, and provide actionable recommendations based on your data patterns.
+                    </p>
+                    <div class="service-price">Starting at $4,000/month</div>
+                    <form action="{{ url_for('create_checkout_session') }}" method="POST" style="margin: 0;">
+                        <input type="hidden" name="service_type" value="data_analysis_ai">
+                        <input type="hidden" name="amount" value="400000">
+                        <input type="hidden" name="description" value="Data Analysis Agent - Monthly Subscription">
+                        <button type="submit" class="service-btn">Deploy Agent</button>
+                    </form>
+                </div>
+
+                <!-- Content Creation Agent -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="spinning-star">★</span>
+                    </div>
+                    <h3 class="service-title">Content Creation Agent</h3>
+                    <p class="service-description">
+                        Creative AI agents that generate marketing content, social media posts, blog articles, 
+                        and multimedia content while maintaining your brand voice and style guidelines.
+                    </p>
+                    <div class="service-price">Starting at $2,000/month</div>
+                    <form action="{{ url_for('create_checkout_session') }}" method="POST" style="margin: 0;">
+                        <input type="hidden" name="service_type" value="content_creation_ai">
+                        <input type="hidden" name="amount" value="200000">
+                        <input type="hidden" name="description" value="Content Creation Agent - Monthly Subscription">
+                        <button type="submit" class="service-btn">Deploy Agent</button>
+                    </form>
+                </div>
+
+                <!-- Process Automation Agent -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="spinning-star">★</span>
+                    </div>
+                    <h3 class="service-title">Process Automation Agent</h3>
+                    <p class="service-description">
+                        Intelligent workflow automation agents that streamline business processes, 
+                        integrate systems, and optimize operational efficiency across your organization.
+                    </p>
+                    <div class="service-price">Starting at $5,000/month</div>
+                    <form action="{{ url_for('create_checkout_session') }}" method="POST" style="margin: 0;">
+                        <input type="hidden" name="service_type" value="process_automation_ai">
+                        <input type="hidden" name="amount" value="500000">
+                        <input type="hidden" name="description" value="Process Automation Agent - Monthly Subscription">
+                        <button type="submit" class="service-btn">Deploy Agent</button>
+                    </form>
+                </div>
+
+                <!-- Custom AI Workforce -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="spinning-star">★</span>
+                    </div>
+                    <h3 class="service-title">Custom AI Workforce</h3>
+                    <p class="service-description">
+                        Bespoke AI agent teams designed specifically for your industry and business needs. 
+                        Complete autonomous workforce solutions with multi-agent collaboration and orchestration.
+                    </p>
+                    <div class="service-price">Starting at $10,000/month</div>
+                    <form action="{{ url_for('create_checkout_session') }}" method="POST" style="margin: 0;">
+                        <input type="hidden" name="service_type" value="custom_ai_workforce">
+                        <input type="hidden" name="amount" value="1000000">
+                        <input type="hidden" name="description" value="Custom AI Workforce - Monthly Subscription">
+                        <button type="submit" class="service-btn">Deploy Workforce</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enterprise Features Section -->
+    <section class="services-section" style="background: rgba(255, 255, 255, 0.05);">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Enterprise AI Features</h2>
+                <p class="section-subtitle">
+                    Advanced capabilities for large-scale autonomous operations
+                </p>
+            </div>
+            
+            <div class="services-grid">
+                <!-- Multi-Agent Orchestration -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="spinning-star">★</span>
+                    </div>
+                    <h3 class="service-title">Multi-Agent Orchestration</h3>
+                    <p class="service-description">
+                        Coordinate multiple AI agents working together on complex workflows with 
+                        intelligent task distribution and real-time collaboration capabilities.
+                    </p>
+                </div>
+
+                <!-- Advanced Analytics -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="spinning-star">★</span>
+                    </div>
+                    <h3 class="service-title">Performance Analytics</h3>
+                    <p class="service-description">
+                        Comprehensive monitoring and analytics dashboard to track agent performance, 
+                        ROI metrics, and optimization opportunities across your AI workforce.
+                    </p>
+                </div>
+
+                <!-- Integration Platform -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="spinning-star">★</span>
+                    </div>
+                    <h3 class="service-title">Enterprise Integration</h3>
+                    <p class="service-description">
+                        Seamless integration with existing enterprise systems, CRMs, ERPs, and 
+                        third-party platforms through our comprehensive API framework.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="services-section" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 60px 0;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Ready to Deploy Your AI Workforce?</h2>
+                <p class="section-subtitle">
+                    Contact our AI specialists to discuss your specific requirements and deployment strategy
+                </p>
+                <a href="{{ url_for('home') }}" class="service-btn" style="margin-top: 30px; font-size: 1.2rem; padding: 15px 40px;">
+                    <span class="spinning-star" style="margin-right: 10px;">★</span>
+                    Get Started Today
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Form submission handling with loading state
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                const button = this.querySelector('button[type="submit"]');
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                button.disabled = true;
+                
+                // Re-enable after 10 seconds as fallback
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                }, 10000);
+            });
+        });
+    </script>
+    
+    <!-- Mobile Navigation Script -->
+    <script src="{{ url_for('static', filename='js/mobile-navigation.js') }}"></script>
+</body>
+</html>

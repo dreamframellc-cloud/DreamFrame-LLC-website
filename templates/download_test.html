@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Download Test Page</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #1a1a1a; color: white; }
+        .download-section { margin: 20px 0; padding: 20px; background: #2a2a2a; border-radius: 10px; }
+        .download-btn { 
+            background: #4CAF50; color: white; padding: 15px 25px; 
+            text-decoration: none; border-radius: 5px; font-weight: bold; 
+            display: inline-block; margin: 10px; 
+        }
+        .info { background: #333; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .test-video { width: 300px; height: 200px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>🎬 DreamFrame Video Download Test</h1>
+    
+    <div class="download-section">
+        <h2>Project #7: Lion of Judah</h2>
+        <div class="info">File: 597KB video with fire effects</div>
+        <video class="test-video" controls>
+            <source src="/static/lion_customer.mp4" type="video/mp4">
+            Video not supported
+        </video>
+        <br>
+        <a href="/static/lion_customer.mp4" download="Lion_of_Judah_Customer_Video.mp4" class="download-btn">
+            📥 Download Lion Video (Direct Link)
+        </a>
+        <a href="/static/lion_customer.mp4" target="_blank" class="download-btn">
+            🎬 Open Lion Video (New Tab)
+        </a>
+    </div>
+    
+    <div class="download-section">
+        <h2>Project #8: Kindness</h2>
+        <div class="info">File: 134KB video from customer portrait</div>
+        <video class="test-video" controls>
+            <source src="/static/kindness_customer.mp4" type="video/mp4">
+            Video not supported
+        </video>
+        <br>
+        <a href="/static/kindness_customer.mp4" download="Kindness_Customer_Video.mp4" class="download-btn">
+            📥 Download Kindness Video (Direct Link)
+        </a>
+        <a href="/static/kindness_customer.mp4" target="_blank" class="download-btn">
+            🎬 Open Kindness Video (New Tab)
+        </a>
+    </div>
+    
+    <div class="download-section">
+        <h2>Diagnostic Information</h2>
+        <div class="info">
+            <strong>Current Status:</strong><br>
+            ✅ Videos are confirmed to exist on server<br>
+            ✅ Videos have unique MD5 hashes (authentic content)<br>
+            ✅ Server logs show successful file access<br>
+            ✅ Direct static file links created<br>
+            <br>
+            <strong>Test Instructions:</strong><br>
+            1. Try playing videos above to confirm they work<br>
+            2. Try both download buttons for each video<br>
+            3. Check browser downloads folder<br>
+            4. Report which method works (if any)
+        </div>
+    </div>
+    
+    <div class="download-section">
+        <h2>Alternative Access Methods</h2>
+        <div class="info">
+            <strong>Direct URLs (copy to new browser tab):</strong><br>
+            Lion Video: <code>{{base_url}}/static/lion_customer.mp4</code><br>
+            Kindness Video: <code>{{base_url}}/static/kindness_customer.mp4</code>
+        </div>
+    </div>
+    
+</body>
+</html>
+    

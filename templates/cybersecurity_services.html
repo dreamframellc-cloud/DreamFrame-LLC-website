@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity & Information Assurance - DreamFrame LLC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=20250910stars">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/service-navigation.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Floating Chatbot -->
+    <script src="{{ url_for('static', filename='js/floating-chatbot.js') }}"></script>
+    <style>
+        :root {
+            --orange: #ff6b35;
+            --cyan: #00ffff;
+            --dark: #1a1a2e;
+            --white: #ffffff;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            padding: 40px 0;
+        }
+        
+        .service-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--orange), #f7931e);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 107, 53, 0.3);
+        }
+        
+        .service-icon {
+            font-size: 3rem;
+            background: linear-gradient(135deg, var(--orange), #f7931e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+        
+        .service-title {
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .service-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .service-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 25px;
+        }
+        
+        .service-features li {
+            color: rgba(255, 255, 255, 0.7);
+            padding: 5px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .service-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--orange);
+            font-weight: bold;
+        }
+        
+        .pricing-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .price-range {
+            color: var(--orange);
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        
+        .service-cta {
+            background: linear-gradient(135deg, var(--orange), #f7931e);
+            color: var(--white);
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .service-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+        }
+        
+        .hero-cyber {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(22, 33, 62, 0.85) 50%, rgba(26, 26, 46, 0.95) 100%);
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-cyber:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="cyber-grid" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,107,53,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23cyber-grid)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .cyber-badges {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .cyber-badge {
+            background: rgba(255, 107, 53, 0.1);
+            border: 1px solid var(--orange);
+            color: var(--orange);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+        }
+        
+        @media (max-width: 768px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px 0;
+            }
+            
+            .service-card {
+                padding: 20px;
+            }
+            
+            .pricing-section {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+
+    <!-- Meta Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+       fbq('init', '1234567890123456');  // <-- Your Pixel ID
+       fbq('track', 'PageView');
+    </script>
+    <!-- End Meta Pixel Code -->
+
+    <!-- GA4 base tag -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      gtag('js', new Date());
+      // Replace with your GA4 Measurement ID
+      gtag('config', 'G-XXXXXXXXXX', { send_page_view: true });
+    </script>
+</head>
+<body>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 20000; max-width: 600px; width: 90%;">
+                {% for category, message in messages %}
+                    <div id="flashMessage" style="padding: 15px 20px; margin: 10px 0; border-radius: 8px; font-size: 16px; text-align: center; font-weight: 600; box-shadow: 0 5px 15px rgba(0,0,0,0.3); {% if category == 'success' %}background: #d4edda; color: #155724; border: 2px solid #c3e6cb;{% else %}background: #f8d7da; color: #721c24; border: 2px solid #f5c6cb;{% endif %}">
+                        {{ message }}
+                        <button onclick="this.parentElement.style.display='none'" style="background: none; border: none; color: inherit; font-size: 18px; font-weight: bold; float: right; cursor: pointer; margin-left: 10px;">&times;</button>
+                    </div>
+                {% endfor %}
+            </div>
+            <script>
+                setTimeout(function() {
+                    const flashMsg = document.getElementById('flashMessage');
+                    if (flashMsg) {
+                        flashMsg.style.opacity = '0';
+                        flashMsg.style.transition = 'opacity 0.5s ease';
+                        setTimeout(() => flashMsg.style.display = 'none', 500);
+                    }
+                }, 5000);
+            </script>
+        {% endif %}
+    {% endwith %}
+    
+    <div class="gradient-bg">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="container">
+                <div class="brand-container">
+                    <div class="brand-text">DreamFrame</div>
+                    <div class="glowing-star">★</div>
+                    <div class="brand-text">LLC</div>
+                </div>
+                
+                <!-- Language Menu (DreamFrame LLC) -->
+                <nav class="df-lang" aria-label="Language selector">
+                    <div class="df-lang-menu" role="menu">
+                        <button class="df-lang-btn" type="button" aria-haspopup="true" aria-expanded="false">
+                            <span class="df-lang-icon" aria-hidden="true">🌐</span>
+                            <span class="df-lang-label">Language</span>
+                            <svg class="df-caret" viewBox="0 0 10 6" aria-hidden="true">
+                                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" />
+                            </svg>
+                        </button>
+
+                        <ul class="df-lang-list" role="menu" aria-label="Languages">
+                            {% for code, name in language_names.items() %}
+                                <li role="none"><a role="menuitem" hreflang="{{ code }}" lang="{{ code }}" href="{{ url_for('set_language', language=code) }}">{{ name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </nav>
+
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="main-nav">
+            <div class="nav-container">
+                <!-- Mobile Hamburger Menu Button -->
+                <button class="mobile-nav-toggle" id="mobileNavToggle">
+                    <i class="fas fa-bars" style="margin-right: 10px;"></i>
+                    <span class="toggle-text">Service Navigation</span>
+                </button>
+                
+                <div class="nav-tabs" id="navTabs">
+                    <a href="{{ url_for('home') }}" class="nav-tab">{{ get_text('nav_video_music') }}</a>
+                    <a href="{{ url_for('website_development') }}" class="nav-tab">{{ get_text('nav_website_dev') }}</a>
+                    <a href="{{ url_for('business_consultation') }}" class="nav-tab">{{ get_text('nav_business') }}</a>
+                    <a href="{{ url_for('cybersecurity_services') }}" class="nav-tab active">{{ get_text('nav_cybersecurity') }}</a>
+                    <a href="{{ url_for('agentic_ai_services') }}" class="nav-tab">{{ get_text('nav_ai_agents') }}</a>
+                    <a href="{{ url_for('services_overview') }}" class="nav-tab">{{ get_text('nav_advertising') }}</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero-cyber">
+            <div class="container">
+                <h1 style="color: var(--white); font-size: 3rem; margin-bottom: 20px; position: relative; z-index: 2;">
+                    <span class="spinning-star" style="color: var(--cyan); margin-right: 15px;">★</span>
+                    Cybersecurity & Information Assurance
+                </h1>
+                <p style="color: rgba(255, 255, 255, 0.9); font-size: 1.3rem; max-width: 800px; margin: 0 auto 30px; position: relative; z-index: 2;">
+                    Protecting your digital assets with enterprise-grade security solutions, compliance frameworks, and proactive threat management.
+                </p>
+                
+                <div class="cyber-badges">
+                    <span class="cyber-badge">NIST Certified</span>
+                    <span class="cyber-badge">SOC 2 Compliance</span>
+                    <span class="cyber-badge">GDPR Ready</span>
+                    <span class="cyber-badge">24/7 Monitoring</span>
+                    <span class="cyber-badge">Veteran Owned</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Grid -->
+        <section style="padding: 80px 0;">
+            <div class="container">
+                <div class="services-grid">
+                    
+                    <!-- Security Assessment & Auditing -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <span class="spinning-star">★</span>
+                        </div>
+                        <h3 class="service-title">Security Assessment & Auditing</h3>
+                        <p class="service-description">
+                            Comprehensive security evaluations to identify vulnerabilities and ensure your systems meet industry standards and compliance requirements.
+                        </p>
+                        <ul class="service-features">
+                            <li>Vulnerability assessments and penetration testing</li>
+                            <li>Security architecture reviews</li>
+                            <li>Compliance audits (SOC 2, HIPAA, PCI DSS)</li>
+                            <li>Risk assessment and mitigation planning</li>
+                            <li>Security policy development</li>
+                        </ul>
+                        <div class="pricing-section">
+                            <span class="price-range">$5,000 - $25,000</span>
+                            <form action="/create-checkout-session" method="post">
+                                <input type="hidden" name="service_type" value="security_assessment">
+                                <input type="hidden" name="amount" value="500000">
+                                <input type="hidden" name="service_name" value="Security Assessment Deposit">
+                                <button type="submit" class="service-cta">Get Assessment</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Managed Security Services -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <span class="spinning-star">★</span>
+                        </div>
+                        <h3 class="service-title">Managed Security Services</h3>
+                        <p class="service-description">
+                            24/7 security monitoring and incident response to protect your business from evolving cyber threats with proactive defense strategies.
+                        </p>
+                        <ul class="service-features">
+                            <li>24/7 Security Operations Center (SOC)</li>
+                            <li>Threat detection and response</li>
+                            <li>Security incident management</li>
+                            <li>Endpoint detection and response (EDR)</li>
+                            <li>Security information and event management (SIEM)</li>
+                        </ul>
+                        <div class="pricing-section">
+                            <span class="price-range">$3,000 - $15,000/month</span>
+                            <form action="/create-checkout-session" method="post">
+                                <input type="hidden" name="service_type" value="managed_security">
+                                <input type="hidden" name="amount" value="300000">
+                                <input type="hidden" name="service_name" value="Managed Security Setup">
+                                <button type="submit" class="service-cta">Start Protection</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Identity & Access Management -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <span class="spinning-star">★</span>
+                        </div>
+                        <h3 class="service-title">Identity & Access Management</h3>
+                        <p class="service-description">
+                            Secure user authentication and authorization systems to ensure only authorized personnel access sensitive data and systems.
+                        </p>
+                        <ul class="service-features">
+                            <li>Multi-factor authentication (MFA) implementation</li>
+                            <li>Single sign-on (SSO) solutions</li>
+                            <li>Privileged access management (PAM)</li>
+                            <li>Role-based access control (RBAC)</li>
+                            <li>Identity governance and administration</li>
+                        </ul>
+                        <div class="pricing-section">
+                            <span class="price-range">$8,000 - $30,000</span>
+                            <form action="/create-checkout-session" method="post">
+                                <input type="hidden" name="service_type" value="identity_management">
+                                <input type="hidden" name="amount" value="800000">
+                                <input type="hidden" name="service_name" value="IAM Implementation">
+                                <button type="submit" class="service-cta">Secure Access</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Data Protection & Encryption -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <span class="spinning-star">★</span>
+                        </div>
+                        <h3 class="service-title">Data Protection & Encryption</h3>
+                        <p class="service-description">
+                            Advanced data encryption and protection strategies to safeguard sensitive information at rest, in transit, and in use.
+                        </p>
+                        <ul class="service-features">
+                            <li>End-to-end encryption implementation</li>
+                            <li>Database encryption and key management</li>
+                            <li>Data loss prevention (DLP) solutions</li>
+                            <li>Backup and disaster recovery planning</li>
+                            <li>Data classification and handling policies</li>
+                        </ul>
+                        <div class="pricing-section">
+                            <span class="price-range">$6,000 - $25,000</span>
+                            <form action="/create-checkout-session" method="post">
+                                <input type="hidden" name="service_type" value="data_protection">
+                                <input type="hidden" name="amount" value="600000">
+                                <input type="hidden" name="service_name" value="Data Protection Setup">
+                                <button type="submit" class="service-cta">Protect Data</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Network Security -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <span class="spinning-star">★</span>
+                        </div>
+                        <h3 class="service-title">Network Security</h3>
+                        <p class="service-description">
+                            Comprehensive network protection including firewalls, intrusion detection, and secure network architecture design.
+                        </p>
+                        <ul class="service-features">
+                            <li>Next-generation firewall (NGFW) deployment</li>
+                            <li>Intrusion detection and prevention systems</li>
+                            <li>Network segmentation and micro-segmentation</li>
+                            <li>VPN and secure remote access solutions</li>
+                            <li>Network traffic analysis and monitoring</li>
+                        </ul>
+                        <div class="pricing-section">
+                            <span class="price-range">$4,000 - $20,000</span>
+                            <form action="/create-checkout-session" method="post">
+                                <input type="hidden" name="service_type" value="network_security">
+                                <input type="hidden" name="amount" value="400000">
+                                <input type="hidden" name="service_name" value="Network Security Setup">
+                                <button type="submit" class="service-cta">Secure Network</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Compliance & Governance -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <span class="spinning-star">★</span>
+                        </div>
+                        <h3 class="service-title">Compliance & Governance</h3>
+                        <p class="service-description">
+                            Ensure regulatory compliance and establish governance frameworks that meet industry standards and legal requirements.
+                        </p>
+                        <ul class="service-features">
+                            <li>GDPR, HIPAA, SOX compliance consulting</li>
+                            <li>Policy and procedure development</li>
+                            <li>Audit preparation and support</li>
+                            <li>Risk management frameworks</li>
+                            <li>Security awareness training programs</li>
+                        </ul>
+                        <div class="pricing-section">
+                            <span class="price-range">$7,000 - $35,000</span>
+                            <form action="/create-checkout-session" method="post">
+                                <input type="hidden" name="service_type" value="compliance_governance">
+                                <input type="hidden" name="amount" value="700000">
+                                <input type="hidden" name="service_name" value="Compliance Consulting">
+                                <button type="submit" class="service-cta">Ensure Compliance</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Cloud Security -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <span class="spinning-star">★</span>
+                        </div>
+                        <h3 class="service-title">Cloud Security</h3>
+                        <p class="service-description">
+                            Secure your cloud infrastructure with advanced security controls, monitoring, and configuration management across all platforms.
+                        </p>
+                        <ul class="service-features">
+                            <li>Cloud security posture management (CSPM)</li>
+                            <li>Container and Kubernetes security</li>
+                            <li>Cloud access security broker (CASB)</li>
+                            <li>Multi-cloud security architecture</li>
+                            <li>DevSecOps integration and automation</li>
+                        </ul>
+                        <div class="pricing-section">
+                            <span class="price-range">$5,000 - $22,000</span>
+                            <form action="/create-checkout-session" method="post">
+                                <input type="hidden" name="service_type" value="cloud_security">
+                                <input type="hidden" name="amount" value="500000">
+                                <input type="hidden" name="service_name" value="Cloud Security Setup">
+                                <button type="submit" class="service-cta">Secure Cloud</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Incident Response & Forensics -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <span class="spinning-star">★</span>
+                        </div>
+                        <h3 class="service-title">Incident Response & Forensics</h3>
+                        <p class="service-description">
+                            Rapid response to security incidents with expert forensic analysis and recovery planning to minimize business impact.
+                        </p>
+                        <ul class="service-features">
+                            <li>24/7 incident response team</li>
+                            <li>Digital forensics and evidence preservation</li>
+                            <li>Malware analysis and reverse engineering</li>
+                            <li>Business continuity planning</li>
+                            <li>Post-incident remediation and lessons learned</li>
+                        </ul>
+                        <div class="pricing-section">
+                            <span class="price-range">$2,000 - $15,000</span>
+                            <form action="/create-checkout-session" method="post">
+                                <input type="hidden" name="service_type" value="incident_response">
+                                <input type="hidden" name="amount" value="200000">
+                                <input type="hidden" name="service_name" value="Incident Response Retainer">
+                                <button type="submit" class="service-cta">Emergency Ready</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Security Training & Awareness -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <span class="spinning-star">★</span>
+                        </div>
+                        <h3 class="service-title">Security Training & Awareness</h3>
+                        <p class="service-description">
+                            Comprehensive security education programs to build a security-conscious culture and reduce human-related security risks.
+                        </p>
+                        <ul class="service-features">
+                            <li>Phishing simulation and training</li>
+                            <li>Security awareness workshops</li>
+                            <li>Role-specific security training</li>
+                            <li>Security culture assessment</li>
+                            <li>Ongoing education and certification programs</li>
+                        </ul>
+                        <div class="pricing-section">
+                            <span class="price-range">$3,000 - $12,000</span>
+                            <form action="/create-checkout-session" method="post">
+                                <input type="hidden" name="service_type" value="security_training">
+                                <input type="hidden" name="amount" value="300000">
+                                <input type="hidden" name="service_name" value="Security Training Program">
+                                <button type="submit" class="service-cta">Train Team</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section style="background: rgba(0, 0, 0, 0.3); padding: 60px 0; text-align: center;">
+            <div class="container">
+                <h2 style="color: var(--white); font-size: 2.5rem; margin-bottom: 20px;">
+                    Ready to Secure Your Business?
+                </h2>
+                <p style="color: rgba(255, 255, 255, 0.8); font-size: 1.2rem; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    Contact our cybersecurity experts for a free consultation and discover how we can protect your digital assets.
+                </p>
+                <a href="{{ url_for('contact') }}" style="background: linear-gradient(135deg, var(--orange), #f7931e); color: var(--white); padding: 15px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: all 0.3s ease; display: inline-block;">
+                    <span class="spinning-star" style="margin-right: 10px;">★</span>
+                    Get Security Consultation
+                </a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer style="background: rgba(0, 0, 0, 0.5); padding: 40px 0; text-align: center;">
+            <div class="container">
+                <p style="color: rgba(255, 255, 255, 0.6); margin: 0;">
+                    © 2025 DreamFrame LLC - Veteran Owned Cybersecurity & Information Assurance Services
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/enhanced-ui-clean.js') }}"></script>
+    
+    <!-- Mobile Navigation Script -->
+    <script src="{{ url_for('static', filename='js/mobile-navigation.js') }}"></script>
+</body>
+</html>

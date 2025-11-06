@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Videos | DreamFrame</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            font-family: 'Papyrus', fantasy;
+            margin: 0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin: 0;
+        }
+        .user-info {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .welcome {
+            flex: 1;
+        }
+        .welcome h2 {
+            margin: 0;
+            color: #4CAF50;
+        }
+        .welcome p {
+            margin: 5px 0 0 0;
+            color: rgba(255,255,255,0.8);
+        }
+        .actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-family: inherit;
+        }
+        .btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .video-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        .video-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .status-completed {
+            background: #4CAF50;
+            color: white;
+        }
+        .status-generating {
+            background: #FF9800;
+            color: white;
+        }
+        .status-pending {
+            background: #9E9E9E;
+            color: white;
+        }
+        .video-title {
+            font-size: 1.4rem;
+            margin: 0 0 10px 0;
+            color: white;
+        }
+        .video-description {
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        .video-meta {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 20px;
+        }
+        .video-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        .btn-download {
+            background: #FF6B6B;
+        }
+        .btn-download:hover {
+            background: #ff5252;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+        .empty-state h3 {
+            color: #4CAF50;
+            margin-bottom: 15px;
+        }
+        .empty-state p {
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 25px;
+        }
+        @media (max-width: 768px) {
+            .user-info {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            .actions {
+                justify-content: center;
+            }
+            .videos-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎬 My Videos</h1>
+        </div>
+        
+        <div class="user-info">
+            <div class="welcome">
+                <h2>Welcome back, {{ current_user.first_name }}!</h2>
+                <p>{{ video_orders|length }} video{{ 's' if video_orders|length != 1 else '' }} in your account</p>
+            </div>
+            <div class="actions">
+                <a href="{{ url_for('create_video') }}" class="btn">+ Create New Video</a>
+                <a href="{{ url_for('home') }}" class="btn btn-secondary">Home</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-secondary">Sign Out</a>
+            </div>
+        </div>
+        
+        {% if video_orders %}
+            <div class="videos-grid">
+                {% for order in video_orders %}
+                    <div class="video-card">
+                        <span class="video-status status-{{ order.status.value }}">
+                            {% if order.status.value == 'completed' %}
+                                ✅ Ready
+                            {% elif order.status.value == 'in_production' %}
+                                ⏳ Generating
+                            {% else %}
+                                ⭕ {{ order.status.value.title() }}
+                            {% endif %}
+                        </span>
+                        
+                        <h3 class="video-title">{{ order.title }}</h3>
+                        
+                        {% if order.description %}
+                            <p class="video-description">{{ order.description }}</p>
+                        {% endif %}
+                        
+                        <div class="video-meta">
+                            Platform: {{ order.platform.title() }} • 
+                            Created: {{ order.created_at.strftime('%b %d, %Y') }}
+                            {% if order.completed_at %}
+                                • Completed: {{ order.completed_at.strftime('%b %d, %Y') }}
+                            {% endif %}
+                        </div>
+                        
+                        <div class="video-actions">
+                            {% if order.is_ready %}
+                                <a href="{{ url_for('download_customer_video', order_id=order.id) }}" 
+                                   class="btn btn-small btn-download">📥 Download Video</a>
+                            {% elif order.is_generating %}
+                                <button class="btn btn-small btn-secondary" disabled>
+                                    🔄 Processing... (15-30 min)
+                                </button>
+                            {% else %}
+                                <button class="btn btn-small btn-secondary" disabled>
+                                    ⏱️ Pending
+                                </button>
+                            {% endif %}
+                            
+                            {% if order.veo3_operation_id %}
+                                <span class="btn btn-small btn-secondary" style="cursor: default;">
+                                    ID: {{ order.veo3_operation_id[:8] }}...
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <h3>🎬 No Videos Yet</h3>
+                <p>Ready to create your first AI-powered video? Upload an image and let our VEO 3 technology bring it to life!</p>
+                <a href="{{ url_for('create_video') }}" class="btn">Create Your First Video</a>
+            </div>
+        {% endif %}
+        
+        <div style="text-align: center; margin-top: 40px;">
+            <p style="color: rgba(255,255,255,0.6);">
+                Need help? Contact <a href="mailto:support@dreamframe.com" style="color: #4CAF50;">support@dreamframe.com</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

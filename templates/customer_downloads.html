@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Your Videos | DreamFrame</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            font-family: 'Papyrus', fantasy;
+            margin: 0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            color: rgba(255,255,255,0.8);
+        }
+        .download-form {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 16px;
+        }
+        input[type="text"]::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+        .btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        .btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .result-box {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+        .success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4CAF50;
+        }
+        .error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid #f44336;
+        }
+        .info {
+            background: rgba(33, 150, 243, 0.2);
+            border: 1px solid #2196F3;
+        }
+        .download-link {
+            display: inline-block;
+            background: #FF6B6B;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+        .download-link:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+        .help-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        .help-section h3 {
+            color: #4CAF50;
+            margin-bottom: 15px;
+        }
+        .help-item {
+            margin-bottom: 10px;
+            color: rgba(255,255,255,0.8);
+        }
+        .quick-access {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .demo-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .demo-btn {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            min-width: 160px;
+            text-align: center;
+        }
+        .demo-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        .demo-btn.ready {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+        .demo-btn.ready:hover {
+            background: rgba(76, 175, 80, 0.2);
+        }
+        .demo-btn.generating {
+            border-color: #FF9800;
+            background: rgba(255, 152, 0, 0.1);
+        }
+        .demo-btn.generating:hover {
+            background: rgba(255, 152, 0, 0.2);
+        }
+        .demo-btn small {
+            display: block;
+            margin-top: 5px;
+            opacity: 0.8;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📥 Download Your Videos</h1>
+        <p class="subtitle">Enter your operation ID to download your completed VEO 3 videos</p>
+        
+        <div class="download-form">
+            <div class="form-group">
+                <label for="operationId">Video ID (from your email or SMS)</label>
+                <input type="text" 
+                       id="operationId" 
+                       placeholder="Paste your video ID here"
+                       maxlength="100">
+            </div>
+            
+            <button onclick="checkAndDownload()" class="btn" id="downloadBtn">
+                Get My Video
+            </button>
+            
+            <div id="resultBox" class="result-box"></div>
+        </div>
+        
+        <div class="quick-access">
+            <h3 style="color: #4CAF50; margin-bottom: 20px;">🚀 Quick Access - Try These Demo Videos:</h3>
+            <div class="demo-buttons">
+                <button onclick="loadVideo('317ed3e9-5a78-469a-a990-97237f0bb121')" class="demo-btn ready">
+                    🐉 Dragon Video<br><small>Ready to Download</small>
+                </button>
+                <button onclick="loadVideo('e1d8d0df-492c-43ff-8c4b-f3814bd71110')" class="demo-btn generating">
+                    📸 Image Video 1<br><small>Still Generating</small>
+                </button>
+                <button onclick="loadVideo('59b97a62-f8b1-4bf9-8988-4190f95fc545')" class="demo-btn generating">
+                    📸 Image Video 2<br><small>Still Generating</small>
+                </button>
+            </div>
+        </div>
+        
+        <div class="help-section">
+            <h3>📋 How to Find Your Operation ID</h3>
+            <div class="help-item">• Check your email confirmation for the operation ID</div>
+            <div class="help-item">• Look in your SMS notifications if enabled</div>
+            <div class="help-item">• Visit the business control panel if you have access</div>
+            <div class="help-item">• Contact support@dreamframe.com if you need help</div>
+            
+            <h3 style="margin-top: 25px;">⏰ Generation Times</h3>
+            <div class="help-item">• Standard videos: 15-30 minutes</div>
+            <div class="help-item">• Complex scenes: 30-45 minutes</div>
+            <div class="help-item">• Peak usage times may take longer</div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="/customer-download-help" style="color: #4CAF50; text-decoration: none; margin-right: 20px;">📖 Need Help?</a>
+            <a href="/" style="color: #4CAF50; text-decoration: none;">← Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        function loadVideo(operationId) {
+            document.getElementById('operationId').value = operationId;
+            checkAndDownload();
+        }
+
+        async function checkAndDownload() {
+            const operationId = document.getElementById('operationId').value.trim();
+            const downloadBtn = document.getElementById('downloadBtn');
+            const resultBox = document.getElementById('resultBox');
+            
+            if (!operationId) {
+                showResult('error', 'Please enter your video ID or try one of the demo buttons above');
+                return;
+            }
+            
+            // Disable button and show loading
+            downloadBtn.disabled = true;
+            downloadBtn.textContent = 'Getting your video...';
+            resultBox.style.display = 'none';
+            
+            try {
+                // Check video status
+                const response = await fetch(`/access-video/${operationId}`);
+                const result = await response.json();
+                
+                if (result.success && result.download_ready) {
+                    // Video is ready for download
+                    showResult('success', 
+                        `🎉 Your video is ready!<br><br>
+                        ${result.description || 'Professional VEO 3 video'}<br>
+                        Platform: ${result.platform || 'Instagram Stories'}<br><br>
+                        <a href="/download-video/${operationId}" class="download-link">
+                            📥 Download My Video
+                        </a>`
+                    );
+                } else if (result.success && !result.download_ready) {
+                    // Video exists but not ready
+                    showResult('info', 
+                        `⏳ Your video is being created!<br><br>
+                        Status: ${result.status}<br>
+                        ${result.description || 'VEO 3 AI processing your content'}<br><br>
+                        ${result.instructions || 'Please check back in 15-30 minutes'}<br><br>
+                        <button onclick="location.reload()" class="btn" style="margin-top: 15px;">🔄 Check Again</button>`
+                    );
+                } else if (result.success && result.status === 'generating') {
+                    // Still generating
+                    showResult('info', 
+                        `⏳ Video is still being generated<br><br>
+                        ${result.message}<br><br>
+                        ${result.instructions}`
+                    );
+                } else {
+                    // Error or not found
+                    showResult('error', 
+                        `❌ ${result.error || 'Video not found'}<br><br>
+                        Please check your operation ID or contact support@dreamframe.com`
+                    );
+                }
+            } catch (error) {
+                showResult('error', 
+                    `❌ Network error: ${error.message}<br><br>
+                    Please try again or contact support@dreamframe.com`
+                );
+            }
+            
+            // Re-enable button
+            downloadBtn.disabled = false;
+            downloadBtn.textContent = 'Get My Video';
+        }
+        
+        function showResult(type, message) {
+            const resultBox = document.getElementById('resultBox');
+            resultBox.className = `result-box ${type}`;
+            resultBox.innerHTML = message;
+            resultBox.style.display = 'block';
+        }
+        
+        // Allow Enter key to trigger download
+        document.getElementById('operationId').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAndDownload();
+            }
+        });
+    </script>
+</body>
+</html>

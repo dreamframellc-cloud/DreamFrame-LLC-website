@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Status - DreamFrame LLC</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <style>
+        .order-timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        .order-timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: #e9ecef;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #6c757d;
+        }
+        .timeline-item.active::before {
+            background: #28a745;
+        }
+        .timeline-item.current::before {
+            background: #007bff;
+        }
+        .message-bubble {
+            max-width: 70%;
+            margin-bottom: 15px;
+        }
+        .message-bubble.customer {
+            margin-left: auto;
+            background: #007bff;
+            color: white;
+        }
+        .message-bubble.admin {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('home') }}">
+                <strong>DREAMFRAME LLC</strong>
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                <a class="nav-link" href="{{ url_for('index') }}">Gallery</a>
+                <a class="nav-link" href="{{ url_for('pricing') }}">Pricing</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        {% if error %}
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="alert alert-danger text-center">
+                    <h4>Order Not Found</h4>
+                    <p>{{ error }}</p>
+                    <a href="{{ url_for('pricing') }}" class="btn btn-primary">View Our Services</a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">Order #{{ order.order_id }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h6>Service Details</h6>
+                                <p><strong>Service:</strong> {{ order.service_type.value.replace('_', ' ').title() }}</p>
+                                <p><strong>Amount:</strong> ${{ "%.2f"|format(order.amount/100) }}</p>
+                                <p><strong>Ordered:</strong> {{ order.created_at.strftime('%B %d, %Y') }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Delivery Information</h6>
+                                {% if order.estimated_delivery %}
+                                <p><strong>Estimated Delivery:</strong> {{ order.estimated_delivery.strftime('%B %d, %Y') }}</p>
+                                {% endif %}
+                                {% if order.delivered_at %}
+                                <p><strong>Delivered:</strong> {{ order.delivered_at.strftime('%B %d, %Y') }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Order Timeline -->
+                        <h6>Order Progress</h6>
+                        <div class="order-timeline">
+                            <div class="timeline-item {% if order.status.value in ['pending', 'paid', 'in_production', 'review', 'completed'] %}active{% endif %}">
+                                <strong>Order Placed</strong>
+                                <p class="text-muted small">Your order has been received</p>
+                            </div>
+                            <div class="timeline-item {% if order.status.value in ['paid', 'in_production', 'review', 'completed'] %}active{% elif order.status.value == 'pending' %}current{% endif %}">
+                                <strong>Payment Confirmed</strong>
+                                <p class="text-muted small">Payment processing complete</p>
+                            </div>
+                            <div class="timeline-item {% if order.status.value in ['in_production', 'review', 'completed'] %}active{% elif order.status.value == 'paid' %}current{% endif %}">
+                                <strong>Production Started</strong>
+                                <p class="text-muted small">Our team is working on your video</p>
+                            </div>
+                            <div class="timeline-item {% if order.status.value in ['review', 'completed'] %}active{% elif order.status.value == 'in_production' %}current{% endif %}">
+                                <strong>Review Phase</strong>
+                                <p class="text-muted small">Quality check and final touches</p>
+                            </div>
+                            <div class="timeline-item {% if order.status.value == 'completed' %}active{% elif order.status.value == 'review' %}current{% endif %}">
+                                <strong>Completed</strong>
+                                <p class="text-muted small">Your video is ready for delivery</p>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info mt-4">
+                            <strong>Current Status:</strong> 
+                            <span class="badge bg-{% if order.status.value == 'completed' %}success{% elif order.status.value == 'pending' %}warning{% elif order.status.value == 'cancelled' %}danger{% else %}info{% endif %} ms-2">
+                                {{ order.status.value.replace('_', ' ').title() }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <!-- Customer Support -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Need Help?</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Have questions about your order? Send us a message!</p>
+                        
+                        <form id="customerMessageForm">
+                            <input type="hidden" name="order_id" value="{{ order.id }}">
+                            <div class="mb-3">
+                                <textarea class="form-control" name="message" rows="4" placeholder="Type your message here..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-paper-plane me-2"></i>Send Message
+                            </button>
+                        </form>
+
+                        <hr>
+
+                        <!-- Contact Information -->
+                        <div class="text-center">
+                            <h6>Direct Contact</h6>
+                            <p>
+                                <i class="fas fa-envelope me-2"></i>
+                                <a href="mailto:DreamFrameLLC@gmail.com">DreamFrameLLC@gmail.com</a>
+                            </p>
+                            <p>
+                                <i class="fas fa-phone me-2"></i>
+                                <a href="tel:+1-555-DREAM-01">+1-555-DREAM-01</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Messages -->
+                {% if messages %}
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Conversation</h5>
+                    </div>
+                    <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                        {% for message in messages %}
+                        <div class="message-bubble p-3 rounded {% if message.is_from_customer %}customer ms-auto{% else %}admin{% endif %}">
+                            <div class="message-content">
+                                {{ message.message_text }}
+                            </div>
+                            <small class="{% if message.is_from_customer %}text-white-50{% else %}text-muted{% endif %} d-block mt-2">
+                                {{ message.created_at.strftime('%m/%d/%Y %H:%M') }}
+                            </small>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('customerMessageForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            fetch('/customer/message', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Message sent successfully! We\'ll get back to you soon.');
+                    this.reset();
+                    // Optionally reload to show the new message
+                    location.reload();
+                } else {
+                    alert('Error sending message: ' + data.error);
+                }
+            })
+            .catch(error => {
+                alert('Error sending message: ' + error);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+modules = ["postgresql-16", "python-3.11", "nodejs-20", "python3"]
+[agent]
+integrations = ["flask_stripe:1.0.0", "python_openai:1.0.0", "twilio_send_message:1.0.0"]
+
+[nix]
+channel = "stable-25_05"
+packages = ["cargo", "ffmpeg", "freetype", "glibcLocales", "google-cloud-sdk", "lcms2", "libGL", "libGLU", "libiconv", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "openssl", "pkg-config", "rustc", "tcl", "tk", "unzip", "zlib"]
+
+[[ports]]
+localPort = 3000
+externalPort = 3000
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[[ports]]
+localPort = 36345
+externalPort = 3002
+
+[[ports]]
+localPort = 42357
+externalPort = 3001
+[deployment]
+run = ["gunicorn", "--config", "gunicorn.conf.py", "wsgi_simple:application"]
+deploymentTarget = "cloudrun"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "main"
+
+[[workflows.workflow]]
+name = "main"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python wsgi.py"

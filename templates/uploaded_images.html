@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Videos from Uploaded Images | DreamFrame</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            font-family: 'Papyrus', fantasy;
+            margin: 0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            color: rgba(255,255,255,0.8);
+        }
+        .images-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .image-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .image-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.15);
+            border-color: #4CAF50;
+        }
+        .image-preview {
+            width: 100%;
+            max-width: 250px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .image-filename {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 15px;
+            word-break: break-all;
+        }
+        .btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #6c757d;
+        }
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        .status-message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4CAF50;
+        }
+        .error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid #f44336;
+        }
+        .loading {
+            background: rgba(255, 193, 7, 0.2);
+            border: 1px solid #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 Generate VEO 3 Videos</h1>
+        <p class="subtitle">Transform your uploaded images into professional videos using Google VEO 3 AI</p>
+        
+        <div class="images-grid">
+            <!-- Your latest uploaded image -->
+            <div class="image-card">
+                <img src="/static/placeholder-image.jpg" alt="Latest Upload" class="image-preview" 
+                     onerror="this.style.display='none'">
+                <div class="image-filename">IMG_1602_1753998529558.jpeg</div>
+                <div>
+                    <button onclick="generateVideo('IMG_1602_1753998529558.jpeg')" class="btn">
+                        Generate Instagram Story
+                    </button>
+                </div>
+                <div id="status-IMG_1602_1753998529558.jpeg" class="status-message"></div>
+            </div>
+            
+            <!-- Other recent uploads -->
+            <div class="image-card">
+                <div class="image-filename">IMG_1439_1753901933903.jpeg</div>
+                <div>
+                    <button onclick="generateVideo('IMG_1439_1753901933903.jpeg')" class="btn">
+                        Generate Instagram Story
+                    </button>
+                </div>
+                <div id="status-IMG_1439_1753901933903.jpeg" class="status-message"></div>
+            </div>
+            
+            <div class="image-card">
+                <div class="image-filename">IMG_1598_1753869770168.jpeg</div>
+                <div>
+                    <button onclick="generateVideo('IMG_1598_1753869770168.jpeg')" class="btn">
+                        Generate Instagram Story
+                    </button>
+                </div>
+                <div id="status-IMG_1598_1753869770168.jpeg" class="status-message"></div>
+            </div>
+            
+            <div class="image-card">
+                <div class="image-filename">IMG_0930_1751667370676.jpeg</div>
+                <div>
+                    <button onclick="generateVideo('IMG_0930_1751667370676.jpeg')" class="btn">
+                        Generate Instagram Story
+                    </button>
+                </div>
+                <div id="status-IMG_0930_1751667370676.jpeg" class="status-message"></div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="/control-panel" class="btn btn-secondary">Back to Control Panel</a>
+            <a href="/social-stories" class="btn btn-secondary">Text-to-Video Generation</a>
+        </div>
+    </div>
+
+    <script>
+        async function generateVideo(filename) {
+            const statusDiv = document.getElementById(`status-${filename}`);
+            const button = event.target;
+            
+            // Show loading state
+            button.disabled = true;
+            button.textContent = 'Generating...';
+            statusDiv.className = 'status-message loading';
+            statusDiv.style.display = 'block';
+            statusDiv.textContent = 'Starting VEO 3 video generation...';
+            
+            try {
+                const response = await fetch(`/generate-from-uploaded/${filename}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    statusDiv.className = 'status-message success';
+                    statusDiv.innerHTML = `
+                        ✅ Video generation started!<br>
+                        Operation ID: ${result.operation_id}<br>
+                        Description: ${result.description}<br>
+                        <small>Check Control Panel in 15-30 minutes</small>
+                    `;
+                    button.textContent = 'Video Generating...';
+                } else {
+                    statusDiv.className = 'status-message error';
+                    statusDiv.textContent = `❌ Error: ${result.error}`;
+                    button.disabled = false;
+                    button.textContent = 'Generate Instagram Story';
+                }
+            } catch (error) {
+                statusDiv.className = 'status-message error';
+                statusDiv.textContent = `❌ Network error: ${error.message}`;
+                button.disabled = false;
+                button.textContent = 'Generate Instagram Story';
+            }
+        }
+    </script>
+</body>
+</html>

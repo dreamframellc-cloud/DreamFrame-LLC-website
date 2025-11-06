@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Plans - DreamFrame LLC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .subscription-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .subscription-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .subscription-header h1 {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .subscription-header p {
+            font-size: 1.2rem;
+            color: #ccc;
+            max-width: 800px;
+            margin: 0 auto 1rem;
+        }
+        
+        .speed-highlight {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1rem;
+            margin: 1rem auto;
+            max-width: 600px;
+            text-align: center;
+        }
+        
+        .billing-toggle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0;
+            gap: 1rem;
+        }
+        
+        .billing-toggle label {
+            color: white;
+            font-weight: 500;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: #333;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .toggle-switch.active {
+            background: #00ffff;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+        
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(30px);
+        }
+        
+        .savings-badge {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-left: 1rem;
+        }
+        
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .plan-card {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 2px solid #333;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .plan-card:hover {
+            border-color: #00ffff;
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.2);
+        }
+        
+        .plan-card.popular {
+            border-color: #00ffff;
+            background: linear-gradient(135deg, #0a2a2a, #1a3a3a);
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #00ffff, #00cccc);
+            color: black;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .plan-name {
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+        
+        .plan-price {
+            margin-bottom: 2rem;
+        }
+        
+        .price-amount {
+            font-size: 3rem;
+            color: #00ffff;
+            font-weight: bold;
+        }
+        
+        .price-period {
+            color: #ccc;
+            font-size: 1rem;
+        }
+        
+        .price-annual {
+            display: none;
+        }
+        
+        .annual-savings {
+            color: #00ff88;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 2rem 0;
+            text-align: left;
+        }
+        
+        .plan-features li {
+            color: white;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #333;
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .plan-features li:before {
+            content: "✓";
+            color: #00ffff;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .plan-button {
+            background: linear-gradient(135deg, #00ffff, #00cccc);
+            color: black;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-decoration: none;
+            display: inline-block;
+            box-sizing: border-box;
+        }
+        
+        .plan-button:hover {
+            background: linear-gradient(135deg, #00cccc, #00aaaa);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 255, 255, 0.3);
+        }
+        
+        .addon-section {
+            margin: 4rem 0;
+            text-align: center;
+        }
+        
+        .addon-section h2 {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .addon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .addon-card {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .addon-name {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .addon-price {
+            color: #00ffff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .addon-description {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .plans-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .subscription-header h1 {
+                font-size: 2rem;
+            }
+            
+            .plan-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="subscription-container">
+        <div class="subscription-header">
+            <h1>Choose Your DreamFrame Plan</h1>
+            <p>Transform your memories into professional videos with our AI-powered subscription plans featuring fast turnaround delivery options. Cancel anytime.</p>
+            <div class="speed-highlight">
+                🚀 NEW: RUSH (2-4 hours) • EXPRESS (same-day) • STANDARD (1-2 days)
+            </div>
+        </div>
+        
+        <div class="billing-toggle">
+            <label>Monthly</label>
+            <div class="toggle-switch" id="billingToggle">
+                <div class="toggle-slider"></div>
+            </div>
+            <label>Annual</label>
+            <span class="savings-badge">Save up to $238/year</span>
+        </div>
+        
+        <div class="plans-grid">
+            <div class="plan-card">
+                <div class="plan-name">Starter</div>
+                <div class="plan-price">
+                    <div class="price-monthly">
+                        <span class="price-amount">$29</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                    <div class="price-annual">
+                        <span class="price-amount">$290</span>
+                        <span class="price-period">/year</span>
+                        <div class="annual-savings">Save $58 annually</div>
+                    </div>
+                </div>
+                <ul class="plan-features">
+                    <li>10 VideoGrams per month</li>
+                    <li>5 Quick Clips per month</li>
+                    <li>2 Family Memories per month</li>
+                    <li>1 Military Tribute per month</li>
+                    <li>1 Wedding Story per month</li>
+                    <li>EXPRESS priority (limited)</li>
+                    <li>Standard AI automation</li>
+                    <li>Email support</li>
+                </ul>
+                <a href="#" class="plan-button" onclick="subscribeToPlan('starter')">Start Free Trial</a>
+            </div>
+            
+            <div class="plan-card popular">
+                <div class="popular-badge">Most Popular</div>
+                <div class="plan-name">Professional</div>
+                <div class="plan-price">
+                    <div class="price-monthly">
+                        <span class="price-amount">$79</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                    <div class="price-annual">
+                        <span class="price-amount">$790</span>
+                        <span class="price-period">/year</span>
+                        <div class="annual-savings">Save $158 annually</div>
+                    </div>
+                </div>
+                <ul class="plan-features">
+                    <li>25 VideoGrams per month</li>
+                    <li>15 Quick Clips per month</li>
+                    <li>8 Family Memories per month</li>
+                    <li>5 Military Tributes per month</li>
+                    <li>3 Wedding Stories per month</li>
+                    <li>EXPRESS priority included</li>
+                    <li>RUSH priority (limited access)</li>
+                    <li>AI-assisted production</li>
+                    <li>Priority email support</li>
+                </ul>
+                <a href="#" class="plan-button" onclick="subscribeToPlan('professional')">Start Free Trial</a>
+            </div>
+            
+            <div class="plan-card">
+                <div class="plan-name">Enterprise</div>
+                <div class="plan-price">
+                    <div class="price-monthly">
+                        <span class="price-amount">$199</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                    <div class="price-annual">
+                        <span class="price-amount">$1990</span>
+                        <span class="price-period">/year</span>
+                        <div class="annual-savings">Save $398 annually</div>
+                    </div>
+                </div>
+                <ul class="plan-features">
+                    <li>100 VideoGrams per month</li>
+                    <li>50 Quick Clips per month</li>
+                    <li>25 Family Memories per month</li>
+                    <li>15 Military Tributes per month</li>
+                    <li>10 Wedding Stories per month</li>
+                    <li>RUSH priority unlimited</li>
+                    <li>EXPRESS priority unlimited</li>
+                    <li>Full AI automation</li>
+                    <li>Phone + dedicated rep support</li>
+                </ul>
+                <a href="#" class="plan-button" onclick="subscribeToPlan('enterprise')">Contact Sales</a>
+            </div>
+        </div>
+        
+        <div class="addon-section">
+            <h2>Fast Turnaround Pricing</h2>
+            <p style="color: #ccc; margin-bottom: 2rem;">Speed multipliers apply to all services - get your videos delivered faster with our AI automation pipeline</p>
+            
+            <div class="addon-grid">
+                <div class="addon-card" style="border: 2px solid #00ff00;">
+                    <div class="addon-name">STANDARD Delivery</div>
+                    <div class="addon-price">1.0x</div>
+                    <div class="addon-description">1-2 days • Standard pricing • Human quality control</div>
+                </div>
+                
+                <div class="addon-card" style="border: 2px solid #ffaa00;">
+                    <div class="addon-name">EXPRESS Delivery</div>
+                    <div class="addon-price">1.5x - 2.0x</div>
+                    <div class="addon-description">Same day • AI-assisted production • Professional+</div>
+                </div>
+                
+                <div class="addon-card" style="border: 2px solid #ff4444;">
+                    <div class="addon-name">RUSH Delivery</div>
+                    <div class="addon-price">2.0x - 3.0x</div>
+                    <div class="addon-description">2-4 hours • Full AI automation • Enterprise only</div>
+                </div>
+            </div>
+            
+            <h2 style="margin-top: 3rem;">Add-On Services</h2>
+            <p style="color: #ccc; margin-bottom: 2rem;">Enhance any plan with these premium add-ons</p>
+            
+            <div class="addon-grid">
+                <div class="addon-card">
+                    <div class="addon-name">Extra VideoGram</div>
+                    <div class="addon-price">$15</div>
+                    <div class="addon-description">Additional 5-second promotional video</div>
+                </div>
+                
+                <div class="addon-card">
+                    <div class="addon-name">Extra Quick Clip</div>
+                    <div class="addon-price">$25</div>
+                    <div class="addon-description">Additional 15-second quick clip</div>
+                </div>
+                
+                <div class="addon-card">
+                    <div class="addon-name">Extra Family Memory</div>
+                    <div class="addon-price">$65</div>
+                    <div class="addon-description">Additional 30-second family memory video</div>
+                </div>
+                
+                <div class="addon-card">
+                    <div class="addon-name">Rush Delivery</div>
+                    <div class="addon-price">$50</div>
+                    <div class="addon-description">6-hour expedited delivery</div>
+                </div>
+                
+                <div class="addon-card">
+                    <div class="addon-name">Custom Music</div>
+                    <div class="addon-price">$35</div>
+                    <div class="addon-description">Professional music composition</div>
+                </div>
+                
+                <div class="addon-card">
+                    <div class="addon-name">Professional Voiceover</div>
+                    <div class="addon-price">$35</div>
+                    <div class="addon-description">Custom narration recording</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let isAnnual = false;
+        
+        function toggleBilling() {
+            isAnnual = !isAnnual;
+            const toggle = document.getElementById('billingToggle');
+            const monthlyPrices = document.querySelectorAll('.price-monthly');
+            const annualPrices = document.querySelectorAll('.price-annual');
+            
+            if (isAnnual) {
+                toggle.classList.add('active');
+                monthlyPrices.forEach(el => el.style.display = 'none');
+                annualPrices.forEach(el => el.style.display = 'block');
+            } else {
+                toggle.classList.remove('active');
+                monthlyPrices.forEach(el => el.style.display = 'block');
+                annualPrices.forEach(el => el.style.display = 'none');
+            }
+        }
+        
+        function subscribeToPlan(planId) {
+            const billingCycle = isAnnual ? 'annual' : 'monthly';
+            
+            if (planId === 'enterprise') {
+                window.location.href = '/contact';
+                return;
+            }
+            
+            // Create checkout session
+            fetch('/subscription/create-checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    plan_id: planId,
+                    billing_cycle: billingCycle
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = data.checkout_url;
+                } else {
+                    alert('Error creating checkout session: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error creating checkout session');
+            });
+        }
+        
+        // Add event listener for billing toggle
+        document.getElementById('billingToggle').addEventListener('click', toggleBilling);
+    </script>
+</body>
+</html>

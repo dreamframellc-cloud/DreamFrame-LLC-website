@@ -1,0 +1,156 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Settings - DreamFrame Admin{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>System Settings</h2>
+            </div>
+
+            {% if settings %}
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Configuration Settings</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('admin.update_settings') }}">
+                        <div class="row">
+                            {% for setting in settings %}
+                            <div class="col-md-6 mb-3">
+                                <label for="setting_{{ setting.setting_key }}" class="form-label">
+                                    {{ setting.setting_key.replace('_', ' ').title() }}
+                                    {% if setting.description %}
+                                    <small class="text-muted d-block">{{ setting.description }}</small>
+                                    {% endif %}
+                                </label>
+                                
+                                {% if setting.setting_type == 'bool' %}
+                                <select name="setting_{{ setting.setting_key }}" class="form-select" id="setting_{{ setting.setting_key }}">
+                                    <option value="true" {{ 'selected' if setting.setting_value == 'true' else '' }}>Enabled</option>
+                                    <option value="false" {{ 'selected' if setting.setting_value == 'false' else '' }}>Disabled</option>
+                                </select>
+                                {% elif setting.setting_type == 'int' %}
+                                <input type="number" name="setting_{{ setting.setting_key }}" 
+                                       class="form-control" id="setting_{{ setting.setting_key }}" 
+                                       value="{{ setting.setting_value or '' }}">
+                                {% elif setting.setting_type == 'json' %}
+                                <textarea name="setting_{{ setting.setting_key }}" 
+                                          class="form-control" id="setting_{{ setting.setting_key }}" 
+                                          rows="4" placeholder="Enter JSON configuration">{{ setting.setting_value or '' }}</textarea>
+                                {% else %}
+                                <input type="text" name="setting_{{ setting.setting_key }}" 
+                                       class="form-control" id="setting_{{ setting.setting_key }}" 
+                                       value="{{ setting.setting_value or '' }}">
+                                {% endif %}
+                                
+                                <small class="text-muted">
+                                    Type: {{ setting.setting_type.title() }} | 
+                                    Last updated: {{ setting.updated_at.strftime('%Y-%m-%d %H:%M') if setting.updated_at else 'Never' }}
+                                </small>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <button type="button" class="btn btn-outline-secondary me-md-2" onclick="resetForm()">Reset</button>
+                            <button type="submit" class="btn btn-primary">Save Settings</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {% else %}
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">No Settings Configured</h5>
+                    <p class="card-text text-muted">No system settings have been configured yet.</p>
+                    <button type="button" class="btn btn-primary" onclick="addDefaultSettings()">
+                        Initialize Default Settings
+                    </button>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Recent Settings Changes -->
+            {% if settings %}
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h6 class="mb-0">Recent Changes</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Setting</th>
+                                    <th>Current Value</th>
+                                    <th>Type</th>
+                                    <th>Last Updated</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for setting in settings|sort(attribute='updated_at', reverse=true) %}
+                                <tr>
+                                    <td><code>{{ setting.setting_key }}</code></td>
+                                    <td class="text-truncate" style="max-width: 200px;">
+                                        {% if setting.setting_value %}
+                                            {% if setting.setting_type == 'bool' %}
+                                                <span class="badge {{ 'bg-success' if setting.setting_value == 'true' else 'bg-secondary' }}">
+                                                    {{ 'Enabled' if setting.setting_value == 'true' else 'Disabled' }}
+                                                </span>
+                                            {% else %}
+                                                {{ setting.setting_value[:50] }}{% if setting.setting_value|length > 50 %}...{% endif %}
+                                            {% endif %}
+                                        {% else %}
+                                            <em class="text-muted">Not set</em>
+                                        {% endif %}
+                                    </td>
+                                    <td><span class="badge bg-info">{{ setting.setting_type }}</span></td>
+                                    <td>{{ setting.updated_at.strftime('%Y-%m-%d %H:%M') if setting.updated_at else 'Never' }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+function resetForm() {
+    if (confirm('Are you sure you want to reset all changes? This will reload the current values.')) {
+        location.reload();
+    }
+}
+
+function addDefaultSettings() {
+    if (confirm('This will create default system settings. Continue?')) {
+        // You could make an AJAX call here to create default settings
+        alert('Default settings initialization would be implemented here.');
+    }
+}
+
+// Auto-format JSON fields
+document.addEventListener('DOMContentLoaded', function() {
+    const jsonTextareas = document.querySelectorAll('textarea');
+    jsonTextareas.forEach(textarea => {
+        if (textarea.name.includes('json')) {
+            textarea.addEventListener('blur', function() {
+                try {
+                    const parsed = JSON.parse(this.value);
+                    this.value = JSON.stringify(parsed, null, 2);
+                } catch (e) {
+                    // Invalid JSON, leave as is
+                }
+            });
+        }
+    });
+});
+</script>
+{% endblock %}

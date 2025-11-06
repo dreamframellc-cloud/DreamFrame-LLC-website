@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Homepage Video - DreamFrame LLC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .upload-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            text-align: center;
+        }
+        
+        .upload-zone {
+            border: 3px dashed white;
+            border-radius: 15px;
+            padding: 60px 30px;
+            margin: 30px 0;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .upload-zone:hover {
+            border-color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .upload-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .upload-text {
+            color: white;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .upload-subtext {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .upload-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .status-message {
+            color: white;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .success {
+            background: rgba(76, 175, 80, 0.3);
+            border: 2px solid #4caf50;
+            color: #4caf50;
+        }
+        
+        .error {
+            background: rgba(244, 67, 54, 0.3);
+            border: 2px solid #f44336;
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-container">
+        <h1 style="color: white; margin-bottom: 20px;">Upload Homepage Videos</h1>
+        <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: 30px;">
+            Upload your actual videos for homepage rotation. System will save them as homepage-hero.mp4, homepage-hero-2.mp4, homepage-hero-3.mp4
+        </p>
+        
+        <form id="uploadForm" enctype="multipart/form-data">
+            <div class="upload-zone" id="uploadZone">
+                <div class="upload-icon">🎬</div>
+                <div class="upload-text">Choose Video File</div>
+                <div class="upload-subtext">Select from your Safari downloads</div>
+                <div class="upload-subtext">Supports MP4, MOV, AVI, and other video formats</div>
+                <input type="file" id="fileInput" class="file-input" accept="video/*" required>
+            </div>
+            
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <div class="status-message" id="statusMessage"></div>
+            
+            <button type="submit" class="upload-button" id="uploadButton">
+                Upload as Homepage Video
+            </button>
+        </form>
+        
+        <div style="margin-top: 30px;">
+            <a href="{{ url_for('home') }}" style="color: white; text-decoration: none;">
+                ← Back to Homepage
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+        const uploadForm = document.getElementById('uploadForm');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const statusMessage = document.getElementById('statusMessage');
+        const uploadButton = document.getElementById('uploadButton');
+
+        uploadZone.addEventListener('click', () => fileInput.click());
+        
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                const fileName = e.target.files[0].name;
+                uploadZone.querySelector('.upload-text').textContent = `Selected: ${fileName}`;
+                uploadZone.querySelector('.upload-subtext').textContent = 'Ready to upload';
+            }
+        });
+
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                showStatus('Please select a video file', 'error');
+                return;
+            }
+            
+            formData.append('video', file);
+            formData.append('target', 'homepage');
+            
+            uploadButton.disabled = true;
+            uploadButton.textContent = 'Uploading...';
+            progressBar.style.display = 'block';
+            
+            try {
+                const xhr = new XMLHttpRequest();
+                
+                xhr.upload.addEventListener('progress', (e) => {
+                    if (e.lengthComputable) {
+                        const percentComplete = (e.loaded / e.total) * 100;
+                        progressFill.style.width = percentComplete + '%';
+                    }
+                });
+                
+                xhr.addEventListener('load', () => {
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.success) {
+                            showStatus('Homepage video uploaded successfully!', 'success');
+                            setTimeout(() => {
+                                window.location.href = '/';
+                            }, 2000);
+                        } else {
+                            showStatus(response.message || 'Upload failed', 'error');
+                        }
+                    } else {
+                        showStatus('Upload failed. Please try again.', 'error');
+                    }
+                    
+                    uploadButton.disabled = false;
+                    uploadButton.textContent = 'Upload as Homepage Video';
+                    progressBar.style.display = 'none';
+                });
+                
+                xhr.addEventListener('error', () => {
+                    showStatus('Upload failed. Please try again.', 'error');
+                    uploadButton.disabled = false;
+                    uploadButton.textContent = 'Upload as Homepage Video';
+                    progressBar.style.display = 'none';
+                });
+                
+                xhr.open('POST', '/upload-homepage-video');
+                xhr.send(formData);
+                
+            } catch (error) {
+                showStatus('Upload failed. Please try again.', 'error');
+                uploadButton.disabled = false;
+                uploadButton.textContent = 'Upload as Homepage Video';
+                progressBar.style.display = 'none';
+            }
+        });
+        
+        function showStatus(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message ${type}`;
+            statusMessage.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

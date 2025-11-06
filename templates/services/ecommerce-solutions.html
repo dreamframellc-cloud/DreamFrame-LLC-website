@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eCommerce Solutions – DreamFrame LLC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=20250621music">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="gradient-bg">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="container">
+                <div class="brand-container">
+                    <div class="brand-text">DreamFrame</div>
+                    <div class="glowing-star">★</div>
+                    <div class="brand-text">LLC</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="main-nav">
+            <div class="nav-container">
+                <div class="nav-tabs">
+                    <a href="{{ url_for('home') }}" class="nav-tab">Video Production</a>
+                    <a href="{{ url_for('website_development') }}" class="nav-tab">Website and App Development</a>
+                    <a href="{{ url_for('business_consultation') }}" class="nav-tab">Business Consultation</a>
+                    <a href="{{ url_for('services_overview') }}" class="nav-tab">Advertisement Creation</a>
+                </div>
+            </div>
+        </nav>
+    <!-- Hero Section -->
+    <section class="hero ecommerce-hero">
+        <div class="hero-content">
+            <h1>eCommerce Solutions</h1>
+            <p class="tagline">Online Sales Made Simple</p>
+            <p>Create seamless shopping experiences that convert browsers into loyal customers.</p>
+        </div>
+    </section>
+
+    <!-- Overview -->
+    <section class="content">
+        <h2>Purchasing, Payment &amp; Donation Systems</h2>
+        <p>Your online store should make purchasing effortless—from browsing to checkout. DreamFrame LLC builds powerful eCommerce platforms that offer intuitive buying experiences, secure payments and flexible donation options for nonprofits.</p>
+
+        <h3>Key Features</h3>
+        <ul>
+            <li><strong>Custom Stores:</strong> Scalable shops for boutiques and enterprises alike, with inventory management and customer accounts.</li>
+            <li><strong>Donation Platforms:</strong> Configurable donation and membership systems tailored for nonprofit organizations.</li>
+            <li><strong>Payment Gateways:</strong> Integration with Stripe, PayPal and alternative payment providers for secure transactions.</li>
+            <li><strong>Platform Expertise:</strong> Development on our proprietary eCommerce framework as well as Shopify, Magento, WooCommerce and other platforms.</li>
+        </ul>
+
+        <p>Whether you’re selling products, subscriptions or accepting donations, our team will build a solution that scales with your business.</p>
+        <a href="/contact" class="btn">Schedule a Consultation</a>
+    </section>
+</body>
+</html>

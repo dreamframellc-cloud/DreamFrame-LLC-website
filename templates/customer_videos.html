@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Videos - DreamFrame</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin: 0;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #00ffff;
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .video-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid #00ffff;
+            transition: transform 0.2s;
+        }
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .platform-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #00ffff, #667eea);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            text-transform: capitalize;
+        }
+        
+        .video-prompt {
+            font-style: italic;
+            opacity: 0.9;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .video-stats {
+            display: flex;
+            justify-content: space-between;
+            margin: 1rem 0;
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #00ff88, #00ffff);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        
+        .download-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .no-videos {
+            text-align: center;
+            padding: 3rem;
+            opacity: 0.7;
+        }
+        
+        .refresh-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 1rem;
+        }
+        
+        .auto-refresh {
+            background: rgba(0, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 2rem 0;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📱 My Generated Videos</h1>
+        
+        <div class="auto-refresh">
+            🔄 Page automatically checks for newly completed videos
+        </div>
+        
+        {% if completed_videos %}
+            <div class="video-grid">
+                {% for video in completed_videos %}
+                <div class="video-card">
+                    <div class="platform-badge">{{ video.platform.replace('_', ' ') }}</div>
+                    <div class="video-prompt">{{ video.prompt[:150] }}{% if video.prompt|length > 150 %}...{% endif %}</div>
+                    
+                    <div class="video-stats">
+                        <span>Completed: {{ video.completed_at }}</span>
+                        <span>Downloads: {{ video.download_count }}</span>
+                    </div>
+                    
+                    <a href="{{ video.download_url }}" class="download-btn" download>
+                        ⬇️ Download HD Video
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-videos">
+                <h3>🎬 Videos Ready - Manual Retrieval Needed</h3>
+                <p>Your videos have been processing for 30+ minutes and should be completed</p>
+                <p style="color: #ff9900;">⚠️ Automated system experiencing delays</p>
+                <button class="refresh-btn" onclick="window.location.reload()">🔄 Check Again</button>
+                
+                <div style="margin-top: 20px; padding: 15px; background: rgba(0,255,255,0.1); border-radius: 8px;">
+                    <h4>📋 Manual Check Option</h4>
+                    <p style="font-size: 14px;">If processing takes longer than expected:</p>
+                    <ol style="font-size: 14px; text-align: left; margin: 10px 0;">
+                        <li>Go to <a href="https://console.cloud.google.com" target="_blank" style="color: #00ffff;">Google Cloud Console</a></li>
+                        <li>Select project: <strong>dreamframe</strong></li>
+                        <li>Go to: <strong>Vertex AI → Model Garden → Operations</strong></li>
+                        <li>Look for: <strong>VEO operations</strong> with status "Succeeded"</li>
+                    </ol>
+                    <p style="font-size: 12px; opacity: 0.8;">Videos typically complete within 5-15 minutes</p>
+                </div>
+            </div>
+        {% endif %}
+        
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="/social-media-stories" class="refresh-btn">📱 Generate More Videos</a>
+            <a href="/" class="refresh-btn">🏠 Home</a>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem; font-size: 0.9rem; opacity: 0.6;">
+            <p>✨ All videos generated using authentic Google VEO 3 technology</p>
+            <p>🔒 Your videos are automatically deleted after 30 days for privacy</p>
+        </div>
+    </div>
+
+    <script>
+        // Auto-refresh every 30 seconds to check for new videos
+        setTimeout(() => {
+            window.location.reload();
+        }, 30000);
+    </script>
+</body>
+</html>

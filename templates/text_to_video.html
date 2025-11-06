@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text-to-Video Studio - VEO 3 AI Generation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffd700, #ffed4e, #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+        
+        .description {
+            font-size: 1rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .studio-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .input-section {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .input-section h3 {
+            color: #ffd700;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .prompt-input {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 1rem;
+            resize: vertical;
+            margin-bottom: 1rem;
+        }
+        
+        .prompt-input::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .prompt-input:focus {
+            outline: none;
+            border-color: #ffd700;
+            box-shadow: 0 0 10px rgba(255,215,0,0.3);
+        }
+        
+        .generate-btn {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,107,53,0.3);
+        }
+        
+        .generate-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .suggestions {
+            margin-top: 1rem;
+        }
+        
+        .suggestions h4 {
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .suggestion-item {
+            background: rgba(255,255,255,0.05);
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+        
+        .suggestion-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .preview-section {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .preview-section h3 {
+            color: #ffd700;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .video-preview {
+            width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            background: #000;
+            display: none;
+            margin-bottom: 1rem;
+        }
+        
+        .preview-placeholder {
+            width: 100%;
+            height: 200px;
+            border: 2px dashed rgba(255,255,255,0.3);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 1rem;
+        }
+        
+        .generation-status {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .generation-status.generating {
+            background: rgba(255,193,7,0.2);
+            color: #ffd700;
+            display: block;
+        }
+        
+        .generation-status.success {
+            background: rgba(40,167,69,0.2);
+            color: #4caf50;
+            display: block;
+        }
+        
+        .generation-status.error {
+            background: rgba(220,53,69,0.2);
+            color: #f44336;
+            display: block;
+        }
+        
+        .video-details {
+            background: rgba(255,255,255,0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .video-details h4 {
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .detail-item {
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .detail-value {
+            opacity: 0.8;
+            margin-left: 0.5rem;
+        }
+        
+        .download-section {
+            text-align: center;
+            display: none;
+        }
+        
+        .download-btn {
+            background: linear-gradient(45deg, #4caf50, #45a049);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(76,175,80,0.3);
+        }
+        
+        .back-link {
+            color: #4ecdc4;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-block;
+            margin-top: 2rem;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .studio-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+        }
+        
+        .loading-spinner {
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 3px solid #ffd700;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+            display: none;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Text-to-Video Studio</h1>
+            <p class="subtitle">VEO 3 AI-Powered Video Generation</p>
+            <p class="description">Transform your ideas into professional videos using advanced AI technology. Simply describe what you want to see, and watch it come to life.</p>
+        </div>
+        
+        <div class="studio-container">
+            <div class="input-section">
+                <h3>Create Your Video</h3>
+                <form id="textToVideoForm">
+                    <textarea 
+                        id="promptInput" 
+                        class="prompt-input" 
+                        placeholder="Describe the video you want to create... 
+
+Examples:
+• A majestic dragon soaring through storm clouds
+• Serene forest path with sunlight filtering through trees  
+• Futuristic cityscape with flying cars and neon lights
+• Ocean waves crashing against rocky cliffs at sunset"
+                        required
+                    ></textarea>
+                    
+                    <button type="submit" class="generate-btn" id="generateBtn">
+                        Generate Video with VEO 3
+                    </button>
+                </form>
+                
+                <div class="suggestions">
+                    <h4>Creative Suggestions</h4>
+                    <div class="suggestion-item" onclick="setPrompt('A phoenix rising from flames with golden feathers glowing in cinematic light')">Phoenix rising from flames with golden feathers</div>
+                    <div class="suggestion-item" onclick="setPrompt('Serene forest path with sunlight filtering through ancient trees and dancing shadows')">Serene forest path with magical sunlight</div>
+                    <div class="suggestion-item" onclick="setPrompt('Futuristic cityscape with flying cars and neon lights reflecting in rain')">Futuristic cityscape with flying cars</div>
+                    <div class="suggestion-item" onclick="setPrompt('Ocean waves crashing against rocky cliffs during a dramatic sunset')">Ocean waves at dramatic sunset</div>
+                    <div class="suggestion-item" onclick="setPrompt('Northern lights dancing over snow-covered mountains in ethereal colors')">Northern lights over snowy mountains</div>
+                </div>
+            </div>
+            
+            <div class="preview-section">
+                <h3>Video Preview</h3>
+                
+                <div class="loading-spinner" id="loadingSpinner"></div>
+                
+                <div class="generation-status" id="generationStatus">
+                    Ready to generate your video
+                </div>
+                
+                <video class="video-preview" id="videoPreview" controls>
+                    <source id="videoSource" src="" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                
+                <div class="preview-placeholder" id="previewPlaceholder">
+                    Enter a prompt and click "Generate Video" to create your professional video
+                </div>
+                
+                <div class="video-details" id="videoDetails">
+                    <h4>Generation Details</h4>
+                    <div class="detail-item">
+                        <span class="detail-label">Original Prompt:</span>
+                        <span class="detail-value" id="originalPrompt">-</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Enhanced Prompt:</span>
+                        <span class="detail-value" id="enhancedPrompt">-</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Category:</span>
+                        <span class="detail-value" id="videoCategory">-</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Technology:</span>
+                        <span class="detail-value">VEO 3 AI Generation</span>
+                    </div>
+                </div>
+                
+                <div class="download-section" id="downloadSection">
+                    <a href="#" class="download-btn" id="downloadBtn" download>Download Video</a>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center;">
+            <a href="/" class="back-link">← Back to DreamFrame Studio</a>
+        </div>
+    </div>
+    
+    <script>
+        function setPrompt(prompt) {
+            document.getElementById('promptInput').value = prompt;
+        }
+        
+        document.getElementById('textToVideoForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const prompt = document.getElementById('promptInput').value.trim();
+            if (!prompt) return;
+            
+            const generateBtn = document.getElementById('generateBtn');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const generationStatus = document.getElementById('generationStatus');
+            const videoPreview = document.getElementById('videoPreview');
+            const previewPlaceholder = document.getElementById('previewPlaceholder');
+            const videoDetails = document.getElementById('videoDetails');
+            const downloadSection = document.getElementById('downloadSection');
+            
+            // Show loading state
+            generateBtn.disabled = true;
+            generateBtn.textContent = 'Generating Video...';
+            loadingSpinner.style.display = 'block';
+            generationStatus.className = 'generation-status generating';
+            generationStatus.textContent = 'Analyzing prompt and generating professional video with VEO 3...';
+            previewPlaceholder.style.display = 'none';
+            videoPreview.style.display = 'none';
+            videoDetails.style.display = 'none';
+            downloadSection.style.display = 'none';
+            
+            try {
+                const response = await fetch('/api/text-to-video', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prompt: prompt })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Show success state
+                    generationStatus.className = 'generation-status success';
+                    generationStatus.textContent = 'Video generated successfully!';
+                    
+                    // Show video
+                    document.getElementById('videoSource').src = result.video_url;
+                    videoPreview.load();
+                    videoPreview.style.display = 'block';
+                    
+                    // Show details
+                    document.getElementById('originalPrompt').textContent = result.original_prompt;
+                    document.getElementById('enhancedPrompt').textContent = result.enhanced_prompt.substring(0, 100) + '...';
+                    document.getElementById('videoCategory').textContent = result.category.substring(0, 50) + '...';
+                    videoDetails.style.display = 'block';
+                    
+                    // Show download
+                    document.getElementById('downloadBtn').href = result.video_url;
+                    downloadSection.style.display = 'block';
+                    
+                } else {
+                    throw new Error(result.error || 'Generation failed');
+                }
+                
+            } catch (error) {
+                console.error('Generation error:', error);
+                generationStatus.className = 'generation-status error';
+                generationStatus.textContent = 'Generation failed. Please try again or contact support.';
+                previewPlaceholder.style.display = 'block';
+            }
+            
+            // Reset button state
+            generateBtn.disabled = false;
+            generateBtn.textContent = 'Generate Video with VEO 3';
+            loadingSpinner.style.display = 'none';
+        });
+    </script>
+</body>
+</html>

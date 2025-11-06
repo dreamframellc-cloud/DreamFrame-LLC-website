@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ service.name }} - Payment | DreamFrame LLC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        .payment-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .service-details {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: white;
+        }
+        
+        .service-price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #00ffff;
+            margin: 1rem 0;
+        }
+        
+        .payment-form {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            color: white;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #00ffff;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+        
+        .checkout-button {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .checkout-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .checkout-button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            color: #00ffff;
+            margin-top: 1rem;
+        }
+        
+        .error-message {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            color: #ff6b6b;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 2rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+
+    <!-- Meta Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+       fbq('init', '1234567890123456');  // <-- Your Pixel ID
+       fbq('track', 'PageView');
+    </script>
+    <!-- End Meta Pixel Code -->
+
+    <!-- GA4 base tag -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      gtag('js', new Date());
+      // Replace with your GA4 Measurement ID
+      gtag('config', 'G-XXXXXXXXXX', { send_page_view: true });
+    </script>
+</head>
+<body>
+    <div class="payment-container">
+        <a href="{{ url_for('pricing') }}" class="back-link">← Back to Pricing</a>
+        
+        <div class="service-details">
+            <h1>{{ service.name }}</h1>
+            <p>{{ service.description }}</p>
+            <div class="service-price">${{ "%.2f"|format(service.price) }}</div>
+        </div>
+        
+        <div class="payment-form">
+            <h2 style="color: white; text-align: center; margin-bottom: 1.5rem;">Complete Your Purchase</h2>
+            
+            <form id="payment-form">
+                <div class="form-group">
+                    <label for="customer-name">Full Name *</label>
+                    <input type="text" id="customer-name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="customer-email">Email Address *</label>
+                    <input type="email" id="customer-email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="quantity">Quantity</label>
+                    <input type="number" id="quantity" name="quantity" value="1" min="1" max="10">
+                </div>
+                
+                <button type="submit" class="checkout-button" id="checkout-btn">
+                    Proceed to Secure Payment
+                </button>
+                
+                <div class="loading" id="loading">
+                    Processing your request...
+                </div>
+                
+                <div class="error-message" id="error-message"></div>
+            </form>
+            
+            <div style="text-align: center; margin-top: 2rem; color: rgba(255, 255, 255, 0.7); font-size: 0.9rem;">
+                <p>🔒 Secure payment powered by Stripe</p>
+                <p>Your payment information is encrypted and secure</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('payment-form');
+        const checkoutBtn = document.getElementById('checkout-btn');
+        const loading = document.getElementById('loading');
+        const errorMessage = document.getElementById('error-message');
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Show loading state
+            checkoutBtn.disabled = true;
+            checkoutBtn.textContent = 'Processing...';
+            loading.style.display = 'block';
+            errorMessage.style.display = 'none';
+            
+            // Get form data
+            const formData = new FormData(form);
+            const data = {
+                service_type: '{{ service_type }}',
+                name: formData.get('name'),
+                email: formData.get('email'),
+                quantity: parseInt(formData.get('quantity'))
+            };
+            
+            try {
+                // Create checkout session
+                const response = await fetch('/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.checkout_url) {
+                    // Redirect to Stripe checkout
+                    window.location.href = result.checkout_url;
+                } else {
+                    throw new Error(result.error || 'Failed to create payment session');
+                }
+                
+            } catch (error) {
+                console.error('Payment error:', error);
+                errorMessage.textContent = error.message || 'Payment failed. Please try again.';
+                errorMessage.style.display = 'block';
+                
+                // Reset button state
+                checkoutBtn.disabled = false;
+                checkoutBtn.textContent = 'Proceed to Secure Payment';
+                loading.style.display = 'none';
+            }
+        });
+        
+        // Update total when quantity changes
+        document.getElementById('quantity').addEventListener('change', function() {
+            const quantity = parseInt(this.value) || 1;
+            const basePrice = {{ service.price }};
+            const total = basePrice * quantity;
+            
+            const priceElement = document.querySelector('.service-price');
+            if (quantity > 1) {
+                priceElement.innerHTML = `$${basePrice.toFixed(2)} × ${quantity} = $${total.toFixed(2)}`;
+            } else {
+                priceElement.innerHTML = `$${basePrice.toFixed(2)}`;
+            }
+        });
+    </script>
+</body>
+</html>

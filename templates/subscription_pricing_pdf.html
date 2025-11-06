@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Pricing Guide - DreamFrame LLC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .pdf-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border-radius: 20px;
+            border: 2px solid #00ffff;
+        }
+        
+        .pdf-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .pdf-header h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .pdf-header p {
+            color: #ccc;
+            font-size: 1.2rem;
+        }
+        
+        .pdf-preview {
+            width: 100%;
+            height: 600px;
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+        
+        .pdf-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .pdf-button {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .pdf-button.primary {
+            background: linear-gradient(135deg, #00ffff, #00cccc);
+            color: black;
+        }
+        
+        .pdf-button.secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid #00ffff;
+        }
+        
+        .pdf-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 255, 255, 0.3);
+        }
+        
+        .pdf-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature-card {
+            background: #333;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .feature-card h3 {
+            color: #00ffff;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card p {
+            color: #ccc;
+        }
+        
+        @media (max-width: 768px) {
+            .pdf-container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+            
+            .pdf-header h1 {
+                font-size: 2rem;
+            }
+            
+            .pdf-preview {
+                height: 400px;
+            }
+            
+            .pdf-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="pdf-container">
+        <div class="pdf-header">
+            <h1>Subscription Pricing Guide</h1>
+            <p>Professional subscription plans for video production services</p>
+        </div>
+        
+        <iframe src="/subscription-pricing-guide" class="pdf-preview" type="application/pdf">
+            <p>Your browser does not support PDFs. Please download the PDF to view it: 
+               <a href="/subscription-pricing-guide">Download PDF</a>
+            </p>
+        </iframe>
+        
+        <div class="pdf-actions">
+            <a href="/subscription-pricing-guide" class="pdf-button primary" download>
+                📄 Download PDF Guide
+            </a>
+            <a href="/subscription/plans" class="pdf-button secondary">
+                🚀 View Live Pricing
+            </a>
+            <a href="/" class="pdf-button secondary">
+                🏠 Back to Home
+            </a>
+        </div>
+        
+        <div class="pdf-features">
+            <div class="feature-card">
+                <h3>Professional Layout</h3>
+                <p>Clean, branded design with comprehensive pricing tables and service descriptions</p>
+            </div>
+            <div class="feature-card">
+                <h3>Complete Information</h3>
+                <p>All subscription tiers, features, pricing, and frequently asked questions included</p>
+            </div>
+            <div class="feature-card">
+                <h3>Print Ready</h3>
+                <p>High-quality PDF perfect for sharing with clients or printing for presentations</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

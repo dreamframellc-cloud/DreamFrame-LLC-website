@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Activated - DreamFrame LLC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .success-container {
+            max-width: 800px;
+            margin: 4rem auto;
+            padding: 3rem;
+            text-align: center;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border-radius: 20px;
+            border: 2px solid #00ffff;
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            color: #00ff88;
+            margin-bottom: 2rem;
+        }
+        
+        .success-title {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .success-message {
+            color: #ccc;
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .subscription-details {
+            background: #333;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #444;
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            color: #ccc;
+        }
+        
+        .detail-value {
+            color: white;
+            font-weight: bold;
+        }
+        
+        .next-steps {
+            margin: 3rem 0;
+        }
+        
+        .next-steps h3 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .steps-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .steps-list li {
+            color: #ccc;
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .steps-list li:before {
+            content: "✓";
+            color: #00ffff;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #00ffff, #00cccc);
+            color: black;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid #00ffff;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-icon">🎉</div>
+        <h1 class="success-title">Welcome to DreamFrame!</h1>
+        <p class="success-message">Your subscription has been activated and you're ready to start creating amazing videos.</p>
+        
+        <div class="subscription-details">
+            <div class="detail-row">
+                <span class="detail-label">Plan:</span>
+                <span class="detail-value">{{ subscription.plan_name }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Status:</span>
+                <span class="detail-value">{{ subscription.status|title }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Billing Cycle:</span>
+                <span class="detail-value">{{ subscription.billing_cycle|title }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Next Billing:</span>
+                <span class="detail-value">{{ subscription.current_period_end.strftime('%B %d, %Y') }}</span>
+            </div>
+        </div>
+        
+        <div class="next-steps">
+            <h3>What's Next?</h3>
+            <ul class="steps-list">
+                <li>Start your first project by uploading photos or videos</li>
+                <li>Explore our AI-powered video creation tools</li>
+                <li>Access your subscription dashboard to track usage</li>
+                <li>Contact support if you need any assistance</li>
+            </ul>
+        </div>
+        
+        <div class="action-buttons">
+            <a href="/start-project" class="btn btn-primary">Create Your First Video</a>
+            <a href="/subscription/dashboard" class="btn btn-secondary">View Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

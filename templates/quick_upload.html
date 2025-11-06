@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Video Upload - DreamFrame</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .quick-upload {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background: transparent;
+            text-align: center;
+        }
+        
+        .upload-zone {
+            border: 2px dashed white;
+            border-radius: 15px;
+            padding: 50px 20px;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .upload-zone:hover {
+            border-color: #00ffff;
+            background: rgba(0, 255, 255, 0.1);
+        }
+        
+        .upload-zone.dragover {
+            border-color: #00ffff;
+            background: rgba(0, 255, 255, 0.2);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        
+        .upload-text {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .upload-subtext {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .upload-btn {
+            background: white;
+            color: black;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 20px 0;
+            font-size: 16px;
+        }
+        
+        .upload-btn:hover {
+            background: #f0f0f0;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #00ffff;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .status-message {
+            color: white;
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4caf50;
+            color: #4caf50;
+        }
+        
+        .error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid #f44336;
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="quick-upload">
+        <h1 style="color: white; margin-bottom: 30px;">Upload Your Video</h1>
+        
+        <div class="upload-zone" id="uploadZone">
+            <div class="upload-icon">🎬</div>
+            <div class="upload-text">Drop your video here</div>
+            <div class="upload-subtext">or click to browse</div>
+            <input type="file" id="fileInput" class="file-input" accept=".mp4,.mov,.avi,.mkv,.webm,.m4v,.3gp,.wmv" multiple>
+        </div>
+        
+        <button type="button" class="upload-btn" onclick="document.getElementById('fileInput').click()">
+            Choose Video File
+        </button>
+        
+        <div class="progress-bar" id="progressBar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="status-message" id="statusMessage"></div>
+        
+        <div style="margin-top: 30px;">
+            <a href="{{ url_for('home') }}" style="color: white; text-decoration: none;">← Back to Homepage</a>
+        </div>
+    </div>
+
+    <script>
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const statusMessage = document.getElementById('statusMessage');
+
+        // Click to upload
+        uploadZone.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // Drag and drop
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                uploadFiles(files);
+            }
+        });
+
+        // File input change
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                uploadFiles(e.target.files);
+            }
+        });
+
+        function uploadFiles(files) {
+            Array.from(files).forEach(file => {
+                if (file.type.startsWith('video/')) {
+                    uploadSingleFile(file);
+                } else {
+                    showStatus('Please select a valid video file', 'error');
+                }
+            });
+        }
+
+        function uploadSingleFile(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_type', 'video');
+
+            progressBar.style.display = 'block';
+            showStatus('Uploading video...', 'info');
+
+            const xhr = new XMLHttpRequest();
+
+            xhr.upload.addEventListener('progress', (e) => {
+                if (e.lengthComputable) {
+                    const percentComplete = (e.loaded / e.total) * 100;
+                    progressFill.style.width = percentComplete + '%';
+                }
+            });
+
+            xhr.addEventListener('load', () => {
+                progressBar.style.display = 'none';
+                
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        showStatus(`Successfully uploaded: ${response.filename}`, 'success');
+                        setTimeout(() => {
+                            window.location.href = '/';
+                        }, 2000);
+                    } else {
+                        showStatus(`Upload failed: ${response.error}`, 'error');
+                    }
+                } else {
+                    showStatus('Upload failed. Please try again.', 'error');
+                }
+            });
+
+            xhr.addEventListener('error', () => {
+                progressBar.style.display = 'none';
+                showStatus('Upload failed. Please check your connection.', 'error');
+            });
+
+            xhr.open('POST', '/upload/ajax');
+            xhr.send(formData);
+        }
+
+        function showStatus(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message ${type}`;
+            statusMessage.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Panel - DreamFrame LLC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 40px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border-left: 4px solid #4CAF50;
+        }
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        .stat-label {
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+        }
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .video-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+        .video-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.15);
+            border-color: #4CAF50;
+        }
+        .video-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .video-platform {
+            background: #4CAF50;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .video-status {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .video-description {
+            color: rgba(255,255,255,0.8);
+            margin: 10px 0;
+            line-height: 1.4;
+        }
+        .video-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        .btn-primary {
+            background: #4CAF50;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #45a049;
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        .operation-id {
+            font-family: monospace;
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+            word-break: break-all;
+        }
+        .quick-actions {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        .quick-actions h3 {
+            color: #4CAF50;
+            margin-bottom: 15px;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .dragon-highlight {
+            border: 2px solid #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+        }
+        .dragon-badge {
+            background: #ff6b6b;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255,255,255,0.6);
+        }
+        .refresh-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 Control Panel</h1>
+        <p class="subtitle">Access your generated videos and manage operations</p>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ videos|length }}</div>
+                <div class="stat-label">Total Videos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ videos|selectattr('status', 'equalto', 'completed')|list|length }}</div>
+                <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">9</div>
+                <div class="stat-label">Operations Found</div>
+            </div>
+        </div>
+        
+        <div class="quick-actions">
+            <h3>🚀 Quick Actions</h3>
+            <div class="action-buttons">
+                <a href="/social-stories" class="btn btn-primary">Create New Story</a>
+                <a href="/uploaded-images" class="btn btn-primary">🖼️ Generate from Images</a>
+                <a href="/customer-downloads" class="btn btn-primary">📥 Customer Downloads</a>
+                <a href="/admin/emails" class="btn btn-secondary">Check Messages</a>
+                <a href="/admin/setup-sms" class="btn btn-secondary">SMS Setup</a>
+                <button onclick="checkAllVideos()" class="btn btn-secondary">Refresh Status</button>
+            </div>
+        </div>
+        
+        {% if videos %}
+        <div class="video-grid">
+            {% for video in videos %}
+            <div class="video-card {% if 'dragon' in video.operation_id or video.operation_id == '317ed3e9-5a78-469a-a990-97237f0bb121' %}dragon-highlight{% endif %}">
+                <div class="video-header">
+                    <span class="video-platform">{{ video.platform }}</span>
+                    <span class="video-status">{{ video.status }}
+                        {% if 'dragon' in video.operation_id or video.operation_id == '317ed3e9-5a78-469a-a990-97237f0bb121' %}
+                        <span class="dragon-badge">🐉 DRAGON</span>
+                        {% endif %}
+                    </span>
+                </div>
+                
+                <div class="video-description">
+                    {% if video.operation_id == '317ed3e9-5a78-469a-a990-97237f0bb121' %}
+                    🐉 <strong>Dragon Video</strong> - Majestic dragon soaring through clouds at sunset (Instagram Story Format)
+                    {% else %}
+                    {{ video.description }}
+                    {% endif %}
+                </div>
+                
+                <div class="operation-id">
+                    ID: {{ video.operation_id }}
+                </div>
+                
+                <div class="video-actions">
+                    <button onclick="downloadVideo('{{ video.operation_id }}')" class="btn btn-primary">
+                        Download Video
+                    </button>
+                    <button onclick="checkStatus('{{ video.operation_id }}')" class="btn btn-secondary">
+                        Check Status
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <h3>No videos found</h3>
+            <p>Your generated videos will appear here once they're completed.</p>
+            <a href="/social-stories" class="btn btn-primary">Create Your First Video</a>
+        </div>
+        {% endif %}
+        
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="/" style="color: #4CAF50; text-decoration: none;">← Back to Home</a>
+        </div>
+    </div>
+    
+    <button class="refresh-btn" onclick="location.reload()" title="Refresh">↻</button>
+
+    <script>
+        async function downloadVideo(operationId) {
+            try {
+                // First check if video is ready for download
+                const statusResponse = await fetch(`/access-video/${operationId}`);
+                const statusResult = await statusResponse.json();
+                
+                if (statusResult.success && statusResult.download_ready) {
+                    // Video is ready - initiate download
+                    const downloadUrl = `/download-video/${operationId}`;
+                    
+                    // Create a temporary link to trigger download
+                    const link = document.createElement('a');
+                    link.href = downloadUrl;
+                    link.download = `dreamframe_video_${operationId.substring(0, 8)}.mp4`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    alert('Video download started! Check your downloads folder.');
+                } else if (statusResult.success && !statusResult.download_ready) {
+                    // Video completed but not yet downloadable
+                    alert(`Video Status: ${statusResult.status}\n\n${statusResult.message}\n\nInstructions: ${statusResult.instructions}`);
+                } else {
+                    // Video not ready or error
+                    alert(`Video Status: ${statusResult.status || 'Unknown'}\n\n${statusResult.message || statusResult.error}\n\nInstructions: ${statusResult.instructions || 'Please try again later'}`);
+                }
+            } catch (error) {
+                alert(`Download failed: ${error.message}`);
+            }
+        }
+        
+        async function checkStatus(operationId) {
+            try {
+                const response = await fetch(`/access-video/${operationId}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert(`Operation Status: COMPLETED ✅\n\nOperation ID: ${operationId}\n\nVideo is ready for download!`);
+                } else {
+                    alert(`Status: ${result.error}\n\nOperation ID: ${operationId}`);
+                }
+            } catch (error) {
+                alert(`Status check failed: ${error.message}`);
+            }
+        }
+        
+        function checkAllVideos() {
+            alert('Refreshing video status...');
+            location.reload();
+        }
+        
+        // Highlight dragon video on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            const dragonCard = document.querySelector('.dragon-highlight');
+            if (dragonCard) {
+                dragonCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Test - DreamFrame LLC</title>
+    <style>
+        body { background: #222; color: white; font-family: Arial, sans-serif; padding: 2rem; }
+        .test-video { width: 100%; max-width: 800px; margin: 1rem 0; }
+        .test-section { margin: 2rem 0; border: 1px solid #444; padding: 1rem; }
+        button { padding: 0.5rem 1rem; margin: 0.5rem; background: #007bff; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Video Playback Test</h1>
+    
+    <div class="test-section">
+        <h2>Direct Video Elements</h2>
+        
+        <h3>Avatar Intro (MP4)</h3>
+        <video class="test-video" controls preload="metadata">
+            <source src="/video/Avatar_intro.mp4" type="video/mp4">
+            Your browser doesn't support video playback.
+        </video>
+        
+        <h3>VideoGram (MOV)</h3>
+        <video class="test-video" controls preload="metadata">
+            <source src="/video/My_Movie_20.mov" type="video/mp4">
+            Your browser doesn't support video playback.
+        </video>
+        
+        <h3>WWII Family (MOV)</h3>
+        <video class="test-video" controls preload="metadata">
+            <source src="/video/My_Movie_4.mov" type="video/mp4">
+            Your browser doesn't support video playback.
+        </video>
+        
+        <h3>Horror (MP4)</h3>
+        <video class="test-video" controls preload="metadata">
+            <source src="/video/Horror_video.mp4" type="video/mp4">
+            Your browser doesn't support video playback.
+        </video>
+    </div>
+    
+    <div class="test-section">
+        <h2>JavaScript Test</h2>
+        <video id="testVideo" class="test-video" controls>
+            Your browser doesn't support video playback.
+        </video>
+        
+        <div>
+            <button onclick="loadVideo('My_Movie_20.mov')">Load VideoGram</button>
+            <button onclick="loadVideo('My_Movie_20.mov')">Load VideoGram</button>
+            <button onclick="loadVideo('My_Movie_4.mov')">Load WWII Family</button>
+            <button onclick="loadVideo('Horror_video.mp4')">Load Horror</button>
+        </div>
+        
+        <div id="log" style="background: #333; padding: 1rem; margin-top: 1rem; font-family: monospace; font-size: 0.8rem;"></div>
+    </div>
+    
+    <script>
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            logDiv.innerHTML += new Date().toLocaleTimeString() + ': ' + message + '<br>';
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+        
+        function loadVideo(filename) {
+            const video = document.getElementById('testVideo');
+            const url = `/video/${filename}`;
+            
+            log(`Loading ${filename}...`);
+            
+            // Reset video
+            video.pause();
+            video.currentTime = 0;
+            video.removeAttribute('src');
+            
+            // Clear existing sources
+            while (video.firstChild) {
+                video.removeChild(video.firstChild);
+            }
+            
+            // Add event listeners
+            video.onloadstart = () => log(`${filename}: Load started`);
+            video.onloadedmetadata = () => log(`${filename}: Metadata loaded`);
+            video.onloadeddata = () => log(`${filename}: Data loaded`);
+            video.oncanplay = () => log(`${filename}: Can play`);
+            video.onerror = (e) => {
+                log(`${filename}: ERROR - ${video.error ? video.error.message : 'Unknown error'}`);
+                log(`Error code: ${video.error ? video.error.code : 'Unknown'}`);
+            };
+            
+            // Set source
+            video.src = url;
+            video.load();
+            
+            log(`${filename}: Source set to ${url}`);
+        }
+        
+        // Test all videos on page load
+        window.onload = function() {
+            log('Page loaded - testing video elements...');
+            
+            const videos = document.querySelectorAll('video');
+            videos.forEach((video, index) => {
+                video.onerror = (e) => {
+                    log(`Video ${index + 1}: ERROR - ${video.error ? video.error.message : 'Unknown error'}`);
+                };
+                video.oncanplay = () => {
+                    log(`Video ${index + 1}: Ready to play`);
+                };
+            });
+        };
+    </script>
+</body>
+</html>

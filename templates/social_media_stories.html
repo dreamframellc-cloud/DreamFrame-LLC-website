@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Story Generator - DreamFrame LLC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .story-generator {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 15px;
+        }
+        
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .platform-card {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .platform-card:hover {
+            border-color: #00ffff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
+        }
+        
+        .platform-card.selected {
+            border-color: #00ff88;
+            background: linear-gradient(135deg, #003311, #004422);
+        }
+        
+        .platform-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .platform-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+        
+        .platform-specs {
+            font-size: 0.9rem;
+            color: #cccccc;
+            line-height: 1.4;
+        }
+        
+        .story-input {
+            margin: 2rem 0;
+        }
+        
+        .story-textarea {
+            width: 100%;
+            min-height: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            color: white;
+            font-size: 1rem;
+            resize: vertical;
+        }
+        
+        .story-textarea:focus {
+            border-color: #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+            outline: none;
+        }
+        
+        .template-selector {
+            margin: 2rem 0;
+        }
+        
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .template-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .template-card:hover {
+            border-color: #00ffff;
+            background: rgba(0, 255, 255, 0.1);
+        }
+        
+        .template-card.selected {
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+        }
+        
+        .generate-buttons {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .generate-btn {
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            color: black;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.3);
+        }
+        
+        .generate-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .multi-platform-btn {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+        }
+        
+        .results-section {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            display: none;
+        }
+        
+        .result-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid #00ff88;
+        }
+        
+        .result-error {
+            border-left-color: #ff4444;
+        }
+        
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #00ffff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .upload-section {
+            margin: 2rem 0;
+            padding: 2rem;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-section:hover {
+            border-color: #00ffff;
+            background: rgba(0, 255, 255, 0.05);
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .upload-btn {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .platform-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .generate-buttons {
+                flex-direction: column;
+            }
+            
+            .generate-btn {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="story-generator">
+            <h1>📱 One-Click Social Media Story Generator</h1>
+            <p>Create professional stories optimized for every platform using authentic VEO 3 technology</p>
+            
+            <!-- Platform Selection -->
+            <div class="platform-selection">
+                <h3>Select Platforms</h3>
+                <div class="platform-grid">
+                    <div class="platform-card" data-platform="instagram">
+                        <div class="platform-icon">📸</div>
+                        <div class="platform-name">Instagram Stories</div>
+                        <div class="platform-specs">
+                            9:16 vertical • 15s duration<br>
+                            1080x1920 • Trendy aesthetics
+                        </div>
+                    </div>
+                    
+                    <div class="platform-card" data-platform="tiktok">
+                        <div class="platform-icon">🎵</div>
+                        <div class="platform-name">TikTok</div>
+                        <div class="platform-specs">
+                            9:16 vertical • 15s duration<br>
+                            1080x1920 • Dynamic energy
+                        </div>
+                    </div>
+                    
+                    <div class="platform-card" data-platform="youtube_shorts">
+                        <div class="platform-icon">▶️</div>
+                        <div class="platform-name">YouTube Shorts</div>
+                        <div class="platform-specs">
+                            9:16 vertical • 60s duration<br>
+                            1080x1920 • Discovery optimized
+                        </div>
+                    </div>
+                    
+                    <div class="platform-card" data-platform="facebook_stories">
+                        <div class="platform-icon">📘</div>
+                        <div class="platform-name">Facebook Stories</div>
+                        <div class="platform-specs">
+                            9:16 vertical • 15s duration<br>
+                            1080x1920 • Social sharing
+                        </div>
+                    </div>
+                    
+                    <div class="platform-card" data-platform="twitter">
+                        <div class="platform-icon">🐦</div>
+                        <div class="platform-name">Twitter Video</div>
+                        <div class="platform-specs">
+                            16:9 horizontal • 140s duration<br>
+                            1280x720 • Professional news
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Story Templates -->
+            <div class="template-selector">
+                <h3>Choose Template (Optional)</h3>
+                <div class="template-grid">
+                    <div class="template-card" data-template="business_promo">
+                        <h4>Business Promo</h4>
+                        <p>Professional branding showcase</p>
+                    </div>
+                    <div class="template-card" data-template="product_showcase">
+                        <h4>Product Showcase</h4>
+                        <p>Dynamic product reveal</p>
+                    </div>
+                    <div class="template-card" data-template="behind_scenes">
+                        <h4>Behind Scenes</h4>
+                        <p>Authentic candid moments</p>
+                    </div>
+                    <div class="template-card" data-template="tutorial_teaser">
+                        <h4>Tutorial Teaser</h4>
+                        <p>Educational content preview</p>
+                    </div>
+                    <div class="template-card" data-template="event_highlight">
+                        <h4>Event Highlight</h4>
+                        <p>Memorable event moments</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Image Upload (Optional) -->
+            <div class="upload-section">
+                <h3>Upload Image (Optional)</h3>
+                <p>Upload an image and we'll analyze it to create an amazing social media story using VEO 3</p>
+                <input type="file" id="imageUpload" class="file-input" accept="image/*">
+                <button class="upload-btn" onclick="document.getElementById('imageUpload').click()">Choose Image</button>
+                <div id="uploadPreview"></div>
+                <div style="margin-top: 1rem; font-size: 0.9rem; color: #ccc;">
+                    <strong>How it works:</strong> We analyze your image with AI vision, then create a VEO 3 video based on the visual elements
+                </div>
+            </div>
+            
+            <!-- Story Content Input -->
+            <div class="story-input">
+                <h3>Describe Your Story</h3>
+                <textarea id="storyPrompt" class="story-textarea" 
+                          placeholder="Describe the story you want to create... e.g., 'Professional logo animation with modern design elements' or 'Dynamic product showcase with cinematic lighting'"></textarea>
+            </div>
+            
+            <!-- Generation Buttons -->
+            <div class="generate-buttons">
+                <button id="generateSingle" class="generate-btn">
+                    Generate for Selected Platform
+                </button>
+                <button id="generateMulti" class="generate-btn multi-platform-btn">
+                    Generate for All Platforms
+                </button>
+            </div>
+            
+            <!-- Loading Spinner -->
+            <div id="loadingSpinner" class="loading-spinner">
+                <div class="spinner"></div>
+                <p>Generating authentic VEO 3 stories...</p>
+                <p style="font-size: 0.9rem; color: #ccc;">This may take 30-60 seconds per platform</p>
+            </div>
+            
+            <!-- Results Section -->
+            <div id="resultsSection" class="results-section">
+                <h3>Generation Results</h3>
+                <div id="resultsContainer"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let selectedPlatforms = new Set();
+        let selectedTemplate = null;
+        let uploadedImage = null;
+        
+        // Platform selection
+        document.querySelectorAll('.platform-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const platform = card.dataset.platform;
+                
+                if (selectedPlatforms.has(platform)) {
+                    selectedPlatforms.delete(platform);
+                    card.classList.remove('selected');
+                } else {
+                    selectedPlatforms.add(platform);
+                    card.classList.add('selected');
+                }
+                
+                updateGenerateButtons();
+            });
+        });
+        
+        // Template selection
+        document.querySelectorAll('.template-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                selectedTemplate = card.dataset.template;
+                
+                // Load template prompt
+                const templatePrompts = {
+                    'business_promo': 'Professional business showcase with modern branding elements and corporate aesthetics',
+                    'product_showcase': 'Dynamic product reveal with cinematic lighting and premium presentation',
+                    'behind_scenes': 'Authentic behind-the-scenes content with candid moments and real interactions',
+                    'tutorial_teaser': 'Educational content teaser with clear visual instructions and engaging presentation',
+                    'event_highlight': 'Event highlights with energetic atmosphere and memorable moments'
+                };
+                
+                document.getElementById('storyPrompt').value = templatePrompts[selectedTemplate] || '';
+            });
+        });
+        
+        // Image upload
+        document.getElementById('imageUpload').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                uploadedImage = file;
+                const preview = document.getElementById('uploadPreview');
+                preview.innerHTML = `
+                    <div style="margin-top: 1rem; color: #00ff88;">
+                        ✅ Image uploaded: ${file.name}
+                    </div>
+                `;
+            }
+        });
+        
+        // Generate buttons
+        document.getElementById('generateSingle').addEventListener('click', () => {
+            if (selectedPlatforms.size === 0) {
+                alert('Please select at least one platform');
+                return;
+            }
+            
+            const prompt = document.getElementById('storyPrompt').value.trim();
+            if (!prompt) {
+                alert('Please describe your story');
+                return;
+            }
+            
+            generateStories(Array.from(selectedPlatforms), prompt, false);
+        });
+        
+        document.getElementById('generateMulti').addEventListener('click', () => {
+            const prompt = document.getElementById('storyPrompt').value.trim();
+            if (!prompt) {
+                alert('Please describe your story');
+                return;
+            }
+            
+            const allPlatforms = ['instagram', 'tiktok', 'youtube_shorts', 'facebook_stories'];
+            generateStories(allPlatforms, prompt, true);
+        });
+        
+        function updateGenerateButtons() {
+            const singleBtn = document.getElementById('generateSingle');
+            singleBtn.disabled = selectedPlatforms.size === 0;
+            
+            const platformText = selectedPlatforms.size === 1 
+                ? Array.from(selectedPlatforms)[0] 
+                : `${selectedPlatforms.size} Platforms`;
+            singleBtn.textContent = `Generate for ${platformText}`;
+        }
+        
+        async function generateStories(platforms, prompt, isMultiPlatform) {
+            // Show loading
+            document.getElementById('loadingSpinner').style.display = 'block';
+            document.getElementById('resultsSection').style.display = 'none';
+            
+            // Disable buttons
+            document.getElementById('generateSingle').disabled = true;
+            document.getElementById('generateMulti').disabled = true;
+            
+            try {
+                const formData = new FormData();
+                formData.append('prompt', prompt);
+                formData.append('platforms', JSON.stringify(platforms));
+                formData.append('is_multi_platform', isMultiPlatform);
+                formData.append('template', selectedTemplate || '');
+                
+                if (uploadedImage) {
+                    formData.append('image', uploadedImage);
+                }
+                
+                const response = await fetch('/api/generate-social-stories', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                displayResults(result);
+                
+            } catch (error) {
+                console.error('Generation error:', error);
+                displayError('Generation failed. Please try again.');
+            } finally {
+                // Hide loading
+                document.getElementById('loadingSpinner').style.display = 'none';
+                
+                // Re-enable buttons
+                document.getElementById('generateSingle').disabled = false;
+                document.getElementById('generateMulti').disabled = false;
+            }
+        }
+        
+        function displayResults(result) {
+            const resultsSection = document.getElementById('resultsSection');
+            const container = document.getElementById('resultsContainer');
+            
+            container.innerHTML = '';
+            
+            if (result.success) {
+                const platforms = result.is_multi_platform ? result.results : {[result.platform]: result};
+                
+                for (const [platform, platformResult] of Object.entries(platforms)) {
+                    const card = document.createElement('div');
+                    card.className = `result-card ${platformResult.success ? '' : 'result-error'}`;
+                    
+                    card.innerHTML = `
+                        <h4>${platform.replace('_', ' ').toUpperCase()}</h4>
+                        ${platformResult.success ? `
+                            <p>✅ Story generated successfully!</p>
+                            <p><strong>Operation ID:</strong> ${platformResult.operation_name}</p>
+                            <p><strong>Status:</strong> Processing with VEO 3</p>
+                            <p><small>⚡ Speed-Optimized VEO 3: Video will be ready in 3-5 minutes!</small></p>
+                            <p><a href="/my-videos" style="color: #00ffff;">View My Videos →</a></p>
+                        ` : `
+                            <p>❌ Generation failed</p>
+                            <p><strong>Error:</strong> ${platformResult.error || 'Unknown error'}</p>
+                        `}
+                    `;
+                    
+                    container.appendChild(card);
+                }
+                
+                // Add overall summary
+                if (result.is_multi_platform) {
+                    const summary = document.createElement('div');
+                    summary.className = 'result-card';
+                    summary.innerHTML = `
+                        <h4>Summary</h4>
+                        <p>Generated stories for ${result.successful_generations}/${result.total_platforms} platforms</p>
+                        <p>All generations use authentic VEO 3 technology</p>
+                    `;
+                    container.insertBefore(summary, container.firstChild);
+                }
+            } else {
+                container.innerHTML = `
+                    <div class="result-card result-error">
+                        <h4>Generation Failed</h4>
+                        <p>${result.error || 'Unknown error occurred'}</p>
+                    </div>
+                `;
+            }
+            
+            resultsSection.style.display = 'block';
+        }
+        
+        function displayError(message) {
+            const resultsSection = document.getElementById('resultsSection');
+            const container = document.getElementById('resultsContainer');
+            
+            container.innerHTML = `
+                <div class="result-card result-error">
+                    <h4>Error</h4>
+                    <p>${message}</p>
+                </div>
+            `;
+            
+            resultsSection.style.display = 'block';
+        }
+        
+        // Initialize with Instagram selected
+        document.querySelector('[data-platform="instagram"]').click();
+    </script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login Test - DreamFrame</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .test-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .test-form {
+            margin: 20px 0;
+        }
+        
+        input {
+            padding: 12px;
+            margin: 10px 0;
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin: 10px 0;
+        }
+        
+        .info {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
+        .success { background: rgba(0, 255, 0, 0.2); }
+        .error { background: rgba(255, 0, 0, 0.2); }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔧 Admin Login Test</h1>
+        
+        <div class="info">
+            <h3>Current Session Info:</h3>
+            <p><strong>Your IP:</strong> {{ request.remote_addr }}</p>
+            <p><strong>User Agent:</strong> {{ request.user_agent.string[:50] }}...</p>
+            <p><strong>Session ID:</strong> {{ session.get('_id', 'None') }}</p>
+            <p><strong>Admin Status:</strong> {{ 'Authenticated ✅' if session.get('admin_authenticated') else 'Not Authenticated ❌' }}</p>
+        </div>
+        
+        <div class="test-form">
+            <h3>🔑 Direct Login Test</h3>
+            <form method="POST" action="/admin/login">
+                <input type="password" name="password" placeholder="Enter admin password" required>
+                <button type="submit">Test Login</button>
+            </form>
+            
+            <p><strong>Correct Password:</strong> dreamframe2025</p>
+        </div>
+        
+        <div class="test-form">
+            <h3>🚀 Quick Links</h3>
+            <a href="/admin/login" style="color: white;"><button type="button">Regular Login Page</button></a>
+            <a href="/start-project" style="color: white;"><button type="button">Test Project Form</button></a>
+            {% if session.get('admin_authenticated') %}
+            <a href="/admin/simple" style="color: white;"><button type="button">Go to Admin Panel</button></a>
+            {% endif %}
+        </div>
+        
+        {% if error %}
+        <div class="info error">
+            <strong>❌ Error:</strong> {{ error }}
+        </div>
+        {% endif %}
+        
+        <div class="info">
+            <h3>💡 Troubleshooting Tips:</h3>
+            <ul>
+                <li>Make sure cookies are enabled on your iPad</li>
+                <li>Try clearing browser cache/cookies</li>
+                <li>Ensure you're using the correct URL</li>
+                <li>Check if you're using HTTPS vs HTTP</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

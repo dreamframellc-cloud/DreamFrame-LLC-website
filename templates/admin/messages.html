@@ -1,0 +1,208 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Messages - DreamFrame Admin{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Customer Messages</h2>
+                <div class="btn-group" role="group">
+                    <a href="{{ url_for('admin.messages') }}" 
+                       class="btn {{ 'btn-primary' if not unread_only else 'btn-outline-primary' }}">
+                        All Messages
+                    </a>
+                    <a href="{{ url_for('admin.messages', unread=True) }}" 
+                       class="btn {{ 'btn-primary' if unread_only else 'btn-outline-primary' }}">
+                        Unread Only
+                    </a>
+                </div>
+            </div>
+
+            {% if messages.items %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Message</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for message in messages.items %}
+                        <tr class="{{ 'table-warning' if not message.read_by_admin else '' }}">
+                            <td>{{ message.id }}</td>
+                            <td>{{ message.name }}</td>
+                            <td>{{ message.email }}</td>
+                            <td class="text-truncate" style="max-width: 300px;">{{ message.message }}</td>
+                            <td>{{ message.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>
+                                <span class="badge {{ 'bg-warning' if not message.read_by_admin else 'bg-success' }}">
+                                    {{ 'Unread' if not message.read_by_admin else 'Read' }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if not message.read_by_admin %}
+                                <button class="btn btn-sm btn-outline-primary" 
+                                        onclick="markAsRead({{ message.id }})">
+                                    Mark Read
+                                </button>
+                                {% endif %}
+                                <button class="btn btn-sm btn-outline-info" 
+                                        onclick="viewMessage({{ message.id }}, '{{ message.name }}', '{{ message.email }}', `{{ message.message }}`)">
+                                    View
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger" 
+                                        onclick="deleteMessage({{ message.id }}, '{{ message.name }}')">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            {% if messages.pages > 1 %}
+            <nav aria-label="Messages pagination">
+                <ul class="pagination justify-content-center">
+                    {% if messages.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.messages', page=messages.prev_num, unread=unread_only) }}">Previous</a>
+                    </li>
+                    {% endif %}
+                    
+                    {% for page_num in messages.iter_pages() %}
+                    {% if page_num %}
+                        {% if page_num != messages.page %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('admin.messages', page=page_num, unread=unread_only) }}">{{ page_num }}</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ page_num }}</span>
+                        </li>
+                        {% endif %}
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                    
+                    {% if messages.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.messages', page=messages.next_num, unread=unread_only) }}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+
+            {% else %}
+            <div class="alert alert-info">
+                <h4 class="alert-heading">No Messages Found</h4>
+                <p>{{ 'No unread messages at the moment.' if unread_only else 'No messages have been received yet.' }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Message View Modal -->
+<div class="modal fade" id="messageModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Message Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <strong>Name:</strong> <span id="modalName"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Email:</strong> <span id="modalEmail"></span>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-12">
+                        <strong>Message:</strong>
+                        <div id="modalMessage" class="mt-2 p-3 bg-light rounded"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="" id="replyEmailLink" class="btn btn-primary">Reply via Email</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function markAsRead(messageId) {
+    fetch(`/admin/messages/${messageId}/mark_read`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        }
+    })
+    .catch(error => {
+        console.error('Error marking message as read:', error);
+        alert('Failed to mark message as read');
+    });
+}
+
+function deleteMessage(messageId, messageName) {
+    if (confirm(`Are you sure you want to delete the message from ${messageName}? This action cannot be undone.`)) {
+        fetch(`/admin/messages/${messageId}/delete`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting message:', error);
+            alert('Failed to delete message');
+        });
+    }
+}
+
+function viewMessage(id, name, email, message) {
+    document.getElementById('modalName').textContent = name;
+    document.getElementById('modalEmail').textContent = email;
+    document.getElementById('modalMessage').textContent = message;
+    
+    // Set up reply email link
+    const replyLink = document.getElementById('replyEmailLink');
+    const subject = encodeURIComponent(`Re: Your inquiry to DreamFrame LLC`);
+    const body = encodeURIComponent(`Hi ${name},\n\nThank you for contacting DreamFrame LLC.\n\nBest regards,\nDreamFrame Team`);
+    replyLink.href = `mailto:${email}?subject=${subject}&body=${body}`;
+    
+    // Show modal
+    new bootstrap.Modal(document.getElementById('messageModal')).show();
+}
+</script>
+{% endblock %}

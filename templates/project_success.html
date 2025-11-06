@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Submitted - DreamFrame LLC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .success-container {
+            max-width: 600px;
+            margin: 4rem auto;
+            padding: 3rem;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f1e 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            color: white;
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            color: #00ffff;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .success-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #00ffff, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .success-message {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .project-details {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: left;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .detail-label {
+            font-weight: bold;
+            color: #00ffff;
+        }
+        
+        .detail-value {
+            color: white;
+        }
+        
+        .next-steps {
+            background: rgba(0, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+        }
+        
+        .next-steps h3 {
+            color: #00ffff;
+            margin-bottom: 1rem;
+        }
+        
+        .next-steps ul {
+            text-align: left;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+        }
+        
+        .back-btn {
+            background: linear-gradient(45deg, #00ffff, #0099ff);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 2rem;
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.4);
+            text-decoration: none;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .success-container {
+                margin: 1rem;
+                padding: 2rem;
+            }
+            
+            .success-title {
+                font-size: 2rem;
+            }
+            
+            .detail-row {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-icon">✅</div>
+        <h1 class="success-title">Project Submitted!</h1>
+        <p class="success-message">
+            Thank you for choosing DreamFrame LLC! Your project has been successfully submitted and we're excited to bring your vision to life.
+        </p>
+        
+        {% if project %}
+        <div class="project-details">
+            <div class="detail-row">
+                <span class="detail-label">Project ID:</span>
+                <span class="detail-value">#{{ project.id }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Video Title:</span>
+                <span class="detail-value">{{ project.project_title }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Service Type:</span>
+                <span class="detail-value">{{ project.project_type.value|title|replace('_', ' ') }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Files Uploaded:</span>
+                <span class="detail-value">{{ project.uploaded_files|length }} files</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Status:</span>
+                <span class="detail-value">{{ project.status.value|title }}</span>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="next-steps">
+            <h3>🤖 AI-Powered Production Process</h3>
+            <ul>
+                <li><strong>🔍 Immediate AI Analysis:</strong> Our AI is already analyzing your project requirements and optimizing the production approach</li>
+                <li><strong>📅 Smart Timeline:</strong> AI has generated a personalized timeline based on your project complexity and requirements</li>
+                <li><strong>💬 Automated Updates:</strong> You'll receive AI-powered status updates throughout the entire production process</li>
+                <li><strong>🎯 Intelligent Production:</strong> Our AI guides the production team for optimal results based on your vision</li>
+                <li><strong>🚀 AI-Assisted Delivery:</strong> Final delivery optimized by AI for your specific platforms and requirements</li>
+            </ul>
+            <div style="background: rgba(0, 255, 255, 0.1); padding: 1.5rem; border-radius: 15px; margin-top: 1.5rem; border: 1px solid rgba(0, 255, 255, 0.3);">
+                <h4 style="color: #00ffff; margin-bottom: 1rem;">✨ AI Enhancement Features</h4>
+                <div style="font-size: 0.9rem; color: rgba(255,255,255,0.9);">
+                    • <strong>Smart Quality Analysis:</strong> AI ensures optimal video quality<br>
+                    • <strong>Automated Progress Tracking:</strong> Real-time status without manual intervention<br>
+                    • <strong>Intelligent Customer Support:</strong> 24/7 AI assistance for any questions<br>
+                    • <strong>Predictive Delivery:</strong> AI predicts and optimizes completion times
+                </div>
+            </div>
+        </div>
+        
+        <div class="contact-info" style="margin: 2rem 0; padding: 2rem; background: rgba(255, 255, 255, 0.1); border-radius: 15px;">
+            <h3>Questions? AI Assistant Available 24/7!</h3>
+            <p>🤖 Click the AI Assistant button below for instant help</p>
+            <p>📧 Email: support@dreamframe518.com</p>
+            <p>📱 Phone: (555) 123-4567</p>
+            <p>💬 AI Response time: Instant | Human backup: Within 4 hours</p>
+        </div>
+        
+        <a href="{{ url_for('index') }}" class="back-btn">Return to Homepage</a>
+    </div>
+
+    <!-- Include AI Chat Widget -->
+    {% include 'ai_chat_widget.html' %}
+</body>
+</html>

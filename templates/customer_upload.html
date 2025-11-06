@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Your Video - DreamFrame LLC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .upload-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f1e 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .upload-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+        
+        .upload-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #00ffff, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .form-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section-title {
+            color: #00ffff;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            color: white;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .upload-zone {
+            border: 3px dashed rgba(0, 255, 255, 0.5);
+            border-radius: 15px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: rgba(0, 255, 255, 0.05);
+        }
+        
+        .upload-zone:hover,
+        .upload-zone.dragover {
+            border-color: #00ffff;
+            background: rgba(0, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: #00ffff;
+            margin-bottom: 1rem;
+        }
+        
+        .upload-text {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .upload-subtext {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        .file-list {
+            margin-top: 2rem;
+        }
+        
+        .file-item {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .file-info {
+            flex: 1;
+            color: white;
+        }
+        
+        .file-name {
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+        }
+        
+        .file-size {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .file-remove {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-remove:hover {
+            background: #ff3742;
+            transform: scale(1.05);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(45deg, #00ffff, #0099ff);
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 2rem auto 0;
+            min-width: 200px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.4);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .progress-bar {
+            display: none;
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #00ffff, #0099ff);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .upload-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .upload-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-container">
+        <div class="upload-header">
+            <h1>Start Your Video</h1>
+            <p>Upload your photos and tell us about your vision</p>
+        </div>
+
+        <form id="projectForm" enctype="multipart/form-data">
+            <!-- Customer Information Section -->
+            <div class="form-section">
+                <h2 class="section-title">Your Information</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="customer_name">Full Name *</label>
+                        <input type="text" id="customer_name" name="customer_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customer_email">Email Address *</label>
+                        <input type="email" id="customer_email" name="customer_email" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Details Section -->
+            <div class="form-section">
+                <h2 class="section-title">Video Details</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="project_type">Video Type *</label>
+                        <select id="project_type" name="project_type" required>
+                            <option value="">Select a service...</option>
+                            <option value="videogram">VideoGram - $50</option>
+                            <option value="quick_clip">Quick Clip - $75</option>
+                            <option value="family_memory">Family Memory - $200</option>
+                            <option value="military_tribute">Military Tribute - $300</option>
+                            <option value="wedding_story">Wedding Story - $500</option>
+                            <option value="corporate">Corporate Production - $1000</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="deadline_date">Preferred Completion Date</label>
+                        <input type="date" id="deadline_date" name="deadline_date">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="project_title">Video Title *</label>
+                    <input type="text" id="project_title" name="project_title" placeholder="Give your video a title..." required>
+                </div>
+                <div class="form-group">
+                    <label for="project_description">Tell Us Your Vision *</label>
+                    <textarea id="project_description" name="project_description" rows="4" 
+                              placeholder="Describe what you want to see in your video. Include the story you want to tell, the mood you're going for, any specific moments to highlight, and how you want people to feel when they watch it..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="special_requests">Special Requests</label>
+                    <textarea id="special_requests" name="special_requests" rows="3" 
+                              placeholder="Any specific music preferences, text overlays, color themes, or other special requirements..."></textarea>
+                </div>
+            </div>
+
+            <!-- File Upload Section -->
+            <div class="form-section">
+                <h2 class="section-title">Upload Your Photos & Videos</h2>
+                <div class="upload-zone" id="uploadZone">
+                    <div class="upload-icon">📁</div>
+                    <div class="upload-text">Drag & Drop Your Files Here</div>
+                    <div class="upload-subtext">or click to browse</div>
+                    <div class="upload-subtext">Supports: JPG, PNG, HEIC, MP4, MOV</div>
+                </div>
+                <input type="file" id="fileInput" name="files" multiple accept="image/*,video/*" style="display: none;">
+                
+                <div class="file-list" id="fileList"></div>
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                Start My Video
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // File upload functionality
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const submitBtn = document.getElementById('submitBtn');
+        const projectForm = document.getElementById('projectForm');
+
+        let selectedFiles = [];
+
+        // Upload zone click handler
+        uploadZone.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // Drag and drop handlers
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files);
+            handleFiles(files);
+        });
+
+        // File input change handler
+        fileInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            handleFiles(files);
+        });
+
+        function handleFiles(files) {
+            files.forEach(file => {
+                if (isValidFile(file)) {
+                    selectedFiles.push(file);
+                    addFileToList(file);
+                }
+            });
+        }
+
+        function isValidFile(file) {
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/heic', 'video/mp4', 'video/quicktime', 'video/x-msvideo'];
+            const maxSize = 100 * 1024 * 1024; // 100MB
+            
+            console.log('Validating file:', file.name, 'Type:', file.type, 'Size:', file.size);
+            
+            if (!validTypes.includes(file.type)) {
+                alert(`${file.name} is not a supported file type. Supported: JPG, PNG, HEIC, MP4, MOV`);
+                return false;
+            }
+            
+            if (file.size > maxSize) {
+                alert(`${file.name} is too large. Maximum size is 100MB.`);
+                return false;
+            }
+            
+            console.log('File validation passed for:', file.name);
+            return true;
+        }
+
+        function addFileToList(file) {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.innerHTML = `
+                <div class="file-info">
+                    <div class="file-name">${file.name}</div>
+                    <div class="file-size">${formatFileSize(file.size)}</div>
+                </div>
+                <button type="button" class="file-remove" onclick="removeFile('${file.name}')">Remove</button>
+            `;
+            fileList.appendChild(fileItem);
+        }
+
+        function removeFile(fileName) {
+            selectedFiles = selectedFiles.filter(file => file.name !== fileName);
+            const fileItems = fileList.children;
+            for (let item of fileItems) {
+                if (item.querySelector('.file-name').textContent === fileName) {
+                    item.remove();
+                    break;
+                }
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Form submission
+        projectForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            console.log('Form submitted, selected files:', selectedFiles.length);
+            
+            if (selectedFiles.length === 0) {
+                alert('Please upload at least one file before submitting.');
+                return;
+            }
+
+            const formData = new FormData();
+            
+            // Check required fields
+            const requiredFields = ['customer_name', 'customer_email', 'project_type', 'project_title', 'project_description'];
+            for (let fieldName of requiredFields) {
+                const field = document.getElementById(fieldName);
+                if (!field.value.trim()) {
+                    alert(`Please fill in the ${fieldName.replace('_', ' ')} field.`);
+                    return;
+                }
+            }
+            
+            // Add form fields
+            const formElements = projectForm.elements;
+            for (let element of formElements) {
+                if (element.name && element.type !== 'file') {
+                    console.log('Adding form field:', element.name, '=', element.value);
+                    formData.append(element.name, element.value);
+                }
+            }
+            
+            // Add files
+            selectedFiles.forEach(file => {
+                formData.append('files', file);
+            });
+
+            try {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Uploading...';
+                progressBar.style.display = 'block';
+                console.log('Submitting form data...');
+
+                const response = await fetch('/submit-project', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                console.log('Response received:', response.status);
+                const result = await response.json();
+                console.log('Result:', result);
+
+                if (result.success) {
+                    alert('Your project has been submitted successfully! We\'ll contact you soon.');
+                    window.location.href = '/project-success?id=' + result.project_id;
+                } else {
+                    alert('Error: ' + result.message);
+                    console.error('Submission error:', result.message);
+                }
+            } catch (error) {
+                alert('An error occurred while submitting your project. Please try again.');
+                console.error('Submission error:', error);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Start My Video';
+                progressBar.style.display = 'none';
+            }
+        });
+
+        // Set minimum date to today
+        document.getElementById('deadline_date').min = new Date().toISOString().split('T')[0];
+    </script>
+</body>
+</html>

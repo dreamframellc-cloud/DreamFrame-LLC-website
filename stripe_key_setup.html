@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stripe Live Key Setup - DreamFrame LLC</title>
+    <style>
+        :root {
+            --orange: #ff6b35;
+            --cyan: #00ffff;
+            --dark: #1a1a2e;
+            --white: #ffffff;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, #2d2d5f 50%, var(--dark) 100%);
+            color: var(--white);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .setup-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .title {
+            text-align: center;
+            color: var(--orange);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: var(--cyan);
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+        
+        .info-box {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid var(--cyan);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .warning-box {
+            background: rgba(255, 107, 53, 0.1);
+            border: 1px solid var(--orange);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        label {
+            display: block;
+            color: var(--white);
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: var(--white);
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--cyan);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+        
+        .button {
+            background: linear-gradient(135deg, var(--orange), #f7931e);
+            color: var(--white);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+        }
+        
+        .steps {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .steps li {
+            margin: 10px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .steps li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--cyan);
+            font-weight: bold;
+        }
+        
+        .key-format {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            color: var(--cyan);
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="setup-container">
+        <h1 class="title">🔑 Stripe Live Mode Setup</h1>
+        <p class="subtitle">Switch to Real Payment Processing</p>
+        
+        <div class="info-box">
+            <h3>📍 Where to Find Your Live Secret Key:</h3>
+            <ol class="steps">
+                <li>Go to your Stripe Dashboard</li>
+                <li>Click "Developers" → "API keys"</li>
+                <li>Toggle to "Live" mode (not Test)</li>
+                <li>Copy the "Secret key"</li>
+            </ol>
+            
+            <div class="key-format">
+                Format: sk_live_51Abc123...
+            </div>
+        </div>
+        
+        <div class="warning-box">
+            <h3>⚠️ Important Security Notes:</h3>
+            <ul class="steps">
+                <li>This enables real payment processing</li>
+                <li>Keep your live key secure and private</li>
+                <li>Only use on trusted platforms</li>
+                <li>This will charge real credit cards</li>
+            </ul>
+        </div>
+        
+        <form id="stripeKeyForm">
+            <label for="stripeKey">Paste Your Stripe Live Secret Key:</label>
+            <textarea 
+                id="stripeKey" 
+                name="stripeKey" 
+                placeholder="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"
+                required>
+            </textarea>
+            
+            <button type="submit" class="button">
+                🚀 Enable Live Payment Processing
+            </button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('stripeKeyForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const stripeKey = document.getElementById('stripeKey').value.trim();
+            
+            if (!stripeKey.startsWith('sk_live_')) {
+                alert('❌ Invalid key format. Live keys must start with "sk_live_"');
+                return;
+            }
+            
+            if (stripeKey.length < 50) {
+                alert('❌ Key appears too short. Please check you copied the complete key.');
+                return;
+            }
+            
+            // Save the key via API
+            try {
+                const response = await fetch('/save-stripe-key', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ stripe_key: stripeKey })
+                });
+                
+                if (response.ok) {
+                    alert('✅ Stripe live key saved successfully! Payment processing is now active.');
+                    document.getElementById('stripeKey').value = '';
+                    window.location.href = '/';
+                } else {
+                    alert('❌ Error saving key. Please try again.');
+                }
+            } catch (error) {
+                alert('❌ Network error. Please try again.');
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

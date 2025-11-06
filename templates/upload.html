@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=5.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1a1a2e">
+    <title>Upload Videos - DreamFrame</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=20250617">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Apply Trajan-style font immediately */
+        body, *, h1, h2, h3, h4, h5, h6, p, div, span, a, button, input, textarea, label {
+            font-family: 'Cinzel', 'Trajan Pro', serif !important;
+        }
+        .brand-text {
+            font-family: 'Orbitron', 'Arial Black', 'Impact', sans-serif !important;
+            font-weight: 900 !important;
+        }
+        .brand-suffix {
+            font-family: 'Orbitron', 'Arial Black', 'Impact', sans-serif !important;
+            font-weight: 700 !important;
+        }
+        .upload-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            padding: 40px;
+            margin: 40px auto;
+            max-width: 800px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-area:hover {
+            border-color: #00ffff;
+            background: rgba(0, 255, 255, 0.05);
+        }
+        
+        .upload-input {
+            display: none;
+        }
+        
+        .upload-btn {
+            background: #00ffff;
+            color: black;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+        
+        .upload-btn:hover {
+            background: #00cccc;
+            transform: translateY(-2px);
+        }
+        
+        .file-list {
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        .file-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 15px;
+            margin: 5px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: #00ffff;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .required-files {
+            background: rgba(255, 255, 0, 0.1);
+            border: 1px solid rgba(255, 255, 0, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .required-files h3 {
+            color: #ffff00;
+            margin-bottom: 15px;
+        }
+        
+        .file-requirements {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .file-req-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .file-req-item strong {
+            color: #00ffff;
+        }
+        
+        .flash-message {
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+        
+        .flash-success {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            color: #4caf50;
+        }
+        
+        .flash-error {
+            background: rgba(244, 67, 54, 0.1);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            color: #f44336;
+        }
+        
+        .upload-progress {
+            display: none;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ffff, #0080ff);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .upload-spinner {
+            animation: spin 1s linear infinite;
+            color: #00ffff;
+            font-size: 1.5rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- DreamFrame Header -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="brand-container">
+                <div class="brand-text">DREAM</div>
+                <div class="glowing-star">★</div>
+                <div class="brand-text">FRAME</div>
+                <div class="brand-suffix">LLC</div>
+            </div>
+            <p class="brand-tagline">Transform Photos into Beautiful Videos</p>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <a href="{{ url_for('index') }}" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Gallery
+            </a>
+            
+            <div class="upload-section">
+                <h2 style="text-align: center; margin-bottom: 30px;">Upload Your Videos & Thumbnails</h2>
+                
+                <!-- Clear separator between sections -->
+                <hr style="border: 1px solid rgba(255, 255, 255, 0.2); margin: 40px 0;">
+                
+                <div class="required-files">
+                    <h3><i class="fas fa-info-circle"></i> Required Files</h3>
+                    <div class="file-requirements">
+                        <div class="file-req-item">
+                            <strong>Videos (MP4/MOV/AVI/MKV):</strong><br>
+
+                            • WWII_love.mp4<br>
+                            • bull_charge.mp4<br>
+                            • siblings_memories.mp4<br>
+                            <em>Max size: 500MB per file</em>
+                        </div>
+                        <div class="file-req-item">
+                            <strong>Thumbnails (JPEG/PNG):</strong><br>
+                            • Thumbnail.avatar.jpeg<br>
+                            • Thumbnail.WWII.jpeg<br>
+                            • Thumbnail.bull.jpeg<br>
+                            • Thumbnail.siblings.jpeg<br>
+                            <em>Max size: 10MB per file</em>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-triangle' }}"></i>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+                <!-- Video Upload Form -->
+                <form method="POST" enctype="multipart/form-data" id="videoForm" action="/upload">
+                    <input type="hidden" name="upload_type" value="video">
+                    <input type="hidden" name="token" value="{{ request.args.get('token') }}">
+                    <div class="upload-area" onclick="document.getElementById('videoInput').click()">
+                        <i class="fas fa-video" style="font-size: 3rem; color: #00ffff; margin-bottom: 15px;"></i>
+                        <h3>Upload Videos</h3>
+                        <p><strong>Drag & Drop videos here</strong> or click to select files</p>
+                        <p style="font-size: 0.9em; color: #ccc;">Supports: MP4, MOV, AVI, MKV, WebM | Max: 500MB per video</p>
+                        <button type="button" class="upload-btn">
+                            <i class="fas fa-upload"></i> Choose Video Files
+                        </button>
+                    </div>
+                    <input type="file" id="videoInput" name="files" class="upload-input" multiple accept="video/*,.mp4,.mov,.avi,.mkv" onchange="handleVideoUpload(this)">
+                    <div id="videoFiles" class="file-list"></div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button type="submit" class="upload-btn" id="uploadVideoBtn" disabled>
+                            <i class="fas fa-cloud-upload-alt"></i> Upload Videos
+                        </button>
+                    </div>
+                    <div class="upload-progress" id="videoProgress">
+                        <i class="fas fa-spinner upload-spinner"></i>
+                        <p>Uploading videos...</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="videoProgressFill"></div>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- THUMBNAIL UPLOAD SECTION - SCROLL DOWN TO SEE -->
+                <div style="background: rgba(0, 255, 255, 0.1); padding: 20px; border-radius: 10px; margin: 30px 0; border: 2px solid #00ffff;">
+                    <h2 style="color: #00ffff; text-align: center; margin-bottom: 20px;">
+                        <i class="fas fa-image"></i> THUMBNAIL UPLOAD SECTION
+                    </h2>
+                    <p style="text-align: center; font-size: 1.1rem; margin-bottom: 0;">Upload your custom thumbnail images below</p>
+                </div>
+                
+                <!-- Thumbnail Upload Form -->
+                <form method="POST" enctype="multipart/form-data" id="thumbnailForm">
+                    <input type="hidden" name="upload_type" value="image">
+                    <input type="hidden" name="token" value="{{ request.args.get('token') }}">
+                    <div class="upload-area" onclick="document.getElementById('thumbnailInput').click()" style="border: 3px solid #00ffff; background: rgba(0, 255, 255, 0.05);">
+                        <i class="fas fa-image" style="font-size: 3rem; color: #00ffff; margin-bottom: 15px;"></i>
+                        <h3 style="color: #00ffff;">Upload Thumbnails</h3>
+                        <p><strong>Drag & Drop thumbnail images here</strong> or click to select</p>
+                        <p style="font-size: 0.9em; color: #ccc;">Supports: JPEG, PNG, GIF | Max: 10MB per image</p>
+                        <button type="button" class="upload-btn">
+                            <i class="fas fa-upload"></i> Choose Thumbnail Files
+                        </button>
+                    </div>
+                    <input type="file" id="thumbnailInput" name="files" class="upload-input" multiple accept="image/jpeg,image/jpg,image/png" onchange="handleThumbnailUpload(this)">
+                    <div id="thumbnailFiles" class="file-list"></div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button type="submit" class="upload-btn" id="uploadThumbnailBtn">
+                            <i class="fas fa-cloud-upload-alt"></i> Upload Thumbnails
+                        </button>
+                    </div>
+                    <div class="upload-progress" id="thumbnailProgress">
+                        <i class="fas fa-spinner upload-spinner"></i>
+                        <p>Uploading thumbnails...</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="thumbnailProgressFill"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let videoFiles = [];
+        let thumbnailFiles = [];
+
+        function handleVideoUpload(input) {
+            const maxSize = 500 * 1024 * 1024; // 500MB
+            const validFiles = [];
+            const errors = [];
+            
+            Array.from(input.files).forEach(file => {
+                if (file.size > maxSize) {
+                    errors.push(`${file.name} is too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Maximum size is 500MB.`);
+                } else {
+                    validFiles.push(file);
+                }
+            });
+            
+            if (errors.length > 0) {
+                alert('File size errors:\n' + errors.join('\n'));
+            }
+            
+            videoFiles = validFiles;
+            displayFiles('videoFiles', videoFiles, 'video');
+            
+            // Enable upload button when files are selected
+            const uploadBtn = document.getElementById('uploadVideoBtn');
+            if (validFiles.length > 0) {
+                uploadBtn.disabled = false;
+                uploadBtn.style.opacity = '1';
+                uploadBtn.style.cursor = 'pointer';
+            } else {
+                uploadBtn.disabled = true;
+                uploadBtn.style.opacity = '0.5';
+                uploadBtn.style.cursor = 'not-allowed';
+            }
+        }
+
+        function handleThumbnailUpload(input) {
+            const maxSize = 10 * 1024 * 1024; // 10MB
+            const validFiles = [];
+            const errors = [];
+            
+            Array.from(input.files).forEach(file => {
+                if (file.size > maxSize) {
+                    errors.push(`${file.name} is too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Maximum size is 10MB.`);
+                } else {
+                    validFiles.push(file);
+                }
+            });
+            
+            if (errors.length > 0) {
+                alert('File size errors:\n' + errors.join('\n'));
+            }
+            
+            thumbnailFiles = validFiles;
+            displayFiles('thumbnailFiles', thumbnailFiles, 'image');
+        }
+
+        function displayFiles(containerId, files, type) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            files.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <span>
+                        <i class="fas fa-${type === 'video' ? 'video' : 'image'}"></i>
+                        ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)
+                    </span>
+                    <button onclick="removeFile('${containerId}', ${index})" style="background: #ff5252; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                container.appendChild(fileItem);
+            });
+        }
+
+        function removeFile(containerId, index) {
+            if (containerId === 'videoFiles') {
+                videoFiles.splice(index, 1);
+                displayFiles('videoFiles', videoFiles, 'video');
+            } else {
+                thumbnailFiles.splice(index, 1);
+                displayFiles('thumbnailFiles', thumbnailFiles, 'image');
+            }
+        }
+
+        function uploadFileViaAjax(file, uploadType) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_type', uploadType);
+
+            return fetch('/upload/ajax', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Upload successful:', data.filename);
+                    return data;
+                } else {
+                    throw new Error(data.error);
+                }
+            });
+        }
+
+        // Progress tracking for form submissions
+        document.getElementById('videoForm').addEventListener('submit', function(e) {
+            if (videoFiles.length === 0) {
+                e.preventDefault();
+                alert('Please select video files first.');
+                return;
+            }
+            showProgress('videoProgress', 'uploadVideoBtn');
+        });
+
+        document.getElementById('thumbnailForm').addEventListener('submit', function(e) {
+            if (thumbnailFiles.length === 0) {
+                e.preventDefault();
+                alert('Please select thumbnail files first.');
+                return;
+            }
+            showProgress('thumbnailProgress', 'uploadThumbnailBtn');
+        });
+
+        function showProgress(progressId, buttonId) {
+            document.getElementById(progressId).style.display = 'block';
+            document.getElementById(buttonId).disabled = true;
+            document.getElementById(buttonId).innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+        }
+
+        // Enhanced drag and drop functionality
+        const videoUploadArea = document.querySelector('#videoForm .upload-area');
+        const thumbnailUploadArea = document.querySelector('#thumbnailForm .upload-area');
+
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            document.addEventListener(eventName, preventDefaults, false);
+            videoUploadArea.addEventListener(eventName, preventDefaults, false);
+            thumbnailUploadArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        // Add visual feedback for drag operations
+        ['dragenter', 'dragover'].forEach(eventName => {
+            videoUploadArea.addEventListener(eventName, () => {
+                videoUploadArea.style.borderColor = '#00ffff';
+                videoUploadArea.style.backgroundColor = 'rgba(0, 255, 255, 0.1)';
+                videoUploadArea.style.transform = 'scale(1.02)';
+            });
+            
+            thumbnailUploadArea.addEventListener(eventName, () => {
+                thumbnailUploadArea.style.borderColor = '#ffff00';
+                thumbnailUploadArea.style.backgroundColor = 'rgba(255, 255, 0, 0.1)';
+                thumbnailUploadArea.style.transform = 'scale(1.02)';
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            videoUploadArea.addEventListener(eventName, () => {
+                videoUploadArea.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                videoUploadArea.style.backgroundColor = 'transparent';
+                videoUploadArea.style.transform = 'scale(1)';
+            });
+            
+            thumbnailUploadArea.addEventListener(eventName, () => {
+                thumbnailUploadArea.style.borderColor = '#00ffff';
+                thumbnailUploadArea.style.backgroundColor = 'rgba(0, 255, 255, 0.05)';
+                thumbnailUploadArea.style.transform = 'scale(1)';
+            });
+        });
+
+        // Handle drop events specifically for each upload area
+        videoUploadArea.addEventListener('drop', function(e) {
+            const files = Array.from(e.dataTransfer.files);
+            const videos = files.filter(file => file.type.startsWith('video/') || 
+                file.name.toLowerCase().match(/\.(mp4|mov|avi|mkv|webm|m4v|3gp|wmv)$/));
+            
+            if (videos.length > 0) {
+                const videoInput = document.getElementById('videoInput');
+                const dt = new DataTransfer();
+                videos.forEach(file => dt.items.add(file));
+                videoInput.files = dt.files;
+                handleVideoUpload(videoInput);
+                
+                // Show success feedback
+                videoUploadArea.style.borderColor = '#4caf50';
+                videoUploadArea.style.backgroundColor = 'rgba(76, 175, 80, 0.1)';
+                setTimeout(() => {
+                    videoUploadArea.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                    videoUploadArea.style.backgroundColor = 'transparent';
+                }, 2000);
+            } else {
+                alert('Please drop video files only (MP4, MOV, AVI, MKV, etc.)');
+            }
+        });
+
+        thumbnailUploadArea.addEventListener('drop', function(e) {
+            const files = Array.from(e.dataTransfer.files);
+            const images = files.filter(file => file.type.startsWith('image/') || 
+                file.name.toLowerCase().match(/\.(jpg|jpeg|png|gif)$/));
+            
+            if (images.length > 0) {
+                const thumbnailInput = document.getElementById('thumbnailInput');
+                const dt = new DataTransfer();
+                images.forEach(file => dt.items.add(file));
+                thumbnailInput.files = dt.files;
+                handleThumbnailUpload(thumbnailInput);
+                
+                // Show success feedback
+                thumbnailUploadArea.style.borderColor = '#4caf50';
+                thumbnailUploadArea.style.backgroundColor = 'rgba(76, 175, 80, 0.1)';
+                setTimeout(() => {
+                    thumbnailUploadArea.style.borderColor = '#00ffff';
+                    thumbnailUploadArea.style.backgroundColor = 'rgba(0, 255, 255, 0.05)';
+                }, 2000);
+            } else {
+                alert('Please drop image files only (JPEG, PNG, GIF)');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share {{ video_info.title if video_info else 'Video' }} - DreamFrame LLC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Open Graph meta tags -->
+    <meta property="og:title" content="{{ video_info.title if video_info else 'DreamFrame Video' }}">
+    <meta property="og:description" content="{{ video_info.description if video_info else 'Professional video by DreamFrame LLC' }}">
+    <meta property="og:type" content="video.other">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:site_name" content="DreamFrame LLC">
+    <meta property="og:image" content="{{ url_for('static', filename='homepage_hero_clean.jpg', _external=True) }}">
+    
+    <!-- Twitter Card meta tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ video_info.title if video_info else 'DreamFrame Video' }}">
+    <meta name="twitter:description" content="{{ video_info.description if video_info else 'Professional video by DreamFrame LLC' }}">
+    <meta name="twitter:image" content="{{ url_for('static', filename='homepage_hero_clean.jpg', _external=True) }}">
+    <meta name="twitter:site" content="@dreamframe">
+    
+    <style>
+        .share-page-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border-radius: 20px;
+        }
+        
+        .video-preview-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .video-info {
+            padding: 1.5rem;
+        }
+        
+        .video-title {
+            color: #00ffff;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .video-description {
+            color: #ccc;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .video-meta {
+            display: flex;
+            gap: 1rem;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .video-player-container {
+            position: relative;
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .video-player {
+            width: 100%;
+            height: auto;
+        }
+        
+        .share-options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .share-option-card {
+            background: #333;
+            border: 1px solid #444;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .share-option-card:hover {
+            border-color: #00ffff;
+            background: #404040;
+            transform: translateY(-2px);
+        }
+        
+        .platform-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .platform-name {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .platform-description {
+            color: #ccc;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .share-btn {
+            background: linear-gradient(135deg, #00ffff, #00cccc);
+            color: black;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.4);
+        }
+        
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .quick-action-btn {
+            padding: 1rem 2rem;
+            border: 2px solid #00ffff;
+            background: transparent;
+            color: #00ffff;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quick-action-btn:hover {
+            background: #00ffff;
+            color: black;
+        }
+        
+        @media (max-width: 768px) {
+            .video-preview-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .share-page-container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+            
+            .video-title {
+                font-size: 1.5rem;
+            }
+            
+            .quick-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="share-page-container">
+        <div class="video-preview-section">
+            <div class="video-player-container">
+                <video class="video-player" controls poster="{{ url_for('static', filename='thumbnails/' + video_info.thumbnail) if video_info.thumbnail else '' }}">
+                    <source src="{{ url_for('static', filename='videos/' + video_info.video) if video_info.video else '' }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            
+            <div class="video-info">
+                <h1 class="video-title">{{ video_info.title if video_info else 'DreamFrame Video' }}</h1>
+                <p class="video-description">{{ video_info.description if video_info else 'Professional video production by DreamFrame LLC' }}</p>
+                
+                <div class="video-meta">
+                    <span>Duration: {{ video_info.duration if video_info else 'N/A' }}</span>
+                    <span>Category: {{ video_info.category.title() if video_info else 'Video' }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="quick-actions">
+            <button class="quick-action-btn" onclick="generateAllPreviews()">
+                🚀 Generate Optimized Previews
+            </button>
+            <button class="quick-action-btn" onclick="copyVideoLink()">
+                📋 Copy Link
+            </button>
+            <button class="quick-action-btn" onclick="downloadVideo()">
+                💾 Download Video
+            </button>
+        </div>
+        
+        <div class="share-options-grid">
+            <div class="share-option-card" onclick="shareOn('facebook')">
+                <div class="platform-icon">📘</div>
+                <div class="platform-name">Facebook</div>
+                <div class="platform-description">Share with friends and family</div>
+                <button class="share-btn">Share on Facebook</button>
+            </div>
+            
+            <div class="share-option-card" onclick="shareOn('twitter')">
+                <div class="platform-icon">🐦</div>
+                <div class="platform-name">Twitter</div>
+                <div class="platform-description">Tweet to your followers</div>
+                <button class="share-btn">Share on Twitter</button>
+            </div>
+            
+            <div class="share-option-card" onclick="shareOn('instagram')">
+                <div class="platform-icon">📸</div>
+                <div class="platform-name">Instagram</div>
+                <div class="platform-description">Share to your story or feed</div>
+                <button class="share-btn">Get Instagram Preview</button>
+            </div>
+            
+            <div class="share-option-card" onclick="shareOn('linkedin')">
+                <div class="platform-icon">💼</div>
+                <div class="platform-name">LinkedIn</div>
+                <div class="platform-description">Share professionally</div>
+                <button class="share-btn">Share on LinkedIn</button>
+            </div>
+            
+            <div class="share-option-card" onclick="shareOn('whatsapp')">
+                <div class="platform-icon">💬</div>
+                <div class="platform-name">WhatsApp</div>
+                <div class="platform-description">Send to contacts</div>
+                <button class="share-btn">Share via WhatsApp</button>
+            </div>
+            
+            <div class="share-option-card" onclick="shareOn('email')">
+                <div class="platform-icon">📧</div>
+                <div class="platform-name">Email</div>
+                <div class="platform-description">Send via email</div>
+                <button class="share-btn">Share via Email</button>
+            </div>
+        </div>
+        
+        <!-- Social Sharing Widget -->
+        {% include 'social_sharing_widget.html' %}
+        
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="/gallery" class="quick-action-btn">← Back to Gallery</a>
+        </div>
+    </div>
+    
+    <script>
+        const videoId = '{{ video_id }}';
+        const videoTitle = '{{ video_info.title if video_info else "DreamFrame Video" }}';
+        const videoDescription = '{{ video_info.description if video_info else "Professional video by DreamFrame LLC" }}';
+        const currentUrl = window.location.href.replace('/social-share/', '/gallery?video=');
+        
+        function shareOn(platform) {
+            const shareUrls = {
+                facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`,
+                twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(videoTitle)}`,
+                linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`,
+                whatsapp: `https://wa.me/?text=${encodeURIComponent(videoTitle + ' ' + currentUrl)}`,
+                email: `mailto:?subject=${encodeURIComponent(videoTitle)}&body=${encodeURIComponent(videoDescription + '\n\nWatch here: ' + currentUrl)}`
+            };
+            
+            if (platform === 'instagram') {
+                // Instagram requires manual sharing
+                copyVideoLink();
+                alert('Link copied! You can paste it in Instagram.');
+                return;
+            }
+            
+            if (shareUrls[platform]) {
+                window.open(shareUrls[platform], '_blank', 'width=600,height=400');
+            }
+        }
+        
+        function generateAllPreviews() {
+            // This will trigger the social sharing widget
+            generatePreviews();
+        }
+        
+        function copyVideoLink() {
+            navigator.clipboard.writeText(currentUrl).then(function() {
+                alert('Video link copied to clipboard!');
+            }, function(err) {
+                console.error('Failed to copy: ', err);
+                alert('Failed to copy link');
+            });
+        }
+        
+        function downloadVideo() {
+            const videoUrl = '{{ url_for("static", filename="videos/" + video_info.video) if video_info.video else "" }}';
+            const link = document.createElement('a');
+            link.href = videoUrl;
+            link.download = '{{ video_info.title if video_info else "video" }}.mp4';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        // Update widget with current video
+        document.addEventListener('DOMContentLoaded', function() {
+            currentVideoId = videoId;
+        });
+    </script>
+</body>
+</html>

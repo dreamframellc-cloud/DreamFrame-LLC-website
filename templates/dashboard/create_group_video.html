@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Group Video | DreamFrame</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            font-family: 'Cinzel', serif;
+            margin: 0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin: 0;
+            background: linear-gradient(135deg, #ff6b35, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .header p {
+            font-size: 1.2rem;
+            margin-top: 15px;
+            color: rgba(255,255,255,0.8);
+        }
+        .create-form {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+        .form-section {
+            margin-bottom: 30px;
+        }
+        .form-section h3 {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            color: #ff6b35;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #ff6b35;
+            font-family: 'Cinzel', serif;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 16px;
+            box-sizing: border-box;
+            font-family: 'Cinzel', serif;
+        }
+        input::placeholder, textarea::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+        .file-upload-area {
+            border: 2px dashed rgba(255, 107, 53, 0.5);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            background: rgba(255, 107, 53, 0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        .file-upload-area:hover {
+            border-color: #ff6b35;
+            background: rgba(255, 107, 53, 0.2);
+        }
+        .file-upload-area.drag-over {
+            border-color: #00ffff;
+            background: rgba(0, 255, 255, 0.1);
+        }
+        .upload-icon {
+            font-size: 3rem;
+            color: #ff6b35;
+            margin-bottom: 15px;
+        }
+        .file-input {
+            display: none;
+        }
+        .file-upload-btn {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: 'Cinzel', serif;
+        }
+        .file-upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 107, 53, 0.3);
+        }
+        .file-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .preview-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .preview-image {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+        .preview-info {
+            padding: 10px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        .remove-file {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .submit-btn {
+            background: linear-gradient(135deg, #00ff88, #00ffff);
+            color: #1a1a2e;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Orbitron', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 255, 136, 0.3);
+        }
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .info-box {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .info-box h4 {
+            color: #00ffff;
+            margin-top: 0;
+            font-family: 'Orbitron', monospace;
+        }
+        .nav-link {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            margin: 5px;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+            font-family: 'Cinzel', serif;
+        }
+        .nav-link:hover {
+            background: rgba(255, 107, 53, 0.3);
+            border-color: #ff6b35;
+            color: white;
+            text-decoration: none;
+        }
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+        .flash-message {
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .flash-success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.5);
+            color: #4CAF50;
+        }
+        .flash-error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.5);
+            color: #f44336;
+        }
+        .flash-info {
+            background: rgba(0, 255, 255, 0.2);
+            border: 1px solid rgba(0, 255, 255, 0.5);
+            color: #00ffff;
+        }
+        .requirements {
+            background: rgba(255, 107, 53, 0.1);
+            border-left: 4px solid #ff6b35;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .requirements ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .requirements li {
+            margin: 5px 0;
+            color: rgba(255,255,255,0.9);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <div style="margin-bottom: 30px; text-align: center;">
+            <a href="{{ url_for('home') }}" class="nav-link">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="{{ url_for('create_video') }}" class="nav-link">
+                <i class="fas fa-video"></i> Single Video
+            </a>
+            <a href="{{ url_for('my_videos') }}" class="nav-link">
+                <i class="fas fa-folder"></i> My Videos
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <h1><i class="fas fa-users"></i> Group Video Creator</h1>
+            <p>Upload multiple avatar images to create professional group photos and videos</p>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Information Box -->
+        <div class="info-box">
+            <h4><i class="fas fa-info-circle"></i> Group Video Features</h4>
+            <p>Create stunning group photos and videos by uploading 2-6 avatar images. Our AI will automatically compose a professional group scene with proper positioning, lighting, and background.</p>
+            
+            <div class="requirements">
+                <strong>Requirements:</strong>
+                <ul>
+                    <li>Upload 2-6 avatar images (JPG, PNG, or WEBP format)</li>
+                    <li>Each image should show a clear face/person</li>
+                    <li>Images will be automatically positioned and scaled</li>
+                    <li>Professional backgrounds and lighting will be added</li>
+                    <li>Generate both static group photos and dynamic videos</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Creation Form -->
+        <form class="create-form" method="POST" enctype="multipart/form-data">
+            <!-- Project Details -->
+            <div class="form-section">
+                <h3><i class="fas fa-edit"></i> Group Video Details</h3>
+                
+                <div class="form-group">
+                    <label for="title">Project Title *</label>
+                    <input type="text" id="title" name="title" required 
+                           placeholder="e.g., Team Photo 2025, Family Portrait, Conference Group" 
+                           value="{{ title or '' }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Scene Description</label>
+                    <textarea id="description" name="description" rows="3" 
+                              placeholder="Describe the group setting you want (e.g., 'Professional office setting', 'Outdoor park scene', 'Formal conference room')">{{ description or '' }}</textarea>
+                </div>
+            </div>
+
+            <!-- Avatar Upload Section -->
+            <div class="form-section">
+                <h3><i class="fas fa-upload"></i> Upload Avatar Images (2-6 required)</h3>
+                
+                <div class="file-upload-area" id="uploadArea">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h4>Drag & Drop Avatar Images Here</h4>
+                    <p>or click to browse files</p>
+                    <button type="button" class="file-upload-btn" onclick="document.getElementById('avatarFiles').click();">
+                        <i class="fas fa-plus"></i> Select Avatar Images
+                    </button>
+                    <input type="file" id="avatarFiles" name="avatar_files" multiple accept=".jpg,.jpeg,.png,.webp" class="file-input">
+                </div>
+
+                <div class="file-preview" id="filePreview"></div>
+                
+                <p style="margin-top: 15px; color: rgba(255,255,255,0.7); font-size: 0.9rem;">
+                    <i class="fas fa-info-circle"></i> 
+                    Supported formats: JPG, PNG, WEBP | Max file size: 10MB each | Minimum: 2 avatars | Maximum: 6 avatars
+                </p>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-btn" id="submitBtn" disabled>
+                <i class="fas fa-magic"></i> Generate Group Video
+            </button>
+        </form>
+
+        <!-- Recent Orders -->
+        {% if video_orders %}
+        <div class="create-form">
+            <h3><i class="fas fa-history"></i> Recent Video Orders</h3>
+            {% for order in video_orders[:3] %}
+            <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid {{ '#4CAF50' if order.status.value == 'completed' else '#FF9800' if order.status.value == 'in_production' else '#f44336' }};">
+                <strong>{{ order.title }}</strong>
+                <br>
+                <small>Status: {{ order.status.value.title() }} | Created: {{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                {% if order.is_ready %}
+                    <br><a href="{{ url_for('download_customer_video', order_id=order.id) }}" style="color: #4CAF50;"><i class="fas fa-download"></i> Download</a>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        let selectedFiles = [];
+        const maxFiles = 6;
+        const minFiles = 2;
+
+        // File input handling
+        document.getElementById('avatarFiles').addEventListener('change', function(e) {
+            handleFiles(e.target.files);
+        });
+
+        // Drag and drop handling
+        const uploadArea = document.getElementById('uploadArea');
+        
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            uploadArea.classList.add('drag-over');
+        });
+
+        uploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+        });
+
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        function handleFiles(files) {
+            const fileArray = Array.from(files);
+            
+            // Validate file count
+            if (selectedFiles.length + fileArray.length > maxFiles) {
+                alert(`Maximum ${maxFiles} files allowed. You can upload ${maxFiles - selectedFiles.length} more.`);
+                return;
+            }
+
+            fileArray.forEach(file => {
+                // Validate file type
+                if (!file.type.match(/image\/(jpeg|jpg|png|webp)/)) {
+                    alert(`${file.name}: Invalid file type. Please upload JPG, PNG, or WEBP images only.`);
+                    return;
+                }
+
+                // Validate file size (10MB)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert(`${file.name}: File too large. Maximum size is 10MB.`);
+                    return;
+                }
+
+                selectedFiles.push(file);
+            });
+
+            updateFilePreview();
+            updateSubmitButton();
+        }
+
+        function updateFilePreview() {
+            const preview = document.getElementById('filePreview');
+            preview.innerHTML = '';
+
+            selectedFiles.forEach((file, index) => {
+                const previewItem = document.createElement('div');
+                previewItem.className = 'preview-item';
+
+                const img = document.createElement('img');
+                img.className = 'preview-image';
+                img.src = URL.createObjectURL(file);
+
+                const info = document.createElement('div');
+                info.className = 'preview-info';
+                info.innerHTML = `
+                    <div style="font-weight: bold; margin-bottom: 5px;">Avatar ${index + 1}</div>
+                    <div style="font-size: 0.8rem; color: rgba(255,255,255,0.7);">${file.name}</div>
+                `;
+
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'remove-file';
+                removeBtn.innerHTML = '×';
+                removeBtn.onclick = () => removeFile(index);
+
+                previewItem.appendChild(img);
+                previewItem.appendChild(info);
+                previewItem.appendChild(removeBtn);
+                preview.appendChild(previewItem);
+            });
+        }
+
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            updateFilePreview();
+            updateSubmitButton();
+        }
+
+        function updateSubmitButton() {
+            const submitBtn = document.getElementById('submitBtn');
+            const fileCount = selectedFiles.length;
+            
+            if (fileCount >= minFiles && fileCount <= maxFiles) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<i class="fas fa-magic"></i> Generate Group Video (${fileCount} avatars)`;
+            } else {
+                submitBtn.disabled = true;
+                if (fileCount < minFiles) {
+                    submitBtn.innerHTML = `<i class="fas fa-upload"></i> Upload at least ${minFiles} avatars (${fileCount}/${minFiles})`;
+                } else {
+                    submitBtn.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Too many files (${fileCount}/${maxFiles})`;
+                }
+            }
+        }
+
+        // Form submission handling
+        document.querySelector('form').addEventListener('submit', function(e) {
+            if (selectedFiles.length < minFiles) {
+                e.preventDefault();
+                alert(`Please upload at least ${minFiles} avatar images.`);
+                return;
+            }
+
+            // Update file input with selected files
+            const dt = new DataTransfer();
+            selectedFiles.forEach(file => dt.items.add(file));
+            document.getElementById('avatarFiles').files = dt.files;
+
+            // Update submit button
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Group Video...';
+            document.getElementById('submitBtn').disabled = true;
+        });
+
+        // Initialize
+        updateSubmitButton();
+    </script>
+</body>
+</html>

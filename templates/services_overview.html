@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advertisement Creation – DreamFrame LLC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=20250621music">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/service-navigation.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Meta Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+       fbq('init', '1234567890123456');  // <-- Your Pixel ID
+       fbq('track', 'PageView');
+    </script>
+    <!-- End Meta Pixel Code -->
+
+    <!-- GA4 base tag -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      gtag('js', new Date());
+      // Replace with your GA4 Measurement ID
+      gtag('config', 'G-XXXXXXXXXX', { send_page_view: true });
+    </script>
+</head>
+<body>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 20000; max-width: 600px; width: 90%;">
+                {% for category, message in messages %}
+                    <div id="flashMessage" style="padding: 15px 20px; margin: 10px 0; border-radius: 8px; font-size: 16px; text-align: center; font-weight: 600; box-shadow: 0 5px 15px rgba(0,0,0,0.3); {% if category == 'success' %}background: #d4edda; color: #155724; border: 2px solid #c3e6cb;{% else %}background: #f8d7da; color: #721c24; border: 2px solid #f5c6cb;{% endif %}">
+                        {{ message }}
+                        <button onclick="this.parentElement.style.display='none'" style="background: none; border: none; color: inherit; font-size: 18px; font-weight: bold; float: right; cursor: pointer; margin-left: 10px;">&times;</button>
+                    </div>
+                {% endfor %}
+            </div>
+            <script>
+                setTimeout(function() {
+                    const flashMsg = document.getElementById('flashMessage');
+                    if (flashMsg) {
+                        flashMsg.style.opacity = '0';
+                        flashMsg.style.transition = 'opacity 0.5s ease';
+                        setTimeout(() => flashMsg.style.display = 'none', 500);
+                    }
+                }, 5000);
+            </script>
+        {% endif %}
+    {% endwith %}
+    
+    <div class="gradient-bg">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="container">
+                <div class="brand-container">
+                    <div class="brand-text">DreamFrame</div>
+                    <div class="glowing-star">★</div>
+                    <div class="brand-text">LLC</div>
+                </div>
+                
+                <!-- Language Menu (DreamFrame LLC) -->
+                <nav class="df-lang" aria-label="Language selector">
+                    <div class="df-lang-menu" role="menu">
+                        <button class="df-lang-btn" type="button" aria-haspopup="true" aria-expanded="false">
+                            <span class="df-lang-icon" aria-hidden="true">🌐</span>
+                            <span class="df-lang-label">Language</span>
+                            <svg class="df-caret" viewBox="0 0 10 6" aria-hidden="true">
+                                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" />
+                            </svg>
+                        </button>
+
+                        <ul class="df-lang-list" role="menu" aria-label="Languages">
+                            {% for code, name in language_names.items() %}
+                                <li role="none"><a role="menuitem" hreflang="{{ code }}" lang="{{ code }}" href="{{ url_for('set_language', language=code) }}">{{ name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </nav>
+
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="main-nav">
+            <div class="nav-container">
+                <div class="nav-tabs">
+                    <a href="{{ url_for('home') }}" class="nav-tab">{{ get_text('nav_video_music') }}</a>
+                    <a href="{{ url_for('website_development') }}" class="nav-tab">{{ get_text('nav_website_dev') }}</a>
+                    <a href="{{ url_for('business_consultation') }}" class="nav-tab">{{ get_text('nav_business') }}</a>
+                    <a href="{{ url_for('cybersecurity_services') }}" class="nav-tab">{{ get_text('nav_cybersecurity') }}</a>
+                    <a href="{{ url_for('agentic_ai_services') }}" class="nav-tab">{{ get_text('nav_ai_agents') }}</a>
+                    <a href="{{ url_for('services_overview') }}" class="nav-tab active">{{ get_text('nav_advertising') }}</a>
+                </div>
+            </div>
+        </nav>
+    <!-- Hero Section -->
+    <section class="hero services-overview-hero">
+        <div class="hero-content">
+            <h1>DreamFrame Services</h1>
+            <p class="tagline">Complete Digital Solutions</p>
+            <p>From AI video production to comprehensive digital marketing, we deliver professional results that transform your business.</p>
+        </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section class="content">
+        <h2>Our Service Categories</h2>
+        
+        <!-- Core Services -->
+        <div class="service-category">
+            <h3>Core Services</h3>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h4><a href="/services/video-advertising">Creative Video Advertisement Production</a></h4>
+                    <p>Professional promotional videos using cutting-edge AI technology, designed specifically for marketing campaigns across all digital platforms</p>
+                    <span class="price-range">CONTACT FOR PRICING</span>
+                </div>
+                <div class="service-card">
+                    <h4><a href="/services/digital-marketing">Strategic Digital Marketing Campaigns</a></h4>
+                    <p>Comprehensive marketing strategy including social media management, Google Ads optimization, and content creation with performance tracking</p>
+                    <span class="price-range">CONTACT FOR PRICING</span>
+                </div>
+                <div class="service-card">
+                    <h4><a href="/services/brand-development">Brand Development & Creative Strategy</a></h4>
+                    <p>Complete brand identity development with creative marketing strategies, visual storytelling, and audience engagement optimization</p>
+                    <span class="price-range">CONTACT FOR PRICING</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technology Services -->
+        <div class="service-category">
+            <h3>Technology & Development</h3>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h4><a href="/services/custom-software">Custom Software</a></h4>
+                    <p>Personalized software solutions tailored to your needs</p>
+                    <span class="price-range">CONTACT FOR PRICING</span>
+                </div>
+                <div class="service-card">
+                    <h4><a href="/services/ecommerce-solutions">eCommerce Solutions</a></h4>
+                    <p>Online stores and payment systems</p>
+                    <span class="price-range">CONTACT FOR PRICING</span>
+                </div>
+                <div class="service-card">
+                    <h4><a href="/services/mobile-app-development">Mobile App Development</a></h4>
+                    <p>iOS and Android applications</p>
+                    <span class="price-range">CONTACT FOR PRICING</span>
+                </div>
+                <div class="service-card">
+                    <h4><a href="/services/ai-agent-development">AI Agent Development</a></h4>
+                    <p>Intelligent AI agents for workforce automation</p>
+                    <span class="price-range">CONTACT FOR PRICING</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Marketing Services -->
+        <div class="service-category">
+            <h3>Marketing & Branding</h3>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h4><a href="/services/digital-marketing">Digital Marketing</a></h4>
+                    <p>SEM, SEO, SMM and PPC campaigns</p>
+                    <span class="price-range">CONTACT FOR PRICING</span>
+                </div>
+                <div class="service-card">
+                    <h4><a href="/services/branding-identity">Branding & Identity</a></h4>
+                    <p>Complete brand development and strategy</p>
+                    <span class="price-range">CONTACT FOR PRICING</span>
+                </div>
+                <div class="service-card">
+                    <h4><a href="/services/logo-design">Logo Design</a></h4>
+                    <p>Professional logo and visual identity design</p>
+                    <span class="price-range">CONTACT FOR PRICING</span>
+                </div>
+                <div class="service-card">
+                    <h4><a href="/services/marketing-strategy">Marketing Strategy</a></h4>
+                    <p>Strategic marketing planning and execution</p>
+                    <span class="price-range">CONTACT FOR PRICING</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Creative Services -->
+        <div class="service-category">
+            <h3>Creative & Production</h3>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h4><a href="/services/photography-video-audio">Photography, Video & Audio</a></h4>
+                    <p>Professional media production services</p>
+                    <span class="price-range">CONTACT FOR PRICING</span>
+                </div>
+                <div class="service-card">
+                    <h4><a href="/services/print-packaging-design">Print & Packaging Design</a></h4>
+                    <p>Physical marketing materials and packaging</p>
+                    <span class="price-range">CONTACT FOR PRICING</span>
+                </div>
+                <div class="service-card">
+                    <h4><a href="/services/outdoor-trade-show">Outdoor & Trade Show</a></h4>
+                    <p>Event marketing and promotional materials</p>
+                    <span class="price-range">CONTACT FOR PRICING</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Creative Marketing & Advertising -->
+        <div class="service-category">
+            <h3>Creative Marketing & Advertising</h3>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h4><a href="/services/digital-marketing">Digital Marketing Campaigns</a></h4>
+                    <p>AI-powered video ads, Google Ads management, and social media campaigns designed to showcase your AI video content and drive customer acquisition</p>
+                    <span class="price-range">CONTACT FOR PRICING</span>
+                </div>
+                <div class="service-card">
+                    <h4><a href="/services/video-advertising">Video Advertisement Creation</a></h4>
+                    <p>Professional promotional videos using our VEO 3 Fast technology - create stunning video ads in under 90 seconds for all your marketing campaigns</p>
+                    <span class="price-range">CONTACT FOR PRICING</span>
+                </div>
+                <div class="service-card">
+                    <h4><a href="/services/social-media-marketing">Social Media Marketing</a></h4>
+                    <p>Platform-optimized video content for Instagram Stories, TikTok, YouTube Shorts, and Facebook with automated posting and engagement tracking</p>
+                    <span class="price-range">CONTACT FOR PRICING</span>
+                </div>
+                <div class="service-card">
+                    <h4><a href="/services/brand-video-strategy">Brand Video Strategy</a></h4>
+                    <p>Comprehensive video marketing strategy development including content calendars, audience targeting, and ROI optimization using AI-generated video content</p>
+                    <span class="price-range">CONTACT FOR PRICING</span>
+                </div>
+                <div class="service-card">
+                    <h4><a href="/services/media-planning-buying">Media Planning & Buying</a></h4>
+                    <p>Strategic ad placement across Google, Facebook, YouTube, and industry platforms with performance tracking and budget optimization for video content promotion</p>
+                    <span class="price-range">CONTACT FOR PRICING</span>
+                </div>
+                <div class="service-card">
+                    <h4><a href="/services/conversion-optimization">Conversion Optimization</a></h4>
+                    <p>Landing page optimization, A/B testing video content, and sales funnel improvement to maximize your video marketing campaign results and customer conversion</p>
+                    <span class="price-range">CONTACT FOR PRICING</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h3>Ready to Get Started?</h3>
+            <p>Contact us to discuss your project requirements and get a custom quote.</p>
+            <a href="/contact" class="btn primary">Contact Us Today</a>
+        </div>
+    </section>
+
+    <style>
+    .services-overview-hero {
+        background: linear-gradient(135deg, #ff6b35, #00ffff);
+        color: white;
+        text-align: center;
+        padding: 4rem 2rem;
+    }
+
+    .service-category {
+        margin: 3rem 0;
+    }
+
+    .service-category h3 {
+        color: #ff6b35;
+        border-bottom: 2px solid #00ffff;
+        padding-bottom: 0.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .service-card {
+        background: white;
+        border: 2px solid #f0f0f0;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        border-color: #ff6b35;
+    }
+
+    .service-card h4 {
+        margin: 0 0 1rem 0;
+        color: #333;
+    }
+
+    .service-card h4 a {
+        color: #ff6b35;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .service-card h4 a:hover {
+        color: #00ffff;
+    }
+
+    .service-card p {
+        color: #666;
+        margin-bottom: 1rem;
+        line-height: 1.5;
+    }
+
+    .price-range {
+        display: inline-block;
+        background: linear-gradient(135deg, #ff6b35, #00ffff);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: bold;
+    }
+
+    .cta-section {
+        text-align: center;
+        margin: 4rem 0;
+        padding: 3rem;
+        background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(0, 255, 255, 0.1));
+        border-radius: 20px;
+    }
+
+    .cta-section h3 {
+        color: #ff6b35;
+        margin-bottom: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .services-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .services-overview-hero {
+            padding: 2rem 1rem;
+        }
+    }
+    </style>
+    </div>
+</body>
+</html>

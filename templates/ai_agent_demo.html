@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Demo - DreamFrame LLC</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        .demo-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .demo-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .email-demo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .input-section, .output-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .input-section h3, .output-section h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        textarea, input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-family: inherit;
+        }
+        
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .response-box {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            min-height: 100px;
+            white-space: pre-wrap;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.5;
+        }
+        
+        .loading {
+            color: #667eea;
+            font-style: italic;
+        }
+        
+        .quick-tests {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .quick-test-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            padding: 10px 15px;
+            font-size: 14px;
+        }
+        
+        .analytics-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .email-demo {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 AI Agent Demo - DreamFrame LLC</h1>
+        
+        <div class="demo-section">
+            <h2>Email Processing & AI Response Generation</h2>
+            <p>Test how our AI agents automatically classify customer emails and generate personalized responses.</p>
+            
+            <div class="email-demo">
+                <div class="input-section">
+                    <h3>Customer Email</h3>
+                    <input type="text" id="emailSubject" placeholder="Email Subject" value="Wedding Video Quote">
+                    <input type="email" id="emailFrom" placeholder="Customer Email" value="john@example.com">
+                    <textarea id="emailContent" placeholder="Email content...">Hi, I need a wedding highlight video for my wedding next month. Can you provide a quote? My name is John Smith and the wedding is on July 15th. I'm looking for something professional that captures the key moments.</textarea>
+                    <button onclick="processEmail()">Process Email with AI</button>
+                </div>
+                
+                <div class="output-section">
+                    <h3>AI-Generated Response</h3>
+                    <div id="aiResponse" class="response-box">AI response will appear here...</div>
+                </div>
+            </div>
+            
+            <div class="quick-tests">
+                <button class="quick-test-btn" onclick="loadSampleEmail('wedding')">Wedding Inquiry</button>
+                <button class="quick-test-btn" onclick="loadSampleEmail('pricing')">Pricing Request</button>
+                <button class="quick-test-btn" onclick="loadSampleEmail('videogram')">VideoGram Order</button>
+                <button class="quick-test-btn" onclick="loadSampleEmail('status')">Order Status</button>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>Intent Classification</h2>
+            <p>See how AI classifies different types of customer inquiries.</p>
+            
+            <div class="email-demo">
+                <div class="input-section">
+                    <h3>Email to Classify</h3>
+                    <textarea id="classifyContent" placeholder="Enter email content to classify...">I'm interested in your social media video packages. What's the pricing and turnaround time?</textarea>
+                    <button onclick="classifyIntent()">Classify Intent</button>
+                </div>
+                
+                <div class="output-section">
+                    <h3>Classification Result</h3>
+                    <div id="classificationResult" class="response-box">Classification will appear here...</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>Order Analytics</h2>
+            <p>AI-generated business insights and analytics.</p>
+            <button onclick="getAnalytics()">Generate AI Analytics</button>
+            <div id="analyticsResult" class="analytics-section response-box" style="margin-top: 20px;">Analytics will appear here...</div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>Follow-up Email Generation</h2>
+            <p>Automatic follow-up emails for pending orders and customer retention.</p>
+            <button onclick="getFollowUps()">Generate Follow-up Emails</button>
+            <div id="followUpResult" class="analytics-section response-box" style="margin-top: 20px;">Follow-up emails will appear here...</div>
+        </div>
+    </div>
+
+    <script>
+        const sampleEmails = {
+            wedding: {
+                subject: "Wedding Video Quote Request",
+                from: "sarah.johnson@email.com",
+                content: "Hi! I'm getting married on August 20th and would love a highlight video. We're having a garden ceremony with 100 guests. Can you provide pricing and availability? We'd like something romantic and cinematic. Thanks! - Sarah"
+            },
+            pricing: {
+                subject: "Video Production Services Pricing",
+                from: "marketing@startup.com",
+                content: "Hello, we're a tech startup looking for video content for our social media channels. We need 4-5 short videos per month showcasing our product. What are your rates for ongoing social media content creation?"
+            },
+            videogram: {
+                subject: "VideoGram for Anniversary",
+                from: "mike.davis@gmail.com",
+                content: "I'd like to order a VideoGram for my wife's 50th birthday. I have about 20 photos from our travels together. Can this be ready in 3 days? How much does it cost?"
+            },
+            status: {
+                subject: "Order Status Check - ORD789123",
+                from: "customer@example.com",
+                content: "Hi, I placed order #ORD789123 last week for a wedding video. Just wanted to check on the progress. When should I expect the first draft? Thanks!"
+            }
+        };
+
+        function loadSampleEmail(type) {
+            const sample = sampleEmails[type];
+            document.getElementById('emailSubject').value = sample.subject;
+            document.getElementById('emailFrom').value = sample.from;
+            document.getElementById('emailContent').value = sample.content;
+        }
+
+        async function processEmail() {
+            const subject = document.getElementById('emailSubject').value;
+            const fromEmail = document.getElementById('emailFrom').value;
+            const content = document.getElementById('emailContent').value;
+            
+            const responseDiv = document.getElementById('aiResponse');
+            responseDiv.textContent = 'Processing email with AI...';
+            responseDiv.className = 'response-box loading';
+            
+            try {
+                const response = await fetch('/ai/process-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        from_email: fromEmail,
+                        subject: subject,
+                        content: content
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.error) {
+                    responseDiv.textContent = `Error: ${result.error}`;
+                    responseDiv.className = 'response-box';
+                } else {
+                    responseDiv.textContent = `Status: ${result.status}\nAction: ${result.action}\n\nThis email would trigger: ${result.action === 'order_created' ? 'Automatic order creation and payment link' : 'Personalized AI response'}`;
+                    responseDiv.className = 'response-box';
+                }
+            } catch (error) {
+                responseDiv.textContent = `Network error: ${error.message}`;
+                responseDiv.className = 'response-box';
+            }
+        }
+
+        async function classifyIntent() {
+            const content = document.getElementById('classifyContent').value;
+            const resultDiv = document.getElementById('classificationResult');
+            
+            resultDiv.textContent = 'Classifying intent...';
+            resultDiv.className = 'response-box loading';
+            
+            try {
+                const response = await fetch('/ai/classify-intent', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        content: content,
+                        subject: ''
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.error) {
+                    resultDiv.textContent = `Error: ${result.error}`;
+                } else {
+                    resultDiv.textContent = `Intent: ${result.intent_type}\nService Type: ${result.service_type || 'Not specified'}\nCustomer: ${result.customer_name || 'Not detected'}\nEmail: ${result.customer_email || 'Not detected'}\nUrgency: ${result.urgency}\n\nRequirements: ${JSON.stringify(result.requirements, null, 2)}\nExtracted Info: ${JSON.stringify(result.extracted_info, null, 2)}`;
+                }
+                resultDiv.className = 'response-box';
+            } catch (error) {
+                resultDiv.textContent = `Network error: ${error.message}`;
+                resultDiv.className = 'response-box';
+            }
+        }
+
+        async function getAnalytics() {
+            const resultDiv = document.getElementById('analyticsResult');
+            resultDiv.textContent = 'Generating AI analytics...';
+            resultDiv.className = 'response-box loading';
+            
+            try {
+                const response = await fetch('/ai/order-analytics');
+                const result = await response.json();
+                
+                if (result.error) {
+                    resultDiv.textContent = `Error: ${result.error}`;
+                } else {
+                    resultDiv.textContent = JSON.stringify(result, null, 2);
+                }
+                resultDiv.className = 'response-box';
+            } catch (error) {
+                resultDiv.textContent = `Network error: ${error.message}`;
+                resultDiv.className = 'response-box';
+            }
+        }
+
+        async function getFollowUps() {
+            const resultDiv = document.getElementById('followUpResult');
+            resultDiv.textContent = 'Generating follow-up emails...';
+            resultDiv.className = 'response-box loading';
+            
+            try {
+                const response = await fetch('/ai/follow-ups');
+                const result = await response.json();
+                
+                if (result.error) {
+                    resultDiv.textContent = `Error: ${result.error}`;
+                } else {
+                    resultDiv.textContent = `Found ${result.count} follow-up opportunities:\n\n${JSON.stringify(result.follow_ups, null, 2)}`;
+                }
+                resultDiv.className = 'response-box';
+            } catch (error) {
+                resultDiv.textContent = `Network error: ${error.message}`;
+                resultDiv.className = 'response-box';
+            }
+        }
+    </script>
+</body>
+</html>

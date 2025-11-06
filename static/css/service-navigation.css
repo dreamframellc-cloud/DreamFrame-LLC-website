@@ -1,0 +1,216 @@
+/* Main Navigation Tabs - Fixed Position Override */
+.main-nav {
+    position: fixed !important;
+    top: 100px !important; /* Below the main header */
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 9999 !important;
+    background: rgba(26, 26, 46, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    border-bottom: 1px solid rgba(255, 107, 53, 0.2) !important;
+    padding: 15px 0 !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
+}
+
+.nav-container {
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 0 20px !important;
+}
+
+.nav-tabs {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    grid-template-rows: repeat(2, 1fr) !important;
+    gap: 10px !important;
+}
+
+.nav-tab {
+    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%) !important;
+    color: white !important;
+    padding: 12px 16px !important;
+    border-radius: 8px !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+    text-align: center !important;
+    transition: all 0.3s ease !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+}
+
+.nav-tab:hover {
+    background: linear-gradient(135deg, #f7931e 0%, #ff6b35 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3) !important;
+    color: white !important;
+    text-decoration: none !important;
+}
+
+.nav-tab:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.nav-tab:hover:before {
+    left: 100%;
+}
+
+/* Ensure main content areas have proper spacing */
+.main-content, .hero-home, section {
+    margin-top: 20px;
+}
+
+/* Video containers should not be affected by fixed positioning */
+.video-container, .promo-video-container, #heroVideo {
+    position: relative;
+    z-index: 1;
+}
+
+/* Mobile responsive - Hamburger Menu System */
+@media (max-width: 768px) {
+    .main-nav {
+        position: relative !important; /* Remove fixed positioning on mobile */
+        top: auto !important;
+        background: rgba(26, 26, 46, 0.98) !important;
+        padding: 8px 0 !important;
+        border-top: 1px solid rgba(255, 107, 53, 0.3);
+    }
+    
+    .nav-container {
+        position: relative;
+        padding: 0 15px !important;
+    }
+    
+    /* Hamburger Menu Button */
+    .mobile-nav-toggle {
+        display: block;
+        background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .mobile-nav-toggle:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .mobile-nav-toggle:hover:before {
+        left: 100%;
+    }
+    
+    .mobile-nav-toggle:hover {
+        background: linear-gradient(135deg, #f7931e 0%, #ff6b35 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+    }
+    
+    /* Hidden by default on mobile */
+    .nav-tabs {
+        display: none !important;
+        grid-template-columns: 1fr !important;
+        grid-template-rows: repeat(6, auto) !important;
+        gap: 8px !important;
+        margin-top: 15px;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.4s ease;
+    }
+    
+    /* Show when toggled */
+    .nav-tabs.mobile-open {
+        display: grid !important;
+        max-height: 500px;
+        animation: slideDown 0.4s ease-out;
+    }
+    
+    .nav-tab {
+        padding: 14px 16px !important;
+        font-size: 0.9rem !important;
+        margin-bottom: 5px;
+        opacity: 0;
+        transform: translateX(-20px);
+        animation: slideInTab 0.3s ease-out forwards;
+    }
+    
+    .nav-tabs.mobile-open .nav-tab:nth-child(1) { animation-delay: 0.1s; }
+    .nav-tabs.mobile-open .nav-tab:nth-child(2) { animation-delay: 0.15s; }
+    .nav-tabs.mobile-open .nav-tab:nth-child(3) { animation-delay: 0.2s; }
+    .nav-tabs.mobile-open .nav-tab:nth-child(4) { animation-delay: 0.25s; }
+    .nav-tabs.mobile-open .nav-tab:nth-child(5) { animation-delay: 0.3s; }
+    .nav-tabs.mobile-open .nav-tab:nth-child(6) { animation-delay: 0.35s; }
+    
+    /* Remove excessive body padding */
+    body {
+        padding-top: 0 !important;
+    }
+    
+    .main-content, .hero-home, section {
+        margin-top: 15px;
+    }
+}
+
+/* Hide hamburger menu on desktop */
+@media (min-width: 769px) {
+    .mobile-nav-toggle {
+        display: none;
+    }
+}
+
+/* Slide down animation for mobile menu */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        max-height: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        max-height: 500px;
+        transform: translateY(0);
+    }
+}
+
+/* Slide in animation for individual tabs */
+@keyframes slideInTab {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Adjust language selector to avoid overlap */
+.df-lang {
+    z-index: 10001; /* Higher than service nav */
+}

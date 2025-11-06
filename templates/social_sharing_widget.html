@@ -1,0 +1,349 @@
+<!-- Social Media Sharing Widget -->
+<div class="social-sharing-widget" id="socialSharingWidget">
+    <style>
+        .social-sharing-widget {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 2px solid #00ffff;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .widget-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .widget-title {
+            color: #00ffff;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .generate-previews-btn {
+            background: linear-gradient(135deg, #00ffff, #00cccc);
+            color: black;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .generate-previews-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.4);
+        }
+        
+        .custom-text-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .custom-text-section h4 {
+            color: white;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .custom-input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #444;
+            border-radius: 8px;
+            background: #333;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+        
+        .custom-input:focus {
+            outline: none;
+            border-color: #00ffff;
+            box-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+        }
+        
+        .platform-previews {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .platform-preview {
+            background: #333;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .platform-preview:hover {
+            background: #404040;
+            transform: translateY(-2px);
+        }
+        
+        .platform-name {
+            color: #00ffff;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            text-transform: capitalize;
+        }
+        
+        .preview-image {
+            width: 100%;
+            max-width: 150px;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            border: 1px solid #444;
+        }
+        
+        .platform-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .platform-btn {
+            padding: 0.3rem 0.8rem;
+            border: 1px solid #00ffff;
+            background: transparent;
+            color: #00ffff;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .platform-btn:hover {
+            background: #00ffff;
+            color: black;
+        }
+        
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            color: #00ffff;
+            padding: 2rem;
+        }
+        
+        .error-message {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff0000;
+            color: #ff6666;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            display: none;
+        }
+        
+        .success-message {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+            color: #66ff66;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .platform-previews {
+                grid-template-columns: 1fr;
+            }
+            
+            .widget-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+        }
+    </style>
+    
+    <div class="widget-header">
+        <h3 class="widget-title">Social Media Sharing</h3>
+        <button class="generate-previews-btn" onclick="generatePreviews()">
+            🚀 Generate Previews
+        </button>
+    </div>
+    
+    <div class="custom-text-section">
+        <h4>Customize Your Message</h4>
+        <input type="text" class="custom-input" id="customTitle" 
+               placeholder="Custom title (optional)" 
+               value="{{ video_info.title if video_info else '' }}">
+        <textarea class="custom-input" id="customDescription" 
+                  placeholder="Custom description (optional)" 
+                  rows="2">{{ video_info.description if video_info else '' }}</textarea>
+    </div>
+    
+    <div class="loading-spinner" id="loadingSpinner">
+        <p>🔄 Generating optimized previews for all platforms...</p>
+    </div>
+    
+    <div class="error-message" id="errorMessage"></div>
+    <div class="success-message" id="successMessage"></div>
+    
+    <div class="platform-previews" id="platformPreviews">
+        <!-- Platform previews will be populated here -->
+    </div>
+</div>
+
+<script>
+let currentVideoId = '{{ video_info.id if video_info else "" }}';
+let generatedPreviews = {};
+
+function generatePreviews() {
+    if (!currentVideoId) {
+        showError('No video selected');
+        return;
+    }
+    
+    const customTitle = document.getElementById('customTitle').value;
+    const customDescription = document.getElementById('customDescription').value;
+    
+    const customText = {
+        title: customTitle,
+        description: customDescription
+    };
+    
+    showLoading(true);
+    hideMessages();
+    
+    // Generate sharing kit for all platforms
+    fetch('/social/generate-sharing-kit', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            video_id: currentVideoId,
+            custom_text: customText
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        showLoading(false);
+        
+        if (data.success) {
+            generatedPreviews = data.sharing_kit.previews;
+            displayPreviews(data.sharing_kit.previews);
+            showSuccess(`Generated previews for ${data.sharing_kit.total_platforms} platforms!`);
+        } else {
+            showError(data.error || 'Failed to generate previews');
+        }
+    })
+    .catch(error => {
+        showLoading(false);
+        showError('Network error: ' + error.message);
+        console.error('Error:', error);
+    });
+}
+
+function displayPreviews(previews) {
+    const container = document.getElementById('platformPreviews');
+    container.innerHTML = '';
+    
+    for (const [platform, preview] of Object.entries(previews)) {
+        const platformDiv = document.createElement('div');
+        platformDiv.className = 'platform-preview';
+        
+        platformDiv.innerHTML = `
+            <div class="platform-name">${platform}</div>
+            <img src="${preview.preview_url}" alt="${platform} preview" class="preview-image">
+            <div class="platform-actions">
+                <button class="platform-btn" onclick="shareOnPlatform('${platform}', '${preview.sharing_urls}')">
+                    Share
+                </button>
+                <button class="platform-btn" onclick="downloadPreview('${preview.preview_url}', '${platform}')">
+                    Download
+                </button>
+                <button class="platform-btn" onclick="copyLink('${preview.sharing_urls}')">
+                    Copy Link
+                </button>
+            </div>
+        `;
+        
+        container.appendChild(platformDiv);
+    }
+}
+
+function shareOnPlatform(platform, shareUrl) {
+    if (shareUrl && shareUrl !== 'undefined') {
+        window.open(shareUrl, '_blank', 'width=600,height=400');
+    } else {
+        // Fallback sharing
+        const baseUrl = window.location.origin;
+        const videoUrl = `${baseUrl}/gallery?video=${currentVideoId}`;
+        
+        const shareUrls = {
+            'facebook': `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(videoUrl)}`,
+            'twitter': `https://twitter.com/intent/tweet?url=${encodeURIComponent(videoUrl)}&text=${encodeURIComponent('Check out this amazing video from DreamFrame!')}`,
+            'linkedin': `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(videoUrl)}`,
+            'whatsapp': `https://wa.me/?text=${encodeURIComponent('Check out this video: ' + videoUrl)}`,
+            'instagram': videoUrl // Instagram doesn't support direct URL sharing
+        };
+        
+        if (platform === 'instagram') {
+            copyLink(videoUrl);
+            showSuccess('Link copied! You can paste it in Instagram.');
+        } else {
+            window.open(shareUrls[platform] || videoUrl, '_blank', 'width=600,height=400');
+        }
+    }
+}
+
+function downloadPreview(previewUrl, platform) {
+    const link = document.createElement('a');
+    link.href = previewUrl;
+    link.download = `${currentVideoId}_${platform}_preview.jpg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showSuccess(`${platform} preview downloaded!`);
+}
+
+function copyLink(url) {
+    navigator.clipboard.writeText(url).then(function() {
+        showSuccess('Link copied to clipboard!');
+    }, function(err) {
+        showError('Failed to copy link');
+    });
+}
+
+function showLoading(show) {
+    document.getElementById('loadingSpinner').style.display = show ? 'block' : 'none';
+}
+
+function showError(message) {
+    const errorDiv = document.getElementById('errorMessage');
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+}
+
+function showSuccess(message) {
+    const successDiv = document.getElementById('successMessage');
+    successDiv.textContent = message;
+    successDiv.style.display = 'block';
+    
+    // Auto-hide after 3 seconds
+    setTimeout(() => {
+        successDiv.style.display = 'none';
+    }, 3000);
+}
+
+function hideMessages() {
+    document.getElementById('errorMessage').style.display = 'none';
+    document.getElementById('successMessage').style.display = 'none';
+}
+
+// Initialize widget
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Social sharing widget initialized for video:', currentVideoId);
+});
+</script>

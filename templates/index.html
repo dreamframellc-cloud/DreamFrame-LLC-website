@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=5.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>DreamFrame - MemoryMotion Video Gallery</title>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Cinzel:wght@400;600&display=swap" as="style">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=20250620norects">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/service-navigation.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'"">
+    
+    <!-- Tracking Scripts -->
+    {% include 'tracking_scripts.html' %}
+    
+    <!-- Floating Chatbot -->
+    <script src="{{ url_for('static', filename='js/floating-chatbot.js') }}"></script>
+    
+    <style>
+        /* Apply Trajan-style font immediately */
+        body, *, h1, h2, h3, h4, h5, h6, p, div, span, a, button, input, textarea, label {
+            font-family: 'Cinzel', 'Trajan Pro', serif !important;
+        }
+        .brand-text {
+            font-family: 'Orbitron', 'Arial Black', 'Impact', sans-serif !important;
+            font-weight: 900 !important;
+        }
+        .brand-suffix {
+            font-family: 'Orbitron', 'Arial Black', 'Impact', sans-serif !important;
+            font-weight: 700 !important;
+        }
+        
+        /* Force star animation */
+        .glowing-star {
+            display: inline-block !important;
+            animation: star-spin-pulsate 8s linear infinite !important;
+            transform-origin: center center !important;
+        }
+        
+        @keyframes star-spin-pulsate {
+            0% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(90deg) scale(1.2); }
+            50% { transform: rotate(180deg) scale(1); }
+            75% { transform: rotate(270deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        /* Pay Now Section Enhancements */
+        .deposit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255, 107, 53, 0.2);
+            border-color: rgba(255, 107, 53, 0.3);
+        }
+        
+        .pay-now-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .pay-now-section h2 {
+                font-size: 2rem !important;
+            }
+            .pay-now-section p {
+                font-size: 1rem !important;
+            }
+            .deposit-options {
+                grid-template-columns: 1fr !important;
+                gap: 20px !important;
+            }
+            .trust-badges > div {
+                flex-direction: column !important;
+                gap: 15px !important;
+            }
+        }
+    </style>
+    <script src="{{ url_for('static', filename='js/enhanced-ui-clean.js') }}" defer></script>
+</head>
+<body>
+    <!-- DreamFrame Header -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="brand-container">
+                <a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 10px;">
+                    <div class="brand-text">DREAM</div>
+                    <div class="glowing-star">★</div>
+                    <div class="brand-text">FRAME</div>
+                    <div class="brand-suffix">LLC</div>
+                </a>
+            </div>
+            <p class="brand-tagline">Transform Photos into Beautiful Videos</p>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Error Message Display -->
+        {% if error %}
+        <div class="error-message">
+
+            <span>{{ error }}</span>
+        </div>
+        {% endif %}
+
+        <!-- Pay Now Deposit Section -->
+        <section class="pay-now-section" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 60px 0; margin-bottom: 40px; position: relative; z-index: 1; width: 100%; display: block;">
+            <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+                <div class="pay-now-header" style="text-align: center; margin-bottom: 40px;">
+                    <h2 style="color: #fff; font-size: 2.5rem; margin-bottom: 15px; font-weight: 700;">
+                        <svg class="spinning-star star-orange" style="margin-right: 15px; width: 1.2em; height: 1.2em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        Secure Your Project Today
+                    </h2>
+                    <p style="color: #b8c2cc; font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+                        Start your video production journey with a secure deposit. Quick, easy, and fully protected by Stripe.
+                    </p>
+                </div>
+                
+                <div class="deposit-options" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 900px; margin: 0 auto;">
+                    <!-- Project Deposit -->
+                    <div class="deposit-card" style="background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); border-radius: 15px; padding: 30px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; transition: all 0.3s ease;">
+                        <div class="deposit-icon" style="margin-bottom: 20px;">
+                            <svg class="fast-spin-star star-cyan" style="width: 3rem; height: 3rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <h3 style="color: #fff; font-size: 1.5rem; margin-bottom: 15px;">Project Deposit</h3>
+                        <p style="color: #b8c2cc; margin-bottom: 25px; line-height: 1.6;">
+                            Secure your video production project with a $250 deposit. Reserve your spot in our production queue.
+                        </p>
+                        <div class="price" style="margin-bottom: 25px;">
+                            <span style="color: #ff6b35; font-size: 2rem; font-weight: 700;">$250</span>
+                            <span style="color: #b8c2cc; font-size: 1rem;">.00 USD</span>
+                        </div>
+                        <form action="{{ url_for('create_checkout_session') }}" method="POST" style="margin: 0;" onsubmit="this.action += '?v=' + Date.now(); this.querySelector('[name=cache_bust]').value = Date.now();">
+                            <input type="hidden" name="service_type" value="project_deposit">
+                            <input type="hidden" name="amount" value="25000">
+                            <input type="hidden" name="description" value="Video Production Project Deposit">
+                            <input type="hidden" name="cache_bust" value="">
+                            <button type="submit" class="pay-now-btn" style="background: linear-gradient(135deg, #ff6b35 0%, #ff8e53 100%); color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; width: 100%; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;">
+                                <svg class="twinkling-star star-orange" style="margin-right: 10px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                Pay Deposit Now
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Consultation Deposit -->
+                    <div class="deposit-card" style="background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); border-radius: 15px; padding: 30px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; transition: all 0.3s ease;">
+                        <div class="deposit-icon" style="margin-bottom: 20px;">
+                            <svg class="fast-spin-star star-cyan" style="width: 3rem; height: 3rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <h3 style="color: #fff; font-size: 1.5rem; margin-bottom: 15px;">Consultation Deposit</h3>
+                        <p style="color: #b8c2cc; margin-bottom: 25px; line-height: 1.6;">
+                            Schedule your personalized consultation with our video experts. Applied to your final project cost.
+                        </p>
+                        <div class="price" style="margin-bottom: 25px;">
+                            <span style="color: #ff6b35; font-size: 2rem; font-weight: 700;">$50</span>
+                            <span style="color: #b8c2cc; font-size: 1rem;">.00 USD</span>
+                        </div>
+                        <form action="{{ url_for('create_checkout_session') }}" method="POST" style="margin: 0;" onsubmit="this.action += '?v=' + Date.now(); this.querySelector('[name=cache_bust]').value = Date.now();">
+                            <input type="hidden" name="service_type" value="consultation_deposit">
+                            <input type="hidden" name="amount" value="5000">
+                            <input type="hidden" name="description" value="Video Consultation Deposit">
+                            <input type="hidden" name="cache_bust" value="">
+                            <button type="submit" class="pay-now-btn" style="background: linear-gradient(135deg, #00ffff 0%, #40e0d0 100%); color: #1a1a2e; border: none; padding: 15px 30px; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; width: 100%; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;">
+                                <svg class="twinkling-star star-cyan" style="margin-right: 10px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                Book Consultation
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Security Trust Badges -->
+                <div class="trust-badges" style="text-align: center; margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 30px; flex-wrap: wrap;">
+                        <div class="trust-badge" style="display: flex; align-items: center; gap: 10px;">
+                            <svg class="spinning-star star-green" style="width: 1.5rem; height: 1.5rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            <span style="color: #b8c2cc; font-size: 0.95rem;">SSL Secured</span>
+                        </div>
+                        <div class="trust-badge" style="display: flex; align-items: center; gap: 10px;">
+                            <svg class="spinning-star star-blue" style="width: 1.5rem; height: 1.5rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            <span style="color: #b8c2cc; font-size: 0.95rem;">Stripe Protected</span>
+                        </div>
+                        <div class="trust-badge" style="display: flex; align-items: center; gap: 10px;">
+                            <svg class="spinning-star star-orange" style="width: 1.5rem; height: 1.5rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            <span style="color: #b8c2cc; font-size: 0.95rem;">All Cards Accepted</span>
+                        </div>
+                    </div>
+                    <p style="color: #95a5a6; font-size: 0.85rem; margin-top: 15px; font-style: italic;">
+                        Your payment information is processed securely. We do not store credit card details.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Gallery Section -->
+        <section class="video-gallery">
+            <div class="container">
+                <div class="gallery-header">
+                    <h2>Video Gallery</h2>
+                    <p class="gallery-description">Explore our collection of memorable moments</p>
+                    
+                    <!-- Tag Search -->
+                    <div class="search-section">
+                        <div class="search-container">
+                            <input type="text" id="tagSearch" placeholder="Search by tags" class="tag-search-input">
+                            <button id="clearSearchBtn" class="clear-search-btn" onclick="clearSearch()" title="Clear search">
+
+                            </button>
+                        </div>
+                        <div id="searchResults" class="search-results" style="display: none;"></div>
+                    </div>
+                    
+                    <!-- Category Filter Section -->
+                    <div class="category-filter-section" style="margin-bottom: 30px;">
+                        <div class="category-filters">
+                            <a href="{{ url_for('index', category='all') }}" 
+                               class="category-filter {% if current_category == 'all' %}active{% endif %}">
+                                All Videos
+                            </a>
+                            {% for category_key, category_name in categories.items() %}
+                            <a href="{{ url_for('index', category=category_key) }}" 
+                               class="category-filter {% if current_category == category_key %}active{% endif %}">
+                                {{ category_name }}
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 30px; display: flex; gap: 15px; flex-wrap: wrap;">
+                        <a href="{{ url_for('upload') }}" style="background: #00ffff; color: black; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; display: inline-block;">
+                            Upload Your Videos
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Video Gallery using new clean structure -->
+                <div class="video-gallery">
+                    {% for video in videos %}
+                    <div class="video-card" 
+                         data-src="/static/videos/{{ video.video }}" 
+                         data-title="{{ video.title }}"
+                         data-tags="{{ (video.tags | join(',')) if video.tags else '' }}"
+                         data-tooltip="Click to play {{ video.title }}">
+                        <div class="video-thumbnail-container">
+                            <img src="{{ url_for('serve_thumbnail', filename=video.thumbnail) }}" 
+                                 alt="{{ video.title }}" 
+                                 class="video-thumbnail"
+                                 loading="lazy">
+                            <div class="play-overlay">
+                            </div>
+                            <div class="video-duration" data-tooltip="Video duration">{{ video.duration }}</div>
+                            <div class="loading-spinner" style="display: none;">
+                            </div>
+                            <div class="video-actions-overlay">
+                                <button class="action-btn favorite-btn" data-tooltip="Add to favorites" onclick="event.stopPropagation(); toggleFavorite('{{ video.id }}')">
+                                </button>
+                                <button class="action-btn share-btn" data-tooltip="Share video" onclick="event.stopPropagation(); shareVideo('{{ video.id }}')">
+                                </button>
+                            </div>
+                            <!-- Touch-friendly click area -->
+                            <div class="touch-target"></div>
+                        </div>
+                        <div class="video-info">
+                            <h3 class="video-title">{{ video.title }}</h3>
+                            <p class="video-description">{{ video.description }}</p>
+                            <div class="video-meta">
+                                <span class="view-count" data-tooltip="Views">
+                                    <span id="views-{{ video.id }}">0</span>
+                                </span>
+                                <span class="upload-date" data-tooltip="Upload date">
+                                    Recent
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% if not videos %}
+                <div class="empty-state">
+
+                    <h3>No Videos Available</h3>
+                    <p>The video gallery is currently empty. Please check back later.</p>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+
+    <!-- Video Modal (Clean Structure) -->
+    <div id="videoModal" class="modal" aria-hidden="true" style="display: none;">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Close">×</button>
+            <h2 id="modalTitle"></h2>
+            <video id="modalVideo" controls playsinline></video>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2024 DreamFrame LLC. All rights reserved.</p>
+            <p class="footer-tagline">Creating memories in motion</p>
+        </div>
+    </footer>
+
+    <!-- Enhanced Video Share Modal -->
+    <div id="shareModal" class="share-modal">
+        <div class="share-modal-content">
+            <button class="share-close" id="shareCloseBtn">&times;</button>
+            <h3>Share Video</h3>
+            
+            <div class="share-options">
+                <a href="#" class="share-option facebook" id="shareFacebook">
+                    <span>Facebook</span>
+                </a>
+                <a href="#" class="share-option twitter" id="shareTwitter">
+                    <span>Twitter</span>
+                </a>
+                <a href="#" class="share-option whatsapp" id="shareWhatsApp">
+                    <span>WhatsApp</span>
+                </a>
+                <a href="#" class="share-option email" id="shareEmail">
+                    <span>Email</span>
+                </a>
+                <button class="share-option copy" id="shareCopy">
+                    <span>Copy Link</span>
+                </button>
+            </div>
+            
+            <div class="share-url-container">
+                <input type="text" class="share-url-input" id="shareUrlInput" readonly>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced VideoGallery Implementation -->
+    <script>
+        (() => {
+          class VideoGallery {
+            constructor(options = {}) {
+              this.opts = Object.assign(
+                {
+                  gallerySelector: "section.video-gallery .container > .video-gallery", // your inner grid
+                  cardSelector: ".video-card",
+                  modalSelector: "#videoModal",
+                  titleSelector: "#modalTitle",
+                  videoSelector: "#modalVideo",  // <video> element
+                  closeSelector: ".modal-close",
+                  autoRefresh: false,
+                },
+                options
+              );
+
+              this._onCardClick = this._onCardClick.bind(this);
+              this._onKeyDown = this._onKeyDown.bind(this);
+              this._onBackdropClick = this._onBackdropClick.bind(this);
+
+              this._initDOM();
+              this._wireListeners();
+              if (this.opts.autoRefresh) this._observe();
+              this._logStatus();
+            }
+
+            _qs(sel, root = document) { return root.querySelector(sel); }
+            _qsa(sel, root = document) { return Array.from(root.querySelectorAll(sel)); }
+
+            _initDOM() {
+              this.gallery = this._qs(this.opts.gallerySelector);
+              if (!this.gallery) throw new Error("Gallery container not found");
+
+              this.cards = this._qsa(this.opts.cardSelector, this.gallery);
+
+              this.modal = this._qs(this.opts.modalSelector);
+              if (!this.modal) throw new Error("Modal not found");
+
+              this.modalTitle = this._qs(this.opts.titleSelector, this.modal);
+              this.modalMedia = this._qs(this.opts.videoSelector, this.modal);
+              this.closeBtn = this._qs(this.opts.closeSelector, this.modal);
+
+              this.isVideo = this.modalMedia && this.modalMedia.tagName === "VIDEO";
+              if (!this.isVideo) {
+                throw new Error("Expected a <video id='modalVideo'> element inside the modal.");
+              }
+            }
+
+            _wireListeners() {
+              this.cards.forEach((card) => {
+                card.addEventListener("click", this._onCardClick);
+              });
+
+              if (this.closeBtn) {
+                this._onCloseClick = () => this.close();
+                this.closeBtn.addEventListener("click", this._onCloseClick);
+              }
+
+              this.modal.addEventListener("click", this._onBackdropClick);
+              document.addEventListener("keydown", this._onKeyDown);
+            }
+
+            _unwireListeners() {
+              this.cards.forEach((card) => {
+                card.removeEventListener("click", this._onCardClick);
+              });
+              if (this.closeBtn && this._onCloseClick) {
+                this.closeBtn.removeEventListener("click", this._onCloseClick);
+              }
+              this.modal.removeEventListener("click", this._onBackdropClick);
+              document.removeEventListener("keydown", this._onKeyDown);
+            }
+
+            _observe() {
+              this.observer = new MutationObserver(() => this.refresh());
+              this.observer.observe(this.gallery, { childList: true, subtree: true });
+            }
+            _disconnectObserver() { if (this.observer) { this.observer.disconnect(); this.observer = null; } }
+
+            _onBackdropClick(e) {
+              // Close if click is on the backdrop (modal itself), not inside content
+              if (e.target === this.modal) this.close();
+            }
+            _onKeyDown(e) { if (e.key === "Escape") this.close(); }
+
+            _onCardClick(e) {
+              const card = e.currentTarget;
+              const src = card.getAttribute("data-src");
+              const title = card.getAttribute("data-title") || "Untitled";
+              if (!src) return;
+              this.open({ src, title });
+            }
+
+            open({ src, title }) {
+              if (this.modalTitle) this.modalTitle.textContent = title || "";
+
+              // Ensure modal is visible (your HTML uses inline display:none)
+              this.modal.style.display = "block";
+              this.modal.setAttribute("aria-hidden", "false");
+              this.modal.classList.add("open");
+
+              if (this.isVideo) {
+                if (this.modalMedia.src !== src) this.modalMedia.src = src;
+                try {
+                  this.modalMedia.currentTime = 0;
+                  this.modalMedia.play().catch(() => {});
+                } catch (_) {}
+              }
+            }
+
+            close() {
+              if (this.isVideo) {
+                try {
+                  this.modalMedia.pause();
+                  this.modalMedia.currentTime = 0;
+                  // Keep src to allow quick re-open; clear if you prefer:
+                  // this.modalMedia.src = "";
+                } catch (_) {}
+              }
+              this.modal.classList.remove("open");
+              this.modal.setAttribute("aria-hidden", "true");
+              this.modal.style.display = "none";
+            }
+
+            refresh() {
+              const nextCards = this._qsa(this.opts.cardSelector, this.gallery);
+              const removed = this.cards.filter((c) => !nextCards.includes(c));
+              removed.forEach((c) => c.removeEventListener("click", this._onCardClick));
+
+              const added = nextCards.filter((c) => !this.cards.includes(c));
+              added.forEach((c) => c.addEventListener("click", this._onCardClick));
+
+              this.cards = nextCards;
+              console.log(`🔄 VideoGallery refreshed. Video cards: ${this.cards.length}`);
+            }
+
+            destroy() {
+              this._disconnectObserver();
+              this._unwireListeners();
+              this.close();
+              console.log("🧹 VideoGallery destroyed");
+            }
+
+            _logStatus() {
+              console.log("✅ DOM loaded, initializing video gallery...");
+              console.log("✅ 🔍 Checking for gallery elements...");
+              console.log(`✅ 🎬 Modal found: ${!!this.modal}`);
+              console.log(`✅ 📹 Video cards found: ${this.cards.length}`);
+              console.log(`✅ 🎥 Modal video element: ${this.isVideo}`);
+              console.log(`✅ 📝 Modal title element: ${!!this.modalTitle}`);
+            }
+          }
+
+          // Singleton helpers
+          window.initVideoGallery = (options = {}) => {
+            if (window.__videoGallery) {
+              console.warn("⚠️ VideoGallery already exists, skipping init. Call refreshVideoGallery() if needed.");
+              return window.__videoGallery;
+            }
+            window.__videoGallery = new VideoGallery(options);
+            return window.__videoGallery;
+          };
+          window.refreshVideoGallery = () => {
+            if (window.__videoGallery) window.__videoGallery.refresh();
+            else console.warn("⚠️ No VideoGallery to refresh. Call initVideoGallery() first.");
+          };
+          window.destroyVideoGallery = () => {
+            if (window.__videoGallery) {
+              window.__videoGallery.destroy();
+              window.__videoGallery = null;
+            }
+          };
+
+          // Initialize when DOM is ready
+          document.addEventListener('DOMContentLoaded', () => {
+            console.log('🔍 DOM loaded, checking for video gallery section...');
+            const gallerySection = document.querySelector('section.video-gallery');
+            if (gallerySection) {
+              console.log('✅ Gallery section found, initializing VideoGallery...');
+              initVideoGallery();
+            } else {
+              console.log('❌ No gallery section found');
+            }
+          });
+          
+          // Fallback initialization after a short delay
+          setTimeout(() => {
+            if (!window.__videoGallery && document.querySelector('section.video-gallery')) {
+              console.log('🔄 Fallback initialization of VideoGallery...');
+              initVideoGallery();
+            }
+          }, 1000);
+        })();
+
+        // Tag Search + Filter for Video Cards
+        (() => {
+          const input = document.getElementById("tagSearch");
+          const clearBtn = document.getElementById("clearSearchBtn");
+          const resultsBox = document.getElementById("searchResults");
+
+          // The inner grid we targeted in initVideoGallery:
+          const gallery = document.querySelector("section.video-gallery .container > .video-gallery");
+          if (!gallery || !input) return;
+
+          const cards = Array.from(gallery.querySelectorAll(".video-card"));
+
+          // Build a simple tag index (unique, sorted)
+          const allTags = (() => {
+            const set = new Set();
+            cards.forEach(card => {
+              const tagsAttr = (card.getAttribute("data-tags") || "").trim();
+              if (!tagsAttr) return;
+              tagsAttr.split(",").forEach(t => {
+                const tag = t.trim();
+                if (tag) set.add(tag.toLowerCase());
+              });
+            });
+            return Array.from(set).sort();
+          })();
+
+          // Utility: normalize user query -> array of tokens (lowercase words)
+          const tokenize = (str) =>
+            str
+              .toLowerCase()
+              .split(/[,\s]+/)
+              .map(s => s.trim())
+              .filter(Boolean);
+
+          // Show suggestions (tags that start with the last token)
+          const renderSuggestions = (q) => {
+            const tokens = tokenize(q);
+            const last = tokens[tokens.length - 1] || "";
+            const show = last.length >= 1;
+            if (!show) {
+              resultsBox.style.display = "none";
+              resultsBox.innerHTML = "";
+              return;
+            }
+            const suggestions = allTags
+              .filter(tag => tag.startsWith(last))
+              .slice(0, 8);
+
+            if (suggestions.length === 0) {
+              resultsBox.style.display = "none";
+              resultsBox.innerHTML = "";
+              return;
+            }
+
+            resultsBox.innerHTML = suggestions
+              .map(tag => `<div class="suggestion-item" data-tag="${tag}">${tag}</div>`)
+              .join("");
+            resultsBox.style.display = "block";
+          };
+
+          // Apply filter to cards
+          const applyFilter = (q) => {
+            const tokens = tokenize(q);
+            const hasTokens = tokens.length > 0;
+
+            cards.forEach(card => {
+              // Tags
+              const tagsAttr = (card.getAttribute("data-tags") || "").toLowerCase();
+              const tagList = tagsAttr ? tagsAttr.split(",").map(t => t.trim()).filter(Boolean) : [];
+
+              // Fallback fields
+              const title = (card.getAttribute("data-title") || card.querySelector(".video-title")?.textContent || "").toLowerCase();
+              const desc  = (card.querySelector(".video-description")?.textContent || "").toLowerCase();
+
+              // Match logic:
+              // - if tokens present: all tokens must match either a tag OR appear in title/description
+              // - if no tokens: show all
+              let visible = true;
+              if (hasTokens) {
+                visible = tokens.every(tok => {
+                  const inTags = tagList.some(t => t.includes(tok));
+                  const inText = title.includes(tok) || desc.includes(tok);
+                  return inTags || inText;
+                });
+              }
+
+              card.style.display = visible ? "" : "none";
+            });
+
+            // Optional: reflow / sync with gallery
+            if (window.refreshVideoGallery) {
+              window.refreshVideoGallery();
+            }
+          };
+
+          // Click on a suggestion -> replace last token and apply
+          resultsBox.addEventListener("click", (e) => {
+            const item = e.target.closest(".suggestion-item");
+            if (!item) return;
+            const picked = item.getAttribute("data-tag");
+            const tokens = tokenize(input.value);
+            if (tokens.length === 0) {
+              input.value = picked;
+            } else {
+              tokens[tokens.length - 1] = picked;
+              input.value = tokens.join(" ");
+            }
+            resultsBox.style.display = "none";
+            resultsBox.innerHTML = "";
+            applyFilter(input.value);
+          });
+
+          // Debounce helper
+          let t = null;
+          const debounce = (fn, delay = 200) => (...args) => {
+            clearTimeout(t);
+            t = setTimeout(() => fn(...args), delay);
+          };
+
+          // Input listeners
+          input.addEventListener("input", debounce((e) => {
+            const val = e.target.value;
+            renderSuggestions(val);
+            applyFilter(val);
+          }, 120));
+
+          input.addEventListener("focus", () => renderSuggestions(input.value));
+          input.addEventListener("blur", () => {
+            // delay hiding so click can register
+            setTimeout(() => {
+              resultsBox.style.display = "none";
+            }, 150);
+          });
+
+          // Clear button support
+          window.clearSearch = function clearSearch() {
+            input.value = "";
+            resultsBox.style.display = "none";
+            resultsBox.innerHTML = "";
+            applyFilter("");
+          };
+
+          // Basic keyboard support for Enter to apply/hide suggestions
+          input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+              resultsBox.style.display = "none";
+            }
+          });
+
+          // Initial state: show all
+          applyFilter("");
+        })();
+    </script>
+</body>
+</html>

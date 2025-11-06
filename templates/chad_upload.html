@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chad's Project Upload - DreamFrame</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .chad-upload {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background: transparent;
+            text-align: center;
+        }
+        
+        .upload-form {
+            margin: 20px 0;
+        }
+        
+        .file-input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid white;
+            border-radius: 5px;
+            background: transparent;
+            color: white;
+            font-size: 16px;
+        }
+        
+        .upload-btn {
+            background: #00ffff;
+            color: black;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        
+        .upload-btn:hover {
+            background: #00cccc;
+        }
+        
+        .message {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4caf50;
+            color: #4caf50;
+        }
+        
+        .error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid #f44336;
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="chad-upload">
+        <h1 style="color: white; margin-bottom: 30px;">Chad's VideoGram Project</h1>
+        <h2 style="color: #00ffff; margin-bottom: 20px;">Upload Figurine Photo</h2>
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="message {{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+        
+        <div style="color: white; margin-bottom: 20px;">
+            <p>Please upload your figurine action scene photo to complete your VideoGram production.</p>
+            <p><strong>Project:</strong> "Bringing the peanut thing to life"</p>
+        </div>
+        
+        <!-- Image Upload -->
+        <form method="POST" enctype="multipart/form-data" action="/chad-upload-handler" class="upload-form">
+            <input type="file" 
+                   name="image" 
+                   accept="image/*,.jpg,.jpeg,.png,.gif,.heic,.heif" 
+                   class="file-input"
+                   required>
+            
+            <button type="submit" class="upload-btn">
+                Upload Figurine Photo
+            </button>
+        </form>
+        
+        <div style="color: #ccc; font-size: 14px; margin-top: 20px;">
+            Supported: JPEG, PNG, GIF, HEIC, HEIF<br>
+            Maximum size: 20MB
+        </div>
+    </div>
+</body>
+</html>

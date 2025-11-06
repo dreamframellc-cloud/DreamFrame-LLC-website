@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Video - Vertex AI VEO 3</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .form-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #ffd93d;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+        }
+        
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+        
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        .file-upload input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+        
+        .file-upload-label {
+            display: block;
+            padding: 20px;
+            border: 2px dashed rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .file-upload-label:hover {
+            border-color: #ffd93d;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .file-upload-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .duration-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .duration-option {
+            display: none;
+        }
+        
+        .duration-label {
+            display: block;
+            padding: 10px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .duration-option:checked + .duration-label {
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            border-color: #ffd93d;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .preview-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .preview-image {
+            max-width: 300px;
+            max-height: 300px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+            transition: background 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+        
+        .flash-message {
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .flash-success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4CAF50;
+            color: #4CAF50;
+        }
+        
+        .flash-error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid #f44336;
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/vertex-ai" class="back-link">← Back to Vertex AI Home</a>
+        
+        <div class="header">
+            <h1>🎬 Generate Video with VEO 3</h1>
+            <p>Transform your image into a professional video</p>
+        </div>
+        
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+        
+        <div class="form-container">
+            <form method="POST" enctype="multipart/form-data" id="generateForm">
+                <div class="form-group">
+                    <label for="title">Video Title</label>
+                    <input type="text" id="title" name="title" placeholder="Enter a title for your video" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="image">Upload Image</label>
+                    <div class="file-upload">
+                        <input type="file" id="image" name="image" accept="image/*" required>
+                        <label for="image" class="file-upload-label">
+                            <span class="file-upload-icon">📷</span>
+                            <span>Click to upload your image</span>
+                            <small>Supports JPG, PNG, GIF</small>
+                        </label>
+                    </div>
+                    <div class="preview-container" id="previewContainer" style="display: none;">
+                        <img id="previewImage" class="preview-image" alt="Preview">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="prompt">Video Description</label>
+                    <textarea id="prompt" name="prompt" placeholder="Describe what you want to happen in the video. Be specific about motion, effects, and style..." required></textarea>
+                    <small style="opacity: 0.8;">Example: "Create a cinematic video with smooth camera movements, dramatic lighting, and gentle zoom effects"</small>
+                </div>
+                
+                <div class="form-group">
+                    <label>Video Duration</label>
+                    <div class="duration-selector">
+                        <input type="radio" id="duration3" name="duration" value="3" class="duration-option">
+                        <label for="duration3" class="duration-label">3s</label>
+                        
+                        <input type="radio" id="duration5" name="duration" value="5" class="duration-option" checked>
+                        <label for="duration5" class="duration-label">5s</label>
+                        
+                        <input type="radio" id="duration10" name="duration" value="10" class="duration-option">
+                        <label for="duration10" class="duration-label">10s</label>
+                        
+                        <input type="radio" id="duration15" name="duration" value="15" class="duration-option">
+                        <label for="duration15" class="duration-label">15s</label>
+                        
+                        <input type="radio" id="duration30" name="duration" value="30" class="duration-option">
+                        <label for="duration30" class="duration-label">30s</label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    🚀 Generate Video with Vertex AI
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Image preview functionality
+        document.getElementById('image').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImage').src = e.target.result;
+                    document.getElementById('previewContainer').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+                
+                // Update label text
+                document.querySelector('.file-upload-label span:last-child').textContent = file.name;
+            }
+        });
+        
+        // Form submission handling
+        document.getElementById('generateForm').addEventListener('submit', function(e) {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '🔄 Generating Video...';
+            
+            // Re-enable after timeout (in case of error)
+            setTimeout(() => {
+                if (submitBtn.disabled) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '🚀 Generate Video with Vertex AI';
+                }
+            }, 300000); // 5 minutes
+        });
+        
+        // Drag and drop functionality
+        const fileUpload = document.querySelector('.file-upload-label');
+        
+        fileUpload.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#ffd93d';
+            this.style.background = 'rgba(255, 255, 255, 0.1)';
+        });
+        
+        fileUpload.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+            this.style.background = 'rgba(255, 255, 255, 0.05)';
+        });
+        
+        fileUpload.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+            this.style.background = 'rgba(255, 255, 255, 0.05)';
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                document.getElementById('image').files = files;
+                document.getElementById('image').dispatchEvent(new Event('change'));
+            }
+        });
+    </script>
+</body>
+</html>

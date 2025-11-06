@@ -1,0 +1,252 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Health Report Details{% endblock %}
+{% block page_title %}AI Health Report - {{ report.timestamp_formatted }}{% endblock %}
+
+{% block toolbar %}
+<a href="{{ url_for('admin.ai_health_reports') }}" class="btn btn-secondary">
+    <i class="fas fa-arrow-left me-2"></i>Back to Reports
+</a>
+{% endblock %}
+
+{% block content %}
+<!-- Report Summary -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-chart-pie text-primary me-2"></i>
+                    Report Summary
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card stat-card success text-center">
+                            <div class="card-body">
+                                <h2 class="mb-0">{{ report.summary.passed }}</h2>
+                                <small>Tests Passed</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card warning text-center">
+                            <div class="card-body">
+                                <h2 class="mb-0">{{ report.summary.failed }}</h2>
+                                <small>Tests Failed</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card info text-center">
+                            <div class="card-body">
+                                <h2 class="mb-0">{{ report.summary.warnings }}</h2>
+                                <small>Warnings</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card text-center">
+                            <div class="card-body">
+                                <h2 class="mb-0">{{ report.summary.total_tests }}</h2>
+                                <small>Total Tests</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Test Results -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-list-check text-info me-2"></i>
+                    Detailed Test Results
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Test Name</th>
+                                <th>Status</th>
+                                <th>Response Time</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for result in report.results %}
+                            <tr class="{% if result.status == 'FAIL' %}table-danger{% elif result.status == 'WARNING' %}table-warning{% else %}table-success{% endif %}">
+                                <td>
+                                    <strong>{{ result.test_name }}</strong>
+                                </td>
+                                <td>
+                                    {% if result.status == 'PASS' %}
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-check me-1"></i>PASS
+                                        </span>
+                                    {% elif result.status == 'WARNING' %}
+                                        <span class="badge bg-warning">
+                                            <i class="fas fa-exclamation-triangle me-1"></i>WARNING
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-danger">
+                                            <i class="fas fa-times me-1"></i>FAIL
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if result.response_time_ms %}
+                                        <span class="badge bg-secondary">{{ "%.0f"|format(result.response_time_ms) }}ms</span>
+                                    {% else %}
+                                        <span class="text-muted">N/A</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div>{{ result.details }}</div>
+                                    {% if result.error %}
+                                        <div class="text-danger small mt-1">
+                                            <i class="fas fa-exclamation-circle me-1"></i>
+                                            <strong>Error:</strong> {{ result.error }}
+                                        </div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- AI Analysis (if available) -->
+{% for result in report.results %}
+    {% if result.test_name == 'AI System Analysis' and result.status == 'PASS' %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-robot me-2"></i>
+                        AI Analysis & Recommendations
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>AI Analysis Summary:</strong> {{ result.details }}
+                    </div>
+                    
+                    <div class="mt-3">
+                        <h6>Key Insights:</h6>
+                        <p class="text-muted">
+                            The AI system has analyzed the payment health check results and provided intelligent 
+                            recommendations for maintaining optimal system performance.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endfor %}
+
+<!-- System Performance Metrics -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-tachometer-alt text-success me-2"></i>
+                    Performance Metrics
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <canvas id="statusChart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Response Time Analysis</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Test</th>
+                                        <th>Response Time</th>
+                                        <th>Performance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for result in report.results %}
+                                        {% if result.response_time_ms %}
+                                        <tr>
+                                            <td>{{ result.test_name }}</td>
+                                            <td>{{ "%.0f"|format(result.response_time_ms) }}ms</td>
+                                            <td>
+                                                {% if result.response_time_ms < 500 %}
+                                                    <span class="badge bg-success">Excellent</span>
+                                                {% elif result.response_time_ms < 1000 %}
+                                                    <span class="badge bg-warning">Good</span>
+                                                {% else %}
+                                                    <span class="badge bg-danger">Slow</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Create status chart
+const ctx = document.getElementById('statusChart').getContext('2d');
+const statusChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Passed', 'Failed', 'Warnings'],
+        datasets: [{
+            data: [{{ report.summary.passed }}, {{ report.summary.failed }}, {{ report.summary.warnings }}],
+            backgroundColor: [
+                '#28a745',
+                '#dc3545',
+                '#ffc107'
+            ],
+            borderWidth: 2,
+            borderColor: '#fff'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+                display: true,
+                text: 'Test Results Distribution'
+            },
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+</script>
+{% endblock %}

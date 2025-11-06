@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Completed Videos - DreamFrame Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .admin-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: rgba(0, 255, 255, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+        }
+        
+        .admin-header h1 {
+            color: #00ffff;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+        
+        .navigation {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .nav-btn {
+            background: linear-gradient(45deg, #666, #999);
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            margin: 0 10px;
+            display: inline-block;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background: linear-gradient(45deg, #999, #ccc);
+            transform: translateY(-2px);
+        }
+        
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .video-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .video-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+            border-color: #00ffff;
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
+        }
+        
+        .video-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .video-title {
+            font-size: 1.4rem;
+            color: #00ffff;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .project-id {
+            background: #ff6b00;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .customer-info {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+        
+        .customer-name {
+            font-weight: bold;
+            color: #00ff00;
+            margin-bottom: 0.3rem;
+        }
+        
+        .customer-email {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        .video-description {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .video-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .meta-item {
+            text-align: center;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+        
+        .meta-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 0.3rem;
+        }
+        
+        .meta-value {
+            font-weight: bold;
+            color: #00ffff;
+        }
+        
+        .video-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        .action-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .view-btn {
+            background: linear-gradient(45deg, #00ff00, #00cc00);
+            color: white;
+        }
+        
+        .view-btn:hover {
+            background: linear-gradient(45deg, #00cc00, #009900);
+            transform: translateY(-2px);
+        }
+        
+        .download-btn {
+            background: linear-gradient(45deg, #ff6b00, #ff8f00);
+            color: white;
+        }
+        
+        .download-btn:hover {
+            background: linear-gradient(45deg, #ff8f00, #ffaa00);
+            transform: translateY(-2px);
+        }
+        
+        .share-btn {
+            background: linear-gradient(45deg, #9b59b6, #8e44ad);
+            color: white;
+        }
+        
+        .share-btn:hover {
+            background: linear-gradient(45deg, #8e44ad, #732d91);
+            transform: translateY(-2px);
+        }
+        
+        .no-videos {
+            text-align: center;
+            padding: 4rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.2rem;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .status-completed {
+            background: #00ff00;
+            color: #000;
+        }
+        
+        .video-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #333, #555);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+        }
+        
+        .video-placeholder-text {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.1rem;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .videos-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .video-meta {
+                grid-template-columns: 1fr;
+            }
+            
+            .video-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>🎬 Completed Videos</h1>
+            <p>AI-generated videos ready for customer delivery</p>
+        </div>
+        
+        <div class="navigation">
+            <a href="/admin/simple" class="nav-btn">📊 Admin Dashboard</a>
+            <a href="/admin/projects" class="nav-btn">🤖 Project Management</a>
+            <a href="/admin/completed-videos" class="nav-btn" style="background: linear-gradient(45deg, #00ff00, #00cc00);">🎥 Completed Videos</a>
+        </div>
+        
+        {% if error %}
+        <div style="background: rgba(255, 0, 0, 0.2); padding: 1rem; border-radius: 10px; margin-bottom: 2rem; text-align: center;">
+            <strong>Error:</strong> {{ error }}
+        </div>
+        {% endif %}
+        
+        <!-- Standalone Generated Videos Section -->
+        {% if standalone_videos %}
+        <h2 style="color: #ff6b00; margin: 2rem 0 1rem 0; text-align: center;">🎬 Generated Videos</h2>
+        <div class="videos-grid">
+            {% for video in standalone_videos %}
+            <div class="video-card">
+                <div class="video-header">
+                    <div>
+                        <div class="video-title">{{ video.title }}</div>
+                        <span class="status-badge status-completed">✅ Generated</span>
+                    </div>
+                    <div class="project-id">{{ video.size_mb }} MB</div>
+                </div>
+                
+                <div class="video-placeholder">
+                    <div class="video-placeholder-text">
+                        🎬 AI Generated Video<br>
+                        <small>{{ video.filename }}</small>
+                    </div>
+                </div>
+                
+                <div class="customer-info">
+                    <div class="customer-name">📁 File: {{ video.filename }}</div>
+                    <div class="customer-email">💾 Size: {{ video.size_mb }} MB</div>
+                </div>
+                
+                <div class="video-actions">
+                    <a href="/{{ video.file_path }}" target="_blank" class="action-btn view-btn">
+                        👁️ View Video
+                    </a>
+                    <a href="/{{ video.file_path }}" download="{{ video.filename }}" class="action-btn download-btn">
+                        💾 Download
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Customer Project Videos Section -->
+        {% if projects %}
+        <h2 style="color: #00ffff; margin: 2rem 0 1rem 0; text-align: center;">👥 Customer Projects</h2>
+        <div class="videos-grid">
+            {% for project in projects %}
+            <div class="video-card">
+                <div class="video-header">
+                    <div>
+                        <div class="video-title">{{ project.project_title }}</div>
+                        <span class="status-badge status-completed">✅ Completed</span>
+                    </div>
+                    <div class="project-id">#{{ project.id }}</div>
+                </div>
+                
+                <div class="video-placeholder">
+                    <div class="video-placeholder-text">
+                        🎬 Video Generated<br>
+                        <small>{{ project.project_type.value|title|replace('_', ' ') }}</small>
+                    </div>
+                </div>
+                
+                <div class="customer-info">
+                    <div class="customer-name">👤 {{ project.customer_name }}</div>
+                    <div class="customer-email">📧 {{ project.customer_email }}</div>
+                </div>
+                
+                <div class="video-description">
+                    <strong>Project Description:</strong><br>
+                    {{ project.project_description or 'No description provided' }}
+                </div>
+                
+                <div class="video-meta">
+                    <div class="meta-item">
+                        <div class="meta-label">Created</div>
+                        <div class="meta-value">{{ project.created_at.strftime('%m/%d/%Y') }}</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Completed</div>
+                        <div class="meta-value">{{ project.updated_at.strftime('%m/%d/%Y') }}</div>
+                    </div>
+                </div>
+                
+                <div class="video-actions">
+                    <button class="action-btn view-btn" onclick="viewProjectDetails({{ project.id }})">
+                        👁️ View Details
+                    </button>
+                    {% if project.id == 7 %}
+                    <a href="/static/lion_customer.mp4" download="Lion_of_Judah_Customer_Video.mp4" class="action-btn download-btn">
+                        📥 Download Lion (Direct)
+                    </a>
+                    {% elif project.id == 8 %}
+                    <a href="/static/kindness_customer.mp4" download="Kindness_Customer_Video.mp4" class="action-btn download-btn">
+                        📥 Download Kindness (Direct)
+                    </a>
+                    {% else %}
+                    <button class="action-btn download-btn" onclick="downloadVideo({{ project.id }})">
+                        📥 Download
+                    </button>
+                    {% endif %}
+                    <button class="action-btn share-btn" onclick="shareVideo({{ project.id }})">
+                        🔗 Share
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        {% if not projects and not standalone_videos %}
+        <div class="no-videos">
+            <h3>🎬 No Completed Videos Yet</h3>
+            <p>Videos will appear here once AI processing is complete.</p>
+            <br>
+            <a href="/admin/projects" class="nav-btn">View All Projects</a>
+        </div>
+        {% endif %}
+    </div>
+    
+    <script>
+        function downloadVideo(projectId) {
+            const timestamp = new Date().getTime();
+            const downloadUrl = `/admin/project/${projectId}/download-veo3?t=${timestamp}`;
+            console.log('Downloading VEO 3 video:', downloadUrl);
+            
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+            link.download = `DreamFrame_${projectId}_VEO3_${timestamp}.mp4`;
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        function viewProjectDetails(projectId) {
+            fetch(`/admin/project/${projectId}/video`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert('Error: ' + data.error);
+                    } else {
+                        alert(`Title: ${data.title}\\nCustomer: ${data.customer}\\nType: ${data.type}\\nStatus: ${data.status}`);
+                    }
+                })
+                .catch(error => {
+                    alert('Error: ' + error.message);
+                });
+        }
+        
+        function shareVideo(projectId) {
+            alert(`Share feature for project ${projectId} coming soon!`);
+        }
+    </script>
+</body>
+</html>

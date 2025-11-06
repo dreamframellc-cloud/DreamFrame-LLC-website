@@ -1,0 +1,2351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=5.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="cache-bust" content="20250825-contact-fix-v2">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; style-src 'self' 'unsafe-inline' *;">
+    <title>DreamFrame LLC - Veteran Owned Video & Music Production - AI Generation v8</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=20250831lang">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/service-navigation.css') }}">
+    
+    <!-- Floating Chatbot -->
+    <script src="{{ url_for('static', filename='js/floating-chatbot.js') }}"></script>
+    <style>
+        .brand-text {
+            font-family: 'Orbitron', 'Arial Black', 'Impact', sans-serif !important;
+            font-weight: 900 !important;
+        }
+        .brand-suffix {
+            font-family: 'Orbitron', 'Arial Black', 'Impact', sans-serif !important;
+            font-weight: 700 !important;
+        }
+        body, *, h1, h2, h3, h4, h5, h6, p, div, span, a, button, input, textarea, label {
+            font-family: 'Cinzel', 'Trajan Pro', serif !important;
+        }
+        .veteran-badge {
+            display: inline-block !important;
+            background: linear-gradient(135deg, #c41e3a, #003f7f) !important;
+            color: white !important;
+            padding: 8px 16px !important;
+            border-radius: 20px !important;
+            font-size: 0.9rem !important;
+            font-weight: 600 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+            margin: 10px 0 15px 0 !important;
+            border: 2px solid rgba(255, 255, 255, 0.2) !important;
+            backdrop-filter: blur(10px) !important;
+            box-shadow: 0 4px 15px rgba(196, 30, 58, 0.3) !important;
+            animation: veteranGlow 3s ease-in-out infinite !important;
+        }
+        @keyframes veteranGlow {
+            0%, 100% { box-shadow: 0 4px 15px rgba(196, 30, 58, 0.3) !important; }
+            50% { box-shadow: 0 6px 20px rgba(196, 30, 58, 0.5) !important; }
+        }
+
+        /* Video Overlay Animations */
+        @keyframes pulseGlow {
+            0% { 
+                transform: scale(1); 
+                box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+            }
+            50% { 
+                transform: scale(1.05); 
+                box-shadow: 0 8px 25px rgba(255, 107, 53, 0.6);
+            }
+            100% { 
+                transform: scale(1); 
+                box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+            }
+        }
+
+        .promo-video-container:hover .video-overlay {
+            opacity: 1 !important;
+        }
+
+        .video-overlay-btn:hover {
+            transform: scale(1.1) !important;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.8) !important;
+        }
+
+        .video-overlay-btn:nth-child(2):hover {
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.8) !important;
+        }
+
+        @keyframes floatMessage {
+            0%, 100% { 
+                transform: translateY(0); 
+                opacity: 0.9;
+            }
+            50% { 
+                transform: translateY(-5px); 
+                opacity: 1;
+            }
+        }
+
+        /* Animated Background Gradients that Pulse with Video Rhythm */
+        @keyframes backgroundPulse {
+            0%, 100% { 
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
+            }
+            50% { 
+                background: linear-gradient(135deg, #1a1a2e 0%, #20253e 50%, #1a1a2e 100%);
+            }
+        }
+
+        @keyframes heroPulse {
+            0%, 100% { 
+                background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(22, 33, 62, 0.85) 50%, rgba(26, 26, 46, 0.95) 100%);
+                box-shadow: inset 0 0 100px rgba(255, 107, 53, 0.1);
+            }
+            50% { 
+                background: linear-gradient(135deg, rgba(26, 26, 46, 0.98) 0%, rgba(32, 43, 72, 0.90) 50%, rgba(26, 26, 46, 0.98) 100%);
+                box-shadow: inset 0 0 120px rgba(255, 107, 53, 0.15);
+            }
+        }
+
+        /* Disable problematic animations causing blue haze */
+        .gradient-bg {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%) !important;
+        }
+
+        .hero-home {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(22, 33, 62, 0.85) 50%, rgba(26, 26, 46, 0.95) 100%) !important;
+        }
+
+        /* Sync with video timing - matches your video duration */
+        .promo-video-container {
+            position: relative;
+        }
+    </style>
+    
+    <!-- Emergency Language Selector Override - Maximum Specificity -->
+    <style id="lang-reset">
+        /* Target our specific language selector structure with maximum specificity */
+        :root body .language-selector,
+        :root body .language-selector .language-dropdown,
+        :root body .language-selector .language-dropdown .language-menu,
+        :root body header .language-selector,
+        :root body [data-lang-selector] {
+            all: revert; /* neutralize inherited styles */
+        }
+
+        /* Force positioning with nuclear specificity */
+        :root body .language-selector {
+            position: fixed !important;
+            top: 10px !important;
+            left: 20px !important;
+            right: auto !important;
+            bottom: auto !important;
+            transform: none !important;
+            translate: none !important;
+            z-index: 2147483647 !important;
+            display: block !important;
+        }
+
+        :root body .language-selector .language-dropdown .language-menu {
+            position: absolute !important;
+            top: 100% !important;
+            left: 0 !important;
+            right: auto !important;
+            bottom: auto !important;
+            transform: translateY(-10px) !important;
+            translate: none !important;
+            z-index: 2147483647 !important;
+            margin-top: 8px !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            display: none !important;
+            pointer-events: none !important;
+        }
+
+        :root body .language-selector .language-dropdown:hover .language-menu,
+        :root body .language-selector .language-menu:hover {
+            transform: translateY(0) !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+            pointer-events: auto !important;
+        }
+
+        /* Additional ambient lighting effect */
+        .promo-video-container::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.1) 0%, transparent 70%);
+            border-radius: 25px;
+            z-index: -1;
+            animation: videoAmbientGlow 21.33s ease-in-out infinite;
+        }
+
+        @keyframes videoAmbientGlow {
+            0%, 100% { 
+                background: radial-gradient(circle, rgba(255, 107, 53, 0.1) 0%, transparent 70%);
+                transform: scale(1);
+            }
+            50% { 
+                background: radial-gradient(circle, rgba(255, 107, 53, 0.15) 0%, transparent 70%);
+                transform: scale(1.02);
+            }
+        }
+        
+        /* Navigation Tabs Styling */
+        .main-nav {
+            background: rgba(26, 26, 46, 0.95);
+            padding: 15px 0;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .nav-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 20px;
+            max-width: 1000px;
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .nav-tab {
+            color: #fff !important;
+            text-decoration: none !important;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 107, 53, 0.3);
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            backdrop-filter: blur(5px);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 50px;
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+        }
+        
+        .nav-tab:hover {
+            color: #fff !important;
+            background: linear-gradient(135deg, #f7931e, #ff8c42);
+            border-color: rgba(255, 107, 53, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.6);
+        }
+        
+        .nav-tab.active {
+            color: #fff !important;
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            border-color: rgba(255, 107, 53, 0.6);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.8);
+            transform: translateY(-3px);
+        }
+        
+        @media (max-width: 968px) {
+            .nav-tabs {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: 1fr 1fr 1fr;
+                gap: 15px;
+                max-width: 600px;
+            }
+            
+            .nav-tab {
+                padding: 10px 16px;
+                font-size: 0.8rem;
+                min-height: 45px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-tabs {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(6, 1fr);
+                gap: 15px;
+                max-width: 400px;
+            }
+            
+            .nav-tab {
+                width: 100%;
+                text-align: center;
+                padding: 12px 20px;
+                font-size: 0.9rem;
+                min-height: 50px;
+            }
+        }
+
+        /* Pay Now Section Enhancements */
+        .deposit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255, 107, 53, 0.2);
+            border-color: rgba(255, 107, 53, 0.3);
+        }
+        
+        .pay-now-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .pay-now-section h2 {
+                font-size: 2rem !important;
+            }
+            .pay-now-section p {
+                font-size: 1rem !important;
+            }
+            .deposit-options {
+                grid-template-columns: 1fr !important;
+                gap: 20px !important;
+            }
+            .trust-badges > div {
+                flex-direction: column !important;
+                gap: 15px !important;
+            }
+        }
+        
+
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="{{ url_for('static', filename='js/enhanced-ui-clean.js') }}?v=20250619z&t={{ range(1000000, 9999999) | random }}" defer></script>
+    <!-- video-player.js removed to prevent conflicts with new VideoGallery system -->
+    {% include 'tracking_scripts.html' %}
+    <script>
+        // Force cache clear
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        }
+        // Clear all caches
+        if ('caches' in window) {
+            caches.keys().then(function(names) {
+                for (let name of names) {
+                    caches.delete(name);
+                }
+            });
+        }
+        
+        // Video with automatic audio handling
+        document.addEventListener('DOMContentLoaded', function() {
+            const promoVideo = document.querySelector('.promo-video');
+            if (promoVideo) {
+                // Set volume to maximum
+                promoVideo.volume = 1.0;
+                
+                // Auto-enable audio on first user interaction with page
+                const enableAudioOnInteraction = () => {
+                    promoVideo.muted = false;
+                    promoVideo.volume = 1.0;
+                    console.log('Audio automatically enabled on user interaction');
+                    // Remove listeners after first interaction
+                    document.removeEventListener('click', enableAudioOnInteraction);
+                    document.removeEventListener('keydown', enableAudioOnInteraction);
+                    document.removeEventListener('touchstart', enableAudioOnInteraction);
+                };
+                
+                // Listen for any user interaction to enable audio
+                document.addEventListener('click', enableAudioOnInteraction, { once: true });
+                document.addEventListener('keydown', enableAudioOnInteraction, { once: true });
+                document.addEventListener('touchstart', enableAudioOnInteraction, { once: true });
+                
+                // Check if video loaded properly
+                promoVideo.addEventListener('loadedmetadata', function() {
+                    console.log('Video loaded with audio ready');
+                });
+                
+                // Continuous looping
+                promoVideo.addEventListener('ended', function() {
+                    this.currentTime = 0;
+                    this.play();
+                });
+                
+                // Handle video click to ensure audio works
+                promoVideo.addEventListener('click', function() {
+                    this.muted = false;
+                    this.volume = 1.0;
+                    if (this.paused) {
+                        this.play();
+                    }
+                });
+                
+                // Mute button functionality
+                const muteButton = document.getElementById('muteButton');
+                const muteIcon = document.getElementById('muteIcon');
+                const muteLabel = document.getElementById('muteLabel');
+                
+                if (muteButton && muteIcon && muteLabel) {
+                    muteButton.addEventListener('click', function(e) {
+                        e.stopPropagation(); // Prevent video click handler
+                        
+                        if (promoVideo.muted) {
+                            // Unmute
+                            promoVideo.muted = false;
+                            promoVideo.volume = 1.0;
+                            muteIcon.className = 'fas fa-volume-up';
+                            muteLabel.textContent = 'Audio On';
+                            muteButton.title = 'Click to mute audio';
+                        } else {
+                            // Mute
+                            promoVideo.muted = true;
+                            muteIcon.className = 'fas fa-volume-mute';
+                            muteLabel.textContent = 'Audio Off';
+                            muteButton.title = 'Click to unmute audio';
+                        }
+                    });
+                    
+                    // Set initial button state
+                    if (promoVideo.muted) {
+                        muteLabel.textContent = 'Audio Off';
+                        muteButton.title = 'Click to unmute audio';
+                    } else {
+                        muteLabel.textContent = 'Audio On';
+                        muteButton.title = 'Click to mute audio';
+                    }
+                }
+            }
+        });
+        
+
+    </script>
+
+    <!-- Meta Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+       fbq('init', '1234567890123456');  // <-- Your Pixel ID
+       fbq('track', 'PageView');
+    </script>
+    <!-- End Meta Pixel Code -->
+
+    <!-- GA4 base tag -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      gtag('js', new Date());
+      // Replace with your GA4 Measurement ID
+      gtag('config', 'G-XXXXXXXXXX', { send_page_view: true });
+    </script>
+</head>
+<body>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 20000; max-width: 600px; width: 90%;">
+                {% for category, message in messages %}
+                    <div id="flashMessage" style="padding: 15px 20px; margin: 10px 0; border-radius: 8px; font-size: 16px; text-align: center; font-weight: 600; box-shadow: 0 5px 15px rgba(0,0,0,0.3); {% if category == 'success' %}background: #d4edda; color: #155724; border: 2px solid #c3e6cb;{% else %}background: #f8d7da; color: #721c24; border: 2px solid #f5c6cb;{% endif %}">
+                        {{ message }}
+                        <button onclick="this.parentElement.style.display='none'" style="background: none; border: none; color: inherit; font-size: 18px; font-weight: bold; float: right; cursor: pointer; margin-left: 10px;">&times;</button>
+                    </div>
+                {% endfor %}
+            </div>
+            <script>
+                // Auto-hide flash messages after 5 seconds
+                setTimeout(function() {
+                    const flashMsg = document.getElementById('flashMessage');
+                    if (flashMsg) {
+                        flashMsg.style.opacity = '0';
+                        flashMsg.style.transition = 'opacity 0.5s ease';
+                        setTimeout(() => flashMsg.style.display = 'none', 500);
+                    }
+                }, 5000);
+            </script>
+        {% endif %}
+    {% endwith %}
+    
+    <div class="gradient-bg">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="container">
+                <div class="brand-container">
+                    <div class="brand-text">DreamFrame</div>
+                    <div class="glowing-star">★</div>
+                    <div class="brand-text">LLC</div>
+                </div>
+                
+                <!-- Language Menu (DreamFrame LLC) -->
+                <nav class="df-lang" aria-label="Language selector">
+                    <div class="df-lang-menu" role="menu">
+                        <button class="df-lang-btn" type="button" aria-haspopup="true" aria-expanded="false">
+                            <span class="df-lang-icon" aria-hidden="true">🌐</span>
+                            <span class="df-lang-label">Language</span>
+                            <svg class="df-caret" viewBox="0 0 10 6" aria-hidden="true">
+                                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" />
+                            </svg>
+                        </button>
+
+                        <ul class="df-lang-list" role="menu" aria-label="Languages">
+                            {% for code, name in language_names.items() %}
+                                <li role="none"><a role="menuitem" hreflang="{{ code }}" lang="{{ code }}" href="{{ url_for('set_language', language=code) }}">{{ name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </nav>
+
+            </div>
+        </header>
+        
+        <!-- Contact Form Works Inline - No Dependencies -->
+
+        <!-- Navigation Tabs -->
+        <nav class="main-nav">
+            <div class="nav-container">
+                <!-- Mobile Hamburger Menu Button -->
+                <button class="mobile-nav-toggle" id="mobileNavToggle">
+                    <i class="fas fa-bars" style="margin-right: 10px;"></i>
+                    <span class="toggle-text">Service Navigation</span>
+                </button>
+                
+                <div class="nav-tabs" id="navTabs">
+                    <a href="{{ url_for('home') }}" class="nav-tab active">{{ get_text('nav_video_music') }}</a>
+                    <a href="{{ url_for('website_development') }}" class="nav-tab">{{ get_text('nav_website_dev') }}</a>
+                    <a href="{{ url_for('business_consultation') }}" class="nav-tab">{{ get_text('nav_business') }}</a>
+                    <a href="{{ url_for('cybersecurity_services') }}" class="nav-tab">{{ get_text('nav_cybersecurity') }}</a>
+                    <a href="{{ url_for('agentic_ai_services') }}" class="nav-tab">{{ get_text('nav_ai_agents') }}</a>
+                    <a href="{{ url_for('services_overview') }}" class="nav-tab">{{ get_text('nav_advertising') }}</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero-home">
+            <div class="container">
+                <div class="hero-content">
+
+
+                    <h1>{{ get_text('hero_title') }}</h1>
+                    <p class="veteran-badge" style="display: inline-block; background: linear-gradient(135deg, #c41e3a, #003f7f); color: white; padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin: 10px 0 15px 0; border: 2px solid rgba(255, 255, 255, 0.2); box-shadow: 0 4px 15px rgba(196, 30, 58, 0.3);">Veteran owned and operated</p>
+                    <p class="hero-subtitle">{{ get_text('hero_subtitle') }}</p>
+                    
+                    <div class="hero-buttons">
+                        {% if current_user and current_user.is_authenticated %}
+                            <a href="{{ url_for('create_video') }}" class="btn-primary">
+                                🎬 Video Generation Coming Soon
+                            </a>
+                            <a href="{{ url_for('create_group_video') }}" class="btn-primary" style="background: linear-gradient(135deg, #ff6b35, #f7931e);">
+                                👥 Group Video
+                            </a>
+                            <a href="{{ url_for('my_videos') }}" class="btn-primary" style="background: linear-gradient(135deg, #00ff88, #00ffff);">
+                                📥 My Videos
+                            </a>
+                        {% else %}
+                            <a href="{{ url_for('signup') }}" class="btn-primary">
+                                🚀 Create Account
+                            </a>
+                            <a href="{{ url_for('login') }}" class="btn-primary" style="background: linear-gradient(135deg, #ff6b35, #f7931e);">
+                                🔑 Sign In
+                            </a>
+                        {% endif %}
+                        <a href="{{ url_for('index') }}" class="btn-secondary">
+                            {{ get_text('view_gallery') }}
+                        </a>
+                        <a href="{{ url_for('pricing') }}" class="btn-secondary">
+                            {{ get_text('view_pricing') }}
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="hero-features">
+                    <div class="feature-card">
+                        <h3>AI-Powered Video Generation</h3>
+                        <p>Cutting-edge MOTION PREDICTION ALGORITHMS transforms your photos into professional cinematic sequences with realistic motion</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h3>Custom Music Production</h3>
+                        <p>Original soundtracks and audio design perfectly synchronized to enhance your video's emotional impact</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h3>Professional Tools & Services</h3>
+                        <p>Complete production suite including editing, color grading, motion graphics, and advanced post-production techniques</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pay Now Deposit Section -->
+        <section class="pay-now-section" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 60px 0; margin-bottom: 40px; position: relative; z-index: 1; width: 100%; display: block;">
+            <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+                <div class="pay-now-header" style="text-align: center; margin-bottom: 40px;">
+                    <h2 style="color: #fff; font-size: 2.5rem; margin-bottom: 15px; font-weight: 700;">
+                        <svg class="spinning-star star-cyan" style="margin-right: 15px; width: 1.2em; height: 1.2em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        Secure Your Project Today
+                    </h2>
+                    <p style="color: #ffffff; font-size: 1.2rem; max-width: 600px; margin: 0 auto; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                        Start your video production journey with a secure deposit. Quick, easy, and fully protected by Stripe.
+                    </p>
+                </div>
+                
+                <div class="deposit-options" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 900px; margin: 0 auto;">
+                    <!-- Project Deposit -->
+                    <div class="deposit-card" style="background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); border-radius: 15px; padding: 30px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; transition: all 0.3s ease;">
+                        <div class="deposit-icon" style="margin-bottom: 20px;">
+                            <svg class="fast-spin-star star-orange" style="width: 3rem; height: 3rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <h3 style="color: #fff; font-size: 1.5rem; margin-bottom: 15px;">Project Deposit</h3>
+                        <p style="color: #ffffff; margin-bottom: 25px; line-height: 1.6;">
+                            Secure your video production project with a $250 deposit. Reserve your spot in our production queue.
+                        </p>
+                        <div class="price" style="margin-bottom: 25px;">
+                            <span style="color: #ff6b35; font-size: 2rem; font-weight: 700;">$250</span>
+                            <span style="color: #ffffff; font-size: 1rem;">.00 USD</span>
+                        </div>
+                        <form action="{{ url_for('create_checkout_session') }}" method="POST" style="margin: 0;" onsubmit="this.action += '?v=' + Date.now(); this.querySelector('[name=cache_bust]').value = Date.now(); console.log('Project deposit form submitted');">
+                            <input type="hidden" name="service_type" value="project_deposit">
+                            <input type="hidden" name="amount" value="25000">
+                            <input type="hidden" name="description" value="Video Production Project Deposit">
+                            <input type="hidden" name="cache_bust" value="">
+                            <button type="submit" class="pay-now-btn" style="background: linear-gradient(135deg, #ff6b35 0%, #ff8e53 100%); color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; width: 100%; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;" onclick="console.log('Project deposit button clicked'); setTimeout(() => { this.innerHTML='<i class=\'fas fa-spinner fa-spin\'></i> Processing...'; this.disabled=true; }, 50);">
+                                <svg class="twinkling-star star-red" style="margin-right: 10px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                Pay Deposit Now
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Consultation Deposit -->
+                    <div class="deposit-card" style="background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); border-radius: 15px; padding: 30px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; transition: all 0.3s ease;">
+                        <div class="deposit-icon" style="margin-bottom: 20px;">
+                            <svg class="fast-spin-star star-cyan" style="width: 3rem; height: 3rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <h3 style="color: #fff; font-size: 1.5rem; margin-bottom: 15px;">Consultation Deposit</h3>
+                        <p style="color: #ffffff; margin-bottom: 25px; line-height: 1.6;">
+                            Schedule your personalized consultation with our video experts. Applied to your final project cost.
+                        </p>
+                        <div class="price" style="margin-bottom: 25px;">
+                            <span style="color: #ff6b35; font-size: 2rem; font-weight: 700;">$50</span>
+                            <span style="color: #ffffff; font-size: 1rem;">.00 USD</span>
+                        </div>
+                        <form action="{{ url_for('create_checkout_session') }}" method="POST" style="margin: 0;" onsubmit="this.action += '?v=' + Date.now(); this.querySelector('[name=cache_bust]').value = Date.now(); console.log('Consultation deposit form submitted');">
+                            <input type="hidden" name="service_type" value="consultation_deposit">
+                            <input type="hidden" name="amount" value="5000">
+                            <input type="hidden" name="description" value="Video Consultation Deposit">
+                            <input type="hidden" name="cache_bust" value="">
+                            <button type="submit" class="pay-now-btn" style="background: linear-gradient(135deg, #00ffff 0%, #40e0d0 100%); color: #1a1a2e; border: none; padding: 15px 30px; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; width: 100%; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;" onclick="console.log('Consultation deposit button clicked'); setTimeout(() => { this.innerHTML='<i class=\'fas fa-spinner fa-spin\'></i> Processing...'; this.disabled=true; }, 50);">
+                                <svg class="twinkling-star star-red" style="margin-right: 10px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                Book Consultation
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Security Trust Badges -->
+                <div class="trust-badges" style="text-align: center; margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 30px; flex-wrap: wrap;">
+                        <div class="trust-badge" style="display: flex; align-items: center; gap: 10px;">
+                            <svg class="spinning-star star-green" style="width: 1.5rem; height: 1.5rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            <span style="color: #ffffff; font-size: 0.95rem;">SSL Secured</span>
+                        </div>
+                        <div class="trust-badge" style="display: flex; align-items: center; gap: 10px;">
+                            <svg class="spinning-star star-blue" style="width: 1.5rem; height: 1.5rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            <span style="color: #ffffff; font-size: 0.95rem;">Stripe Protected</span>
+                        </div>
+                        <div class="trust-badge" style="display: flex; align-items: center; gap: 10px;">
+                            <svg class="spinning-star star-orange" style="width: 1.5rem; height: 1.5rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            <span style="color: #ffffff; font-size: 0.95rem;">All Cards Accepted</span>
+                        </div>
+                    </div>
+                    <p style="color: #ffffff; font-size: 0.85rem; margin-top: 15px; font-style: italic;">
+                        Your payment information is processed securely. We do not store credit card details.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video & Music Production Services Section -->
+        <section class="production-services-section" style="position: relative; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 0; margin: 0; overflow: hidden; min-height: 100vh; height: 100vh;">
+            
+            <!-- Featured Video - Reduced by 20% -->
+            <div style="position: absolute; top: 10%; left: 10%; width: 80%; height: 80%; z-index: 1;">
+                <video id="heroVideo" muted playsinline preload="auto" controls webkit-playsinline x5-playsinline style="width: 100%; height: 100%; object-fit: cover; object-position: center; display: block;">
+                    <source src="{{ url_for('static', filename='videos/HipHop_new.mp4') }}?v=20250904updated&t={{ range(1000, 9999) | random }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            
+            <!-- Content Overlay -->
+            <div class="container" style="position: absolute; z-index: 2; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 1400px; padding: 0 20px; width: 100%;">
+                <div class="section-header" style="text-align: center;">
+                    <h2 style="color: #fff; font-size: 3rem; margin-bottom: 20px; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">
+                        <svg class="spinning-star star-orange" style="margin-right: 15px; width: 1.2em; height: 1.2em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        Video & Music Production Services
+                    </h2>
+                    <p style="color: #fff; font-size: 1.3rem; max-width: 800px; margin: 0 auto; line-height: 1.6; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">
+                        Cutting-edge video generation tools and professional music production services that transform your content into cinematic masterpieces
+                    </p>
+                </div>
+            </div>
+                    
+            <!-- Video Controls - Overlaid -->
+            <div id="videoControls" style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; gap: 15px;">
+                <button id="playPauseBtn" onclick="togglePlayPause()" style="background: rgba(255, 107, 53, 0.9); color: white; border: none; padding: 12px 25px; border-radius: 25px; font-size: 1.1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px);">
+                    <i class="fas fa-pause"></i> Pause
+                </button>
+                <button id="muteBtn" onclick="toggleMute()" style="background: rgba(0, 255, 255, 0.95); color: black; border: none; padding: 12px 25px; border-radius: 25px; font-size: 1.1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px); font-weight: bold;">
+                    <i class="fas fa-volume-up"></i> 🔊 CLICK FOR AUDIO
+                </button>
+            </div>
+                    
+                    <script>
+                        let hasAutoPlayed = false;
+                        const video = document.getElementById('heroVideo');
+                        const controls = document.getElementById('videoControls');
+                        const playPauseBtn = document.getElementById('playPauseBtn');
+                        const muteBtn = document.getElementById('muteBtn');
+                        
+                        function togglePlayPause() {
+                            if (video.paused) {
+                                video.play();
+                                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+                            } else {
+                                video.pause();
+                                playPauseBtn.innerHTML = '<i class="fas fa-play"></i> Play';
+                            }
+                        }
+                        
+                        function toggleMute() {
+                            if (video.muted) {
+                                video.muted = false;
+                                video.volume = 1.0; // Ensure volume is at maximum
+                                muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i> 🔇 MUTE';
+                                console.log('Video unmuted, volume set to', video.volume);
+                            } else {
+                                video.muted = true;
+                                muteBtn.innerHTML = '<i class="fas fa-volume-up"></i> 🔊 CLICK FOR AUDIO';
+                                console.log('Video muted');
+                            }
+                        }
+                        
+                        // Advanced Audio Autoplay Techniques
+                        let audioContext = null;
+                        let gainNode = null;
+                        let isAudioEnabled = false;
+                        
+                        // 1. Web Audio API Approach
+                        function initWebAudio() {
+                            try {
+                                if (!audioContext) {
+                                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                                    gainNode = audioContext.createGain();
+                                    gainNode.connect(audioContext.destination);
+                                    console.log('🎵 Web Audio Context initialized');
+                                }
+                                
+                                if (audioContext.state === 'suspended') {
+                                    audioContext.resume().then(() => {
+                                        console.log('🎵 Audio context resumed');
+                                        attemptVideoAudioEnable();
+                                    });
+                                } else {
+                                    attemptVideoAudioEnable();
+                                }
+                            } catch (error) {
+                                console.log('Web Audio API not available:', error);
+                                fallbackAudioEnable();
+                            }
+                        }
+                        
+                        // 2. Progressive Audio Enabling
+                        function attemptVideoAudioEnable() {
+                            const enableAudio = () => {
+                                video.muted = false;
+                                video.volume = 1.0;
+                                isAudioEnabled = true;
+                                console.log('🎵 AUDIO ENABLED via Web Audio API!');
+                                muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i> 🔇 MUTE';
+                                return true;
+                            };
+                            
+                            // Try multiple timing approaches
+                            setTimeout(enableAudio, 50);
+                            setTimeout(enableAudio, 100);
+                            setTimeout(enableAudio, 200);
+                            setTimeout(enableAudio, 500);
+                            setTimeout(enableAudio, 1000);
+                        }
+                        
+                        // 3. Fallback Standard Approach
+                        function fallbackAudioEnable() {
+                            video.muted = false;
+                            video.volume = 1.0;
+                            console.log('🎵 Fallback audio enable attempt');
+                        }
+                        
+                        // 4. Initialize Web Audio directly (no beeping audio primer)
+                        function primeBrowserAudio() {
+                            // Skip audio primer beeps - directly initialize Web Audio
+                            console.log('Initializing Web Audio without audio beeps');
+                            initWebAudio();
+                        }
+                        
+                        // 5. Video Event Listeners with Advanced Audio
+                        video.addEventListener('loadstart', function() {
+                            console.log('Video load started - priming audio');
+                            primeBrowserAudio();
+                        });
+                        
+                        video.addEventListener('canplay', function() {
+                            console.log('Video can play - attempting audio activation');
+                            if (!isAudioEnabled) {
+                                initWebAudio();
+                            }
+                        });
+                        
+                        video.addEventListener('playing', function() {
+                            console.log('Video playing - forcing audio unmute');
+                            if (!isAudioEnabled) {
+                                setTimeout(() => {
+                                    video.muted = false;
+                                    video.volume = 1.0;
+                                    isAudioEnabled = true;
+                                    console.log('🎵 FORCE AUDIO ON PLAYING EVENT!');
+                                    muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i> 🔇 MUTE';
+                                }, 10);
+                            }
+                        });
+                        
+                        // 6. Multiple Trigger Events
+                        function enableAudioOnInteraction() {
+                            if (!isAudioEnabled) {
+                                video.muted = false;
+                                video.volume = 1.0;
+                                isAudioEnabled = true;
+                                initWebAudio();
+                                console.log('🎵 User interaction - AUDIO ENABLED!');
+                                muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i> 🔇 MUTE';
+                            }
+                        }
+                        
+                        // Listen for ANY possible interaction
+                        ['click', 'touchstart', 'touchend', 'mousedown', 'mouseup', 'keydown', 'scroll', 'resize', 'focus', 'mousemove'].forEach(event => {
+                            document.addEventListener(event, enableAudioOnInteraction, { once: true, passive: true });
+                        });
+                        
+                        // 7. ENHANCED Mac/Safari Specific Autoplay Strategy - IMMEDIATE AUTOPLAY
+                        function forceVideoAutoplay() {
+                            if (!hasAutoPlayed) {
+                                console.log('🎵 AGGRESSIVE AUDIO AUTOPLAY SETUP - MAC OPTIMIZED');
+                                
+                                // Detect Safari/Mac
+                                const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+                                const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+                                
+                                console.log('Browser detection:', { isSafari, isMac, userAgent: navigator.userAgent });
+                                
+                                // Prime audio immediately
+                                primeBrowserAudio();
+                                
+                                // Mac/Safari specific approach
+                                if (isSafari || isMac) {
+                                    console.log('🍎 Mac/Safari detected - using specialized autoplay');
+                                    
+                                    // Set video properties for Safari
+                                    video.setAttribute('webkit-playsinline', 'true');
+                                    video.setAttribute('x5-playsinline', 'true');
+                                    video.setAttribute('muted', 'true');
+                                    video.muted = true;
+                                    video.defaultMuted = true;
+                                    video.volume = 0;
+                                    video.preload = 'auto';
+                                    
+                                    // Force load the video first
+                                    video.load();
+                                    
+                                    // IMMEDIATE autoplay attempt
+                                    console.log('🍎 Safari IMMEDIATE autoplay attempt');
+                                    video.play().then(() => {
+                                        console.log('🍎 Safari IMMEDIATE autoplay SUCCESS!');
+                                        hasAutoPlayed = true;
+                                        controls.style.display = 'block';
+                                        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+                                        
+                                        // Enable audio after successful video autoplay
+                                        setTimeout(() => initWebAudio(), 200);
+                                        setTimeout(() => initWebAudio(), 500);
+                                        setTimeout(() => initWebAudio(), 1000);
+                                    }).catch(err => {
+                                        console.log('🍎 Safari IMMEDIATE autoplay failed:', err);
+                                        
+                                        // Multiple fallback attempts with progressive delays
+                                        setTimeout(() => {
+                                            console.log('🍎 Safari autoplay attempt 1');
+                                            video.play().then(() => {
+                                                console.log('🍎 Safari autoplay SUCCESS!');
+                                                hasAutoPlayed = true;
+                                                controls.style.display = 'block';
+                                                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+                                            }).catch(err => {
+                                                console.log('🍎 Safari autoplay attempt 1 failed:', err);
+                                                
+                                                // Second attempt after brief delay
+                                                setTimeout(() => {
+                                                    console.log('🍎 Safari autoplay attempt 2');
+                                                    video.play().then(() => {
+                                                        console.log('🍎 Safari autoplay attempt 2 SUCCESS!');
+                                                        hasAutoPlayed = true;
+                                                        controls.style.display = 'block';
+                                                        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+                                                    }).catch(err2 => {
+                                                        console.log('🍎 Safari autoplay attempt 2 failed:', err2);
+                                                        // Show manual play button as final fallback
+                                                        controls.style.display = 'block';
+                                                        playPauseBtn.innerHTML = '<i class="fas fa-play"></i> ▶️ CLICK TO PLAY';
+                                                        playPauseBtn.style.background = 'rgba(255, 107, 53, 0.95)';
+                                                        playPauseBtn.style.fontSize = '1.3rem';
+                                                        playPauseBtn.style.padding = '15px 30px';
+                                                    });
+                                                }, 1000);
+                                            });
+                                        }, 100);
+                                    });
+                                    
+                                } else {
+                                    // Standard approach for other browsers - IMMEDIATE
+                                    console.log('🌐 Standard browser - using IMMEDIATE regular autoplay');
+                                    video.muted = true;
+                                    video.preload = 'auto';
+                                    
+                                    // IMMEDIATE play attempt
+                                    video.play().then(() => {
+                                        console.log('Video IMMEDIATE autoplay started');
+                                        hasAutoPlayed = true;
+                                        controls.style.display = 'block';
+                                        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+                                        
+                                        // Immediate audio attempts
+                                        setTimeout(() => initWebAudio(), 10);
+                                        setTimeout(() => initWebAudio(), 100);
+                                        setTimeout(() => initWebAudio(), 300);
+                                        setTimeout(() => initWebAudio(), 600);
+                                        setTimeout(() => initWebAudio(), 1000);
+                                        
+                                    }).catch(err => {
+                                        console.log('IMMEDIATE Autoplay failed:', err);
+                                        controls.style.display = 'block';
+                                        playPauseBtn.innerHTML = '<i class="fas fa-play"></i> Play';
+                                    });
+                                }
+                            }
+                        }
+                        
+                        // Call autoplay function on DOMContentLoaded
+                        document.addEventListener('DOMContentLoaded', forceVideoAutoplay);
+                        
+                        // Also try immediately if DOM is already loaded
+                        if (document.readyState === 'loading') {
+                            document.addEventListener('DOMContentLoaded', forceVideoAutoplay);
+                        } else {
+                            // DOM already loaded, try autoplay immediately
+                            forceVideoAutoplay();
+                        }
+                        
+                        // 8. Page Visibility Changes (for returning users)
+                        document.addEventListener('visibilitychange', function() {
+                            if (!document.hidden && !isAudioEnabled) {
+                                console.log('Page visible again - attempting audio');
+                                setTimeout(() => initWebAudio(), 100);
+                            }
+                        });
+                        
+                        // Update button when video ends
+                        video.addEventListener('ended', function() {
+                            playPauseBtn.innerHTML = '<i class="fas fa-play"></i> Play Again';
+                        });
+                        
+                        // Update button during playback
+                        video.addEventListener('play', function() {
+                            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+                        });
+                        
+                        video.addEventListener('pause', function() {
+                            playPauseBtn.innerHTML = '<i class="fas fa-play"></i> Play';
+                        });
+                    </script>
+                </div>
+                
+                <div class="services-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-bottom: 60px;">
+                    <!-- FACIAL EXPRESSION ANALYSIS -->
+                    <div class="service-card" style="background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); border-radius: 20px; padding: 35px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; transition: all 0.3s ease;">
+                        <div class="service-icon" style="margin-bottom: 25px;">
+                            <svg class="fast-spin-star star-red" style="width: 4rem; height: 4rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <h3 style="color: #fff; font-size: 1.8rem; margin-bottom: 15px;">Video Generation</h3>
+                        <p style="color: #ffffff; margin-bottom: 25px; line-height: 1.6;">
+                            Transform static photos into dynamic videos using state of the art in video creation technology. Professional motion sequences with realistic facial expressions and environmental animation.
+                        </p>
+                        <div class="service-features" style="margin-bottom: 25px;">
+                            <div style="color: #00ffff; margin: 8px 0; font-size: 0.95rem;">
+                                <svg class="twinkling-star star-orange" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                Custom Video Generations
+                            </div>
+                            <div style="color: #00ffff; margin: 8px 0; font-size: 0.95rem;">
+                                <svg class="twinkling-star star-orange" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                Realistic Motion Generation
+                            </div>
+                            <div style="color: #00ffff; margin: 8px 0; font-size: 0.95rem;">
+                                <svg class="twinkling-star star-orange" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                Content Safety Filtering
+                            </div>
+                        </div>
+                        <div class="service-price" style="color: #ff6b35; font-size: 1.5rem; font-weight: 700;">Starting at $50</div>
+                    </div>
+                    
+                    <!-- Custom Music Production -->
+                    <div class="service-card" style="background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); border-radius: 20px; padding: 35px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; transition: all 0.3s ease;">
+                        <div class="service-icon" style="margin-bottom: 25px;">
+                            <svg class="fast-spin-star star-blue" style="width: 4rem; height: 4rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <h3 style="color: #fff; font-size: 1.8rem; margin-bottom: 15px;">Custom Music Production</h3>
+                        <p style="color: #ffffff; margin-bottom: 25px; line-height: 1.6;">
+                            Original soundtracks, ambient audio, and professional music composition perfectly synchronized to your video content for maximum emotional impact.
+                        </p>
+                        <div class="service-features" style="margin-bottom: 25px;">
+                            <div style="color: #00ffff; margin: 8px 0; font-size: 0.95rem;">
+                                <svg class="twinkling-star star-orange" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                Original Compositions
+                            </div>
+                            <div style="color: #00ffff; margin: 8px 0; font-size: 0.95rem;">
+                                <svg class="twinkling-star star-orange" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                Audio Synchronization
+                            </div>
+                            <div style="color: #00ffff; margin: 8px 0; font-size: 0.95rem;">
+                                <svg class="twinkling-star star-orange" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                Professional Mixing
+                            </div>
+                        </div>
+                        <div class="service-price" style="color: #ff6b35; font-size: 1.5rem; font-weight: 700;">Starting at $150</div>
+                    </div>
+                    
+                    <!-- Group Video Creation -->
+                    <div class="service-card" style="background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); border-radius: 20px; padding: 35px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; transition: all 0.3s ease;">
+                        <div class="service-icon" style="margin-bottom: 25px;">
+                            <svg class="fast-spin-star star-green" style="width: 4rem; height: 4rem;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <h3 style="color: #fff; font-size: 1.8rem; margin-bottom: 15px;">Group Video Creation</h3>
+                        <p style="color: #ffffff; margin-bottom: 25px; line-height: 1.6;">
+                            Multi-avatar video generation supporting 2-6 people with automatic composition, positioning, and professional choreography for group narratives.
+                        </p>
+                        <div class="service-features" style="margin-bottom: 25px;">
+                            <div style="color: #00ffff; margin: 8px 0; font-size: 0.95rem;">
+                                <svg class="twinkling-star star-orange" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                Multi-Avatar Support
+                            </div>
+                            <div style="color: #00ffff; margin: 8px 0; font-size: 0.95rem;">
+                                <svg class="twinkling-star star-orange" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                Automatic Composition
+                            </div>
+                            <div style="color: #00ffff; margin: 8px 0; font-size: 0.95rem;">
+                                <svg class="twinkling-star star-orange" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                Professional Choreography
+                            </div>
+                        </div>
+                        <div class="service-price" style="color: #ff6b35; font-size: 1.5rem; font-weight: 700;">Starting at $200</div>
+                    </div>
+                </div>
+                
+                <!-- Production Tools & Capabilities -->
+                <div class="tools-section" style="margin-top: 80px;">
+                    <h3 style="color: #fff; font-size: 2.5rem; text-align: center; margin-bottom: 50px; font-weight: 600;">
+                        <svg class="spinning-star star-orange" style="margin-right: 15px; width: 1.2em; height: 1.2em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        Professional Production Tools
+                    </h3>
+                    
+                    <div class="tools-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
+                        <!-- Video Generation Tools -->
+                        <div class="tool-category" style="background: rgba(255, 107, 53, 0.1); border-radius: 15px; padding: 30px; border: 1px solid rgba(255, 107, 53, 0.2);">
+                            <h4 style="color: #ff6b35; font-size: 1.3rem; margin-bottom: 20px; font-weight: 600;">
+                                <svg class="twinkling-star star-red" style="margin-right: 10px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                AI Generation
+                            </h4>
+                            <ul style="color: #ffffff; line-height: 1.8; list-style: none; padding: 0;">
+                                <li style="margin-bottom: 8px;"><svg class="twinkling-star star-orange" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>Google MOTION PREDICTION ALGORITHMS Engine</li>
+                                <li style="margin-bottom: 8px;"><svg class="twinkling-star star-orange" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>CONTENT SAFETY SYSTEMS Enhancement</li>
+                                <li style="margin-bottom: 8px;"><svg class="twinkling-star star-orange" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>Motion Prediction Algorithms</li>
+                                <li style="margin-bottom: 8px;"><svg class="twinkling-star star-orange" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>Facial Expression Analysis</li>
+                                <li style="margin-bottom: 8px;"><svg class="twinkling-star star-orange" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>Content Safety Systems</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Post-Production Tools -->
+                        <div class="tool-category" style="background: rgba(0, 255, 255, 0.1); border-radius: 15px; padding: 30px; border: 1px solid rgba(0, 255, 255, 0.2);">
+                            <h4 style="color: #00ffff; font-size: 1.3rem; margin-bottom: 20px; font-weight: 600;">
+                                <svg class="twinkling-star star-red" style="margin-right: 10px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                Post-Production
+                            </h4>
+                            <ul style="color: #ffffff; line-height: 1.8; list-style: none; padding: 0;">
+                                <li style="margin-bottom: 8px;"><svg class="twinkling-star star-blue" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>Advanced Color Grading</li>
+                                <li style="margin-bottom: 8px;"><svg class="twinkling-star star-blue" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>Motion Graphics Design</li>
+                                <li style="margin-bottom: 8px;"><svg class="twinkling-star star-blue" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>Visual Effects (VFX)</li>
+                                <li style="margin-bottom: 8px;"><svg class="twinkling-star star-blue" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>Frame-by-Frame Enhancement</li>
+                                <li style="margin-bottom: 8px;"><svg class="twinkling-star star-blue" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>4K/8K Upscaling</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Audio Production Tools -->
+                        <div class="tool-category" style="background: rgba(39, 174, 96, 0.1); border-radius: 15px; padding: 30px; border: 1px solid rgba(39, 174, 96, 0.2);">
+                            <h4 style="color: #27ae60; font-size: 1.3rem; margin-bottom: 20px; font-weight: 600;">
+                                <svg class="twinkling-star star-red" style="margin-right: 10px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                Audio Production
+                            </h4>
+                            <ul style="color: #ffffff; line-height: 1.8; list-style: none; padding: 0;">
+                                <li style="margin-bottom: 8px;"><svg class="twinkling-star star-green" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>Digital Audio Workstation</li>
+                                <li style="margin-bottom: 8px;"><svg class="twinkling-star star-green" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>Professional Mixing/Mastering</li>
+                                <li style="margin-bottom: 8px;"><svg class="twinkling-star star-green" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>Sound Design & Foley</li>
+                                <li style="margin-bottom: 8px;"><svg class="twinkling-star star-green" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>Surround Sound Processing</li>
+                                <li style="margin-bottom: 8px;"><svg class="twinkling-star star-green" style="margin-right: 8px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>Audio Synchronization</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Delivery & Distribution -->
+                        <div class="tool-category" style="background: rgba(155, 89, 182, 0.1); border-radius: 15px; padding: 30px; border: 1px solid rgba(155, 89, 182, 0.2);">
+                            <h4 style="color: #9b59b6; font-size: 1.3rem; margin-bottom: 20px; font-weight: 600;">
+                                <svg class="twinkling-star star-red" style="margin-right: 10px; width: 1em; height: 1em;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                Delivery & Distribution
+                            </h4>
+                            <ul style="color: #ffffff; line-height: 1.8; list-style: none; padding: 0;">
+                                <li style="margin-bottom: 8px;"><i class="fas fa-caret-right" style="color: #9b59b6; margin-right: 8px;"></i>Secure Account Access</li>
+                                <li style="margin-bottom: 8px;"><i class="fas fa-caret-right" style="color: #9b59b6; margin-right: 8px;"></i>Multiple Format Export</li>
+                                <li style="margin-bottom: 8px;"><i class="fas fa-caret-right" style="color: #9b59b6; margin-right: 8px;"></i>Cloud Storage Integration</li>
+                                <li style="margin-bottom: 8px;"><i class="fas fa-caret-right" style="color: #9b59b6; margin-right: 8px;"></i>Direct Download Links</li>
+                                <li style="margin-bottom: 8px;"><i class="fas fa-caret-right" style="color: #9b59b6; margin-right: 8px;"></i>Progress Tracking Dashboard</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Call to Action -->
+                <div class="production-cta" style="text-align: center; margin-top: 60px; padding: 50px; background: rgba(255, 107, 53, 0.1); border-radius: 20px; border: 1px solid rgba(255, 107, 53, 0.2);">
+                    <h3 style="color: #fff; font-size: 2.2rem; margin-bottom: 20px; font-weight: 600;">Ready to Create Your Masterpiece?</h3>
+                    <p style="color: #ffffff; font-size: 1.1rem; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                        Join thousands of satisfied customers who have transformed their memories into professional video content using our cutting-edge production tools.
+                    </p>
+                    <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                        {% if current_user and current_user.is_authenticated %}
+                            <a href="{{ url_for('create_video') }}" style="background: linear-gradient(135deg, #ff6b35, #f7931e); color: white; padding: 15px 30px; border-radius: 25px; text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: all 0.3s ease;">
+                                <i class="fas fa-video" style="margin-right: 10px;"></i>Start Creating Now
+                            </a>
+                            <a href="{{ url_for('create_group_video') }}" style="background: linear-gradient(135deg, #00ffff, #40e0d0); color: #1a1a2e; padding: 15px 30px; border-radius: 25px; text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: all 0.3s ease;">
+                                <i class="fas fa-users" style="margin-right: 10px;"></i>Create Group Video
+                            </a>
+                        {% else %}
+                            <a href="{{ url_for('signup') }}" style="background: linear-gradient(135deg, #ff6b35, #f7931e); color: white; padding: 15px 30px; border-radius: 25px; text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: all 0.3s ease;">
+                                <i class="fas fa-user-plus" style="margin-right: 10px;"></i>Create Free Account
+                            </a>
+                            <a href="{{ url_for('pricing') }}" style="background: linear-gradient(135deg, #00ffff, #40e0d0); color: #1a1a2e; padding: 15px 30px; border-radius: 25px; text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: all 0.3s ease;">
+                                <i class="fas fa-dollar-sign" style="margin-right: 10px;"></i>View Pricing
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advertisement Section -->
+        <section class="advertisement-section" style="padding: 40px 0; background: linear-gradient(135deg, #1e1e32 0%, #1a2142 100%);">
+            <div class="container">
+                <div class="ads-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto;">
+                    
+                    <!-- Premium Ad Space 1 -->
+                    <div class="premium-ad-space" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 40px 20px; text-align: center; color: white; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.1);"></div>
+                        <div style="position: relative; z-index: 2;">
+                            <h3 style="margin: 0 0 10px 0; font-size: 24px; font-weight: bold;">Premium Banner</h3>
+                            <p style="margin: 0 0 15px 0; opacity: 0.9;">Advertise to engaged customers</p>
+                            <div style="padding: 8px 20px; background: rgba(255,255,255,0.2); border-radius: 25px; font-size: 14px; display: inline-block;">728x90 Standard</div>
+                        </div>
+                    </div>
+
+                    <!-- Premium Ad Space 2 -->
+                    <div class="premium-ad-space" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border-radius: 15px; padding: 40px 20px; text-align: center; color: white; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.1);"></div>
+                        <div style="position: relative; z-index: 2;">
+                            <h3 style="margin: 0 0 10px 0; font-size: 24px; font-weight: bold;">Featured Placement</h3>
+                            <p style="margin: 0 0 15px 0; opacity: 0.9;">High visibility positioning</p>
+                            <div style="padding: 8px 20px; background: rgba(255,255,255,0.2); border-radius: 25px; font-size: 14px; display: inline-block;">300x250 Rectangle</div>
+                        </div>
+                    </div>
+
+                    <!-- Premium Ad Space 3 -->
+                    <div class="premium-ad-space" style="background: linear-gradient(135deg, #fc466b 0%, #3f5efb 100%); border-radius: 15px; padding: 40px 20px; text-align: center; color: white; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.1);"></div>
+                        <div style="position: relative; z-index: 2;">
+                            <h3 style="margin: 0 0 10px 0; font-size: 24px; font-weight: bold;">Sponsor Spotlight</h3>
+                            <p style="margin: 0 0 15px 0; opacity: 0.9;">Exclusive brand partnership</p>
+                            <div style="padding: 8px 20px; background: rgba(255,255,255,0.2); border-radius: 25px; font-size: 14px; display: inline-block;">Custom Size</div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <p style="color: #ffffff; font-size: 16px; margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8), 0 0 10px rgba(255,255,255,0.3); filter: brightness(2);">Interested in advertising with us?</p>
+                    <a href="/contact" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 30px; border-radius: 25px; border: none; font-weight: 600; cursor: pointer; transition: transform 0.3s ease; text-decoration: none;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">Contact for Rates</a>
+                </div>
+                
+                <!-- Contact Form Modal -->
+                <div id="contactModal" style="display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); align-items: center; justify-content: center;">
+                    <div style="background: white; padding: 30px; border-radius: 15px; max-width: 500px; width: 90%; position: relative;">
+                        <span onclick="closeContactForm()" style="position: absolute; top: 15px; right: 20px; color: #666; font-size: 28px; font-weight: bold; cursor: pointer;">&times;</span>
+                        <h3 style="margin: 0 0 20px 0; color: #333; text-align: center;">Advertising Inquiry</h3>
+                        <div id="contactFormContainer">
+                            <form id="contactForm" style="display: flex; flex-direction: column; gap: 15px;">
+                                <input type="text" name="name" placeholder="Your Name" required style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;">
+                                <input type="email" name="email" placeholder="Your Email" required style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;">
+                                <input type="text" name="company" placeholder="Company Name" style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;">
+                                <select name="adtype" style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;">
+                                    <option value="">Select Ad Type</option>
+                                    <option value="banner">Premium Banner (728x90)</option>
+                                    <option value="rectangle">Featured Rectangle (300x250)</option>
+                                    <option value="mobile">Mobile Display (320x480)</option>
+                                    <option value="custom">Custom Placement</option>
+                                </select>
+                                <textarea name="message" placeholder="Tell us about your advertising needs..." rows="4" required style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; resize: vertical;"></textarea>
+                                <button type="button" id="submitBtn" onclick="submitContactForm()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer;">Send Inquiry</button>
+                            </form>
+                        </div>
+                        
+                        <script>
+                        function submitContactForm() {
+                            const form = document.getElementById('contactForm');
+                            const submitBtn = document.getElementById('submitBtn');
+                            const container = document.getElementById('contactFormContainer');
+                            
+                            // Get form data
+                            const formData = new FormData(form);
+                            
+                            // Show loading state
+                            submitBtn.innerHTML = 'Sending...';
+                            submitBtn.disabled = true;
+                            
+                            // Submit form
+                            fetch('/contact', {
+                                method: 'POST',
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                },
+                                body: formData
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    // Show success message
+                                    container.innerHTML = `
+                                        <div style="text-align: center; padding: 40px 20px; background: linear-gradient(135deg, #d4edda 0%, #c8e6c9 100%); border-radius: 15px;">
+                                            <div style="font-size: 4rem; color: #28a745; margin-bottom: 20px;">✓</div>
+                                            <h3 style="color: #155724; margin-bottom: 15px; font-size: 24px;">Message Sent Successfully!</h3>
+                                            <p style="color: #2d5a2d; margin-bottom: 30px; font-size: 16px;">Thank you! We'll get back to you within 24 hours.</p>
+                                            <button onclick="closeContactForm()" style="background: #28a745; color: white; border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 600;">Close</button>
+                                        </div>
+                                    `;
+                                } else {
+                                    // Show error and reset form
+                                    alert(data.message || 'Error sending message. Please try again.');
+                                    submitBtn.innerHTML = 'Send Inquiry';
+                                    submitBtn.disabled = false;
+                                }
+                            })
+                            .catch(error => {
+                                // Show error and reset form
+                                alert('Error sending message. Please try again.');
+                                submitBtn.innerHTML = 'Send Inquiry';
+                                submitBtn.disabled = false;
+                            });
+                        }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            // Define contact form functions immediately when script loads
+            window.showContactForm = function() {
+                console.log('🔍 DEBUGGING: Opening contact form');
+                const modal = document.getElementById('contactModal');
+                console.log('🔍 DEBUGGING: Modal search result:', modal);
+                if (modal) {
+                    console.log('✅ SUCCESS: Contact modal found, opening...');
+                    modal.style.display = 'flex';
+                    modal.style.visibility = 'visible';
+                    modal.style.opacity = '1';
+                    document.body.style.overflow = 'hidden';
+                    console.log('✅ MODAL OPENED: Display set to flex');
+                } else {
+                    console.error('❌ ERROR: Contact modal not found with ID: contactModal');
+                    // Try to find all modals for debugging
+                    const allModals = document.querySelectorAll('[id*="modal"], [id*="Modal"], [id*="contact"], [id*="Contact"]');
+                    console.log('🔍 DEBUGGING: Available elements:', allModals);
+                    console.log('🔍 DEBUGGING: All IDs on page:', Array.from(document.querySelectorAll('[id]')).map(el => el.id));
+                }
+            };
+            
+            window.closeContactForm = function() {
+                console.log('Closing contact form');
+                const modal = document.getElementById('contactModal');
+                if (modal) {
+                    modal.style.display = 'none';
+                    modal.style.visibility = 'hidden';
+                    modal.style.opacity = '0';
+                    document.body.style.overflow = 'auto';
+                }
+            };
+
+            // Modal click-outside handler only (form handler is above)
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('Setting up modal click handler');
+                
+                // Close modal when clicking outside
+                const modal = document.getElementById('contactModal');
+                if (modal) {
+                    modal.addEventListener('click', function(e) {
+                        if (e.target === modal) {
+                            window.closeContactForm();
+                        }
+                    });
+                }
+            });
+        </script>
+
+        <!-- Services Section -->
+        <section class="services-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Our Services</h2>
+                    <p>Comprehensive video production solutions for every memory</p>
+                    <br>
+                    <p>OUR AUTOMATED VIDEO GENERATION PLATFORM IS COMING SOON, EMPOWERING YOU TO CREATE HIGH-QUALITY CONTENT INSTANTLY</p>
+                </div>
+                
+                <div class="services-grid">
+                    <div class="service-card featured-service">
+                        <div class="service-image">
+                            <img src="{{ url_for('serve_thumbnail', filename='VideoGram_thumbnail.jpg') }}" alt="VideoGrams Service" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px; margin-bottom: 15px;">
+                        </div>
+                        <h3>VideoGrams</h3>
+                        <p>Personalized video messages with your custom script. Perfect for greetings, announcements, and special communications delivered with professional quality. Available in 5-second quick clips or longer formats. Starting at $50.</p>
+                    </div>
+                    
+                    <div class="service-card">
+                        <div class="service-image">
+                            <img src="{{ url_for('serve_thumbnail', filename='Memories.jpeg.png') }}" alt="Family Memories Service" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px; margin-bottom: 15px;">
+                        </div>
+                        <h3>Family Memories</h3>
+                        <p>Transform your family photos and videos into beautiful cinematic experiences that celebrate your bond and shared moments.</p>
+                    </div>
+                    
+                    <div class="service-card">
+                        <div class="service-image">
+                            <img src="{{ url_for('serve_thumbnail', filename='WWII_thumbnail.jpg') }}" alt="Military Tributes Service" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px; margin-bottom: 15px;">
+                        </div>
+                        <h3>Military Tributes</h3>
+                        <p>Honor service members with dignified video tributes that capture their dedication, sacrifice, and heroic stories.</p>
+                    </div>
+                    
+                    <div class="service-card">
+                        <div class="service-image">
+                            <img src="{{ url_for('serve_thumbnail', filename='Wedding_thumbnail.jpg') }}" alt="Wedding Stories Service" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px; margin-bottom: 15px;">
+                        </div>
+                        <h3>Wedding Stories</h3>
+                        <p>Create romantic wedding films that capture every emotional moment of your special day with artistic flair.</p>
+                    </div>
+                    
+                    <div class="service-card">
+                        <div class="service-image">
+                            <img src="{{ url_for('serve_thumbnail', filename='Fembot_thumbnail.jpg') }}" alt="Quick Clips Service" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px; margin-bottom: 15px;">
+                        </div>
+                        <h3>Quick Clips</h3>
+                        <p>Five-second promotional videos, social media content, and instant moments. Perfect for social platforms, advertisements, and rapid communication needs.</p>
+                    </div>
+                    
+                    <div class="service-card ad-space">
+                        <div class="ad-container" style="width: 100%; height: 120px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; margin-bottom: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; position: relative; overflow: hidden;">
+                            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.2);"></div>
+                            <div style="position: relative; z-index: 2;">
+                                <h4 style="margin: 0; font-size: 16px; font-weight: bold;">Advertise Here</h4>
+                                <p style="margin: 5px 0 0 0; font-size: 12px; opacity: 0.9;">Reach our audience</p>
+                                <div style="margin-top: 8px; padding: 4px 12px; background: rgba(255,255,255,0.2); border-radius: 15px; font-size: 11px;">Premium Placement</div>
+                            </div>
+                        </div>
+                        <h3>Advertisement Space</h3>
+                        <p>Premium advertising placement to reach our engaged audience. Contact us for rates and availability. Multiple format options available.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>Ready to Transform Your Memories?</h2>
+                    <div class="cta-buttons">
+                        <a href="{{ url_for('pricing') }}" class="btn-primary" onclick="gtag('event', 'click', {'event_category': 'CTA', 'event_label': 'View Pricing'})">
+                            View Pricing
+                        </a>
+                        <button class="btn-secondary" onclick="event.preventDefault(); event.stopPropagation(); showContactForm(); trackQuoteRequest('general_inquiry'); return false;">
+                            Get Quote
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    </div>
+
+
+
+
+    <script>
+        // Background Music Functionality
+        let isPlaying = false;
+        let backgroundMusic = null;
+        let musicToggle = null;
+        
+        // Initialize music elements after DOM loads
+        document.addEventListener('DOMContentLoaded', function() {
+            backgroundMusic = document.getElementById('backgroundMusic');
+            musicToggle = document.getElementById('musicToggle');
+            
+            // Set volume to a comfortable level
+            if (backgroundMusic) {
+                backgroundMusic.volume = 0.3;
+            }
+        });
+        
+        // Background music disabled from auto-starting - user can manually enable with music button
+        
+        function toggleMusic() {
+            // Ensure elements are available
+            if (!backgroundMusic || !musicToggle) {
+                console.error('Music elements not initialized');
+                return;
+            }
+            
+            if (isPlaying) {
+                backgroundMusic.pause();
+                musicToggle.innerHTML = '🎵';
+                musicToggle.classList.remove('playing');
+                isPlaying = false;
+            } else {
+                backgroundMusic.play();
+                musicToggle.innerHTML = '⏸️';
+                musicToggle.classList.add('playing');
+                isPlaying = true;
+            }
+        }
+        
+        // Auto-start music after user interaction (fallback for browsers that block autoplay)
+        document.addEventListener('click', function() {
+            if (!isPlaying) {
+                // Only auto-start once per session
+                if (!sessionStorage.getItem('musicAutoStarted')) {
+                    toggleMusic();
+                    sessionStorage.setItem('musicAutoStarted', 'true');
+                }
+            }
+        }, { once: true });
+        
+        // Background music now only starts manually via user clicking music button - video audio still works perfectly
+
+        // Video handling functions
+        function handleVideoLoad() {
+            console.log('Video metadata loaded');
+            const video = document.getElementById('heroVideo');
+            if (video) {
+                video.muted = true; // Start muted for autoplay
+                video.play().then(() => {
+                    console.log('Video started playing');
+                }).catch(e => {
+                    console.log('Video autoplay failed:', e);
+                });
+            }
+        }
+        
+        function handleVideoError() {
+            console.log('Video failed to load');
+            const video = document.getElementById('heroVideo');
+            if (video) {
+                // Try alternative format or show fallback
+                console.log('Attempting video recovery');
+            }
+        }
+        
+        function ensureVideoPlaying() {
+            const video = document.getElementById('heroVideo');
+            if (video && video.paused) {
+                video.play().catch(e => console.log('Video play failed:', e));
+            }
+        }
+        
+        // Mute button functionality for hero video
+        function toggleVideoMute() {
+            const video = document.getElementById('heroVideo');
+            const muteIcon = document.getElementById('muteIcon');
+            const muteLabel = document.getElementById('muteLabel');
+            
+            if (video.muted) {
+                video.muted = false;
+                muteIcon.className = 'fas fa-volume-up';
+                muteLabel.textContent = 'Audio On';
+                console.log('Video audio enabled');
+            } else {
+                video.muted = true;
+                muteIcon.className = 'fas fa-volume-mute';
+                muteLabel.textContent = 'Muted';
+                console.log('Video audio muted');
+            }
+        }
+
+        // Homepage now uses static images for better performance
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Homepage loaded with static service images for optimal performance');
+            
+            // Initialize video
+            const video = document.getElementById('heroVideo');
+            if (video) {
+                video.muted = true;
+                video.addEventListener('loadedmetadata', () => {
+                    console.log('Video metadata loaded, dimensions:', video.videoWidth, 'x', video.videoHeight);
+                    console.log('Video ready state:', video.readyState);
+                    console.log('Video currentTime:', video.currentTime);
+                    console.log('Video duration:', video.duration);
+                });
+                
+                // Add click-anywhere-to-mute functionality
+                document.addEventListener('click', function(event) {
+                    const videoContainer = document.querySelector('.promo-video-container');
+                    const muteButton = document.getElementById('muteButton');
+                    
+                    // Check if click was outside the video container and not on the mute button
+                    if (videoContainer && muteButton && 
+                        !videoContainer.contains(event.target) && 
+                        !muteButton.contains(event.target)) {
+                        
+                        // Only mute if video is currently unmuted
+                        if (!video.muted) {
+                            video.muted = true;
+                            const muteIcon = document.getElementById('muteIcon');
+                            const muteLabel = document.getElementById('muteLabel');
+                            
+                            if (muteIcon && muteLabel) {
+                                muteIcon.className = 'fas fa-volume-mute';
+                                muteLabel.textContent = 'Muted';
+                                muteButton.title = 'Click to unmute audio';
+                                console.log('Video muted by clicking outside video area');
+                            }
+                        }
+                    }
+                });
+                video.addEventListener('canplay', () => {
+                    console.log('Video can start playing, paused:', video.paused);
+                    if (video.paused) {
+                        video.play().then(() => {
+                            console.log('Video playing successfully');
+                        }).catch(e => console.log('Auto-play failed:', e));
+                    }
+                });
+                video.addEventListener('playing', () => {
+                    console.log('Video is now playing');
+                });
+                video.addEventListener('pause', () => {
+                    console.log('Video paused');
+                });
+                video.addEventListener('error', (e) => {
+                    console.log('Video error:', e, video.error);
+                });
+                video.addEventListener('loadstart', () => {
+                    console.log('Video load started');
+                });
+                video.addEventListener('progress', () => {
+                    console.log('Video loading progress');
+                });
+                
+                // Force video load
+                video.load();
+            }
+        });
+
+
+
+        // Welcome video modal functionality
+        function openWelcomeVideo() {
+            const modal = document.getElementById('welcomeVideoModal');
+            const video = document.getElementById('welcomeVideoPlayer');
+            modal.style.display = 'flex';
+            video.play();
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeWelcomeVideo() {
+            const modal = document.getElementById('welcomeVideoModal');
+            const video = document.getElementById('welcomeVideoPlayer');
+            modal.style.display = 'none';
+            video.pause();
+            video.currentTime = 0;
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeWelcomeVideo();
+            }
+        });
+
+
+    </script>
+    <script src="{{ url_for('static', filename='js/livephoto-gallery.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/accessibility.js') }}"></script>
+    
+    <script>
+        // Video Rotation System
+        class VideoRotation {
+            constructor() {
+                this.currentIndex = 0;
+                this.videos = [
+                    'homepage-hero.mp4',
+                    'homepage-hero-2.mp4', 
+                    'homepage-hero-3.mp4'
+                ];
+                this.availableVideos = [];
+                this.autoRotateInterval = null;
+                this.rotationDuration = 8000; // 8 seconds per video
+                
+                this.init();
+            }
+            
+            async init() {
+                this.video = document.getElementById('heroVideo');
+                this.dots = document.querySelectorAll('.rotation-dot');
+                
+                if (!this.video || this.dots.length === 0) return;
+                
+                // Check which videos actually exist
+                await this.checkAvailableVideos();
+                
+                // Add click handlers to dots
+                this.dots.forEach((dot, index) => {
+                    dot.addEventListener('click', () => this.switchToVideo(index));
+                });
+                
+                // Only start auto-rotation if we have multiple videos
+                if (this.availableVideos.length > 1) {
+                    this.startAutoRotation();
+                }
+                
+                // Pause rotation on hover
+                this.video.addEventListener('mouseenter', () => this.pauseRotation());
+                this.video.addEventListener('mouseleave', () => {
+                    if (this.availableVideos.length > 1) {
+                        this.startAutoRotation();
+                    }
+                });
+            }
+            
+            async checkAvailableVideos() {
+                this.availableVideos = [];
+                
+                for (let i = 0; i < this.videos.length; i++) {
+                    try {
+                        const response = await fetch(`/static/videos/${this.videos[i]}`, { method: 'HEAD' });
+                        if (response.ok) {
+                            this.availableVideos.push(i);
+                        }
+                    } catch (e) {
+                        // Video doesn't exist
+                    }
+                }
+                
+                // Show video player if videos exist, otherwise show placeholder
+                const placeholder = document.querySelector('.video-placeholder');
+                if (this.availableVideos.length > 0) {
+                    this.video.style.display = 'block';
+                    if (placeholder) placeholder.style.display = 'none';
+                    
+                    // Start rotation if we have multiple videos
+                    if (this.availableVideos.length > 1) {
+                        setTimeout(() => this.startAutoRotation(), 1000);
+                    }
+                } else {
+                    this.video.style.display = 'none';
+                    if (placeholder) placeholder.style.display = 'flex';
+                }
+                
+                // Hide dots for non-existent videos
+                this.dots.forEach((dot, index) => {
+                    if (!this.availableVideos.includes(index)) {
+                        dot.style.display = 'none';
+                    } else {
+                        dot.style.display = 'block';
+                    }
+                });
+                
+                console.log('Available videos:', this.availableVideos.map(i => this.videos[i]));
+                console.log('Video directory check complete');
+            }
+            
+            switchToVideo(index) {
+                if (index === this.currentIndex || !this.availableVideos.includes(index)) return;
+                
+                const videoSrc = this.videos[index];
+                const timestamp = Date.now();
+                
+                // Update video source
+                this.video.src = `/static/videos/${videoSrc}?t=${timestamp}`;
+                this.video.load();
+                this.video.play();
+                
+                // Update active dot
+                this.dots[this.currentIndex].classList.remove('active');
+                this.dots[index].classList.add('active');
+                
+                this.currentIndex = index;
+                
+                // Restart auto-rotation
+                if (this.availableVideos.length > 1) {
+                    this.startAutoRotation();
+                }
+            }
+            
+            nextVideo() {
+                const currentPos = this.availableVideos.indexOf(this.currentIndex);
+                const nextPos = (currentPos + 1) % this.availableVideos.length;
+                const nextIndex = this.availableVideos[nextPos];
+                this.switchToVideo(nextIndex);
+            }
+            
+            startAutoRotation() {
+                this.pauseRotation();
+                this.autoRotateInterval = setInterval(() => {
+                    this.nextVideo();
+                }, this.rotationDuration);
+            }
+            
+            pauseRotation() {
+                if (this.autoRotateInterval) {
+                    clearInterval(this.autoRotateInterval);
+                    this.autoRotateInterval = null;
+                }
+            }
+        }
+        
+        // Initialize video rotation when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new VideoRotation();
+            
+            // Emergency Language Selector Positioning Fix
+            (function () {
+                var selector = document.querySelector('.language-selector');
+                var menu = document.querySelector('.language-menu');
+                
+                if (selector && menu) {
+                    // Add debug marker
+                    selector.setAttribute('data-lang-selector', '1');
+                    
+                    // Force correct positioning via JavaScript as backup
+                    function enforcePositioning() {
+                        // Force button position
+                        selector.style.setProperty('position', 'fixed', 'important');
+                        selector.style.setProperty('top', '10px', 'important');
+                        selector.style.setProperty('left', '20px', 'important');
+                        selector.style.setProperty('right', 'auto', 'important');
+                        selector.style.setProperty('z-index', '2147483647', 'important');
+                        
+                        // Force dropdown position and hide by default
+                        menu.style.setProperty('position', 'absolute', 'important');
+                        menu.style.setProperty('top', '100%', 'important');
+                        menu.style.setProperty('left', '0', 'important');
+                        menu.style.setProperty('right', 'auto', 'important');
+                        menu.style.setProperty('margin-top', '8px', 'important');
+                        menu.style.setProperty('opacity', '0', 'important');
+                        menu.style.setProperty('visibility', 'hidden', 'important');
+                        menu.style.setProperty('display', 'none', 'important');
+                        menu.style.setProperty('pointer-events', 'none', 'important');
+                    }
+                    
+                    // Apply immediately and on any DOM changes
+                    enforcePositioning();
+                    
+                    // Reapply if anything tries to change it
+                    var observer = new MutationObserver(enforcePositioning);
+                    observer.observe(selector, { attributes: true, attributeFilter: ['style', 'class'] });
+                    observer.observe(menu, { attributes: true, attributeFilter: ['style', 'class'] });
+                }
+            })();
+
+        });
+        
+        // DreamFrame Language Menu Control
+        document.addEventListener('DOMContentLoaded', function() {
+            const button = document.querySelector('.df-lang-btn');
+            const menu = document.querySelector('.df-lang-list');
+            const menuContainer = document.querySelector('.df-lang-menu');
+            
+            if (!button || !menu || !menuContainer) {
+                console.log('Language menu elements not found');
+                return;
+            }
+            
+            console.log('Language menu initialized');
+            
+            // Toggle dropdown on button click (mobile/touch support)
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const isOpen = button.getAttribute('aria-expanded') === 'true';
+                const newState = !isOpen;
+                
+                button.setAttribute('aria-expanded', newState);
+                
+                if (newState) {
+                    menuContainer.classList.add('is-open');
+                } else {
+                    menuContainer.classList.remove('is-open');
+                }
+                
+                console.log('Language menu toggled:', newState ? 'open' : 'closed');
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!button.contains(e.target) && !menu.contains(e.target)) {
+                    button.setAttribute('aria-expanded', 'false');
+                    menuContainer.classList.remove('is-open');
+                }
+            });
+            
+            // Close menu when pressing Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    button.setAttribute('aria-expanded', 'false');
+                    menuContainer.classList.remove('is-open');
+                }
+            });
+        });
+        
+        // Mobile Navigation Toggle Functionality
+        const mobileNavToggle = document.getElementById('mobileNavToggle');
+        const navTabs = document.getElementById('navTabs');
+        
+        if (mobileNavToggle && navTabs) {
+            mobileNavToggle.addEventListener('click', function() {
+                navTabs.classList.toggle('mobile-open');
+                
+                // Update button icon and text
+                const icon = this.querySelector('i');
+                const text = this.querySelector('.toggle-text');
+                
+                if (navTabs.classList.contains('mobile-open')) {
+                    icon.className = 'fas fa-times';
+                    text.textContent = 'Close Navigation';
+                } else {
+                    icon.className = 'fas fa-bars';
+                    text.textContent = 'Service Navigation';
+                }
+            });
+            
+            // Close menu when clicking on a nav link
+            const navLinks = navTabs.querySelectorAll('.nav-tab');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    navTabs.classList.remove('mobile-open');
+                    const icon = mobileNavToggle.querySelector('i');
+                    const text = mobileNavToggle.querySelector('.toggle-text');
+                    icon.className = 'fas fa-bars';
+                    text.textContent = 'Service Navigation';
+                });
+            });
+        }
+
+    </script>
+
+    <!-- Feedback Widget -->
+    <div id="feedbackWidget" class="feedback-widget" style="display: none;">
+        <div class="feedback-overlay"></div>
+        <div class="feedback-modal">
+            <div class="feedback-header">
+                <h3>Your experience matters to us</h3>
+                <button id="closeFeedback" class="feedback-close">&times;</button>
+            </div>
+            <div class="feedback-body">
+                <p>How are we doing? Please share any suggestions so we can serve you better.</p>
+                <form id="userFeedbackForm">
+                    <div class="feedback-field">
+                        <label for="feedbackMessage">Your Suggestions</label>
+                        <textarea id="feedbackMessage" placeholder="Type your feedback here..." required></textarea>
+                    </div>
+                    <div class="feedback-field">
+                        <label for="userEmail">Your Email (optional)</label>
+                        <input type="email" id="userEmail" placeholder="example@email.com">
+                    </div>
+                    <div class="feedback-actions">
+                        <button type="button" id="cancelFeedback" class="feedback-btn feedback-btn-secondary">Cancel</button>
+                        <button type="submit" id="submitFeedback" class="feedback-btn feedback-btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Button - Lower Position -->
+    <button id="feedbackTrigger" class="feedback-trigger" style="position: fixed; bottom: 120px; right: 16px; z-index: 12000;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.48 2 12C2 13.54 2.36 14.99 3.01 16.28L2 22L7.72 20.99C9.01 21.64 10.46 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C10.74 20 9.54 19.75 8.46 19.3L6 20L6.7 17.54C6.25 16.46 6 15.26 6 14C6 8.48 8.48 6 12 6C15.52 6 18 8.48 18 12C18 15.52 15.52 18 12 18Z" fill="currentColor"/>
+        </svg>
+        Feedback
+    </button>
+    
+    <!-- Background Music Player - Bottom Position -->
+    <div class="music-player" id="musicPlayer" style="position: fixed; bottom: 16px; right: 16px; z-index: 12000; display: block;">
+        <button class="music-toggle" id="musicToggle" onclick="toggleMusic()" style="width: 60px; height: 60px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 3px solid rgba(255, 255, 255, 0.4); color: white; font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);">
+            🎵
+        </button>
+        <label style="position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); color: white; font-size: 0.7rem; text-align: center; white-space: nowrap;">Music</label>
+        <audio id="backgroundMusic" loop preload="auto">
+            <source src="{{ url_for('static', filename='audio/futuristic-ambient.mp3') }}?v=20250621music" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
+    <style>
+        /* Feedback Widget Styles - v20250919 */
+        .feedback-widget {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 15000;
+        }
+
+        .feedback-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+        }
+
+        .feedback-modal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: feedbackModalIn 0.3s ease-out;
+        }
+
+        @keyframes feedbackModalIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .feedback-header h3 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .feedback-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #7f8c8d;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .feedback-close:hover {
+            background-color: #f8f9fa;
+            color: #2c3e50;
+        }
+
+        .feedback-body {
+            padding: 24px;
+        }
+
+        .feedback-body p {
+            margin: 0 0 20px 0;
+            color: #5d6d7e;
+            line-height: 1.5;
+        }
+
+        .feedback-field {
+            margin-bottom: 20px;
+        }
+
+        .feedback-field label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .feedback-field textarea,
+        .feedback-field input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .feedback-field textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .feedback-field textarea:focus,
+        .feedback-field input:focus {
+            outline: none;
+            border-color: #4A90E2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        .feedback-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
+        .feedback-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 90px;
+        }
+
+        .feedback-btn-secondary {
+            background-color: #f8f9fa;
+            color: #5d6d7e;
+            border: 1px solid #e1e5e9;
+        }
+
+        .feedback-btn-secondary:hover {
+            background-color: #e9ecef;
+            color: #2c3e50;
+        }
+
+        .feedback-btn-primary {
+            background-color: #4A90E2;
+            color: white;
+        }
+
+        .feedback-btn-primary:hover {
+            background-color: #357ABD;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        .feedback-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Feedback Trigger Button */
+        .feedback-trigger {
+            position: fixed;
+            background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 14px 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(74, 144, 226, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1;
+        }
+
+        .feedback-trigger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.4);
+        }
+
+        .feedback-trigger svg {
+            transition: transform 0.2s ease;
+        }
+
+        .feedback-trigger:hover svg {
+            transform: scale(1.1);
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .feedback-modal {
+                width: 95%;
+                margin: 20px;
+            }
+
+            .feedback-actions {
+                flex-direction: column-reverse;
+            }
+
+            .feedback-btn {
+                width: 100%;
+            }
+
+            .feedback-trigger {
+                bottom: 100px !important;
+                right: 10px !important;
+                padding: 12px 16px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+
+    <script>
+        // Feedback Widget JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            const feedbackTrigger = document.getElementById('feedbackTrigger');
+            const feedbackWidget = document.getElementById('feedbackWidget');
+            const feedbackForm = document.getElementById('userFeedbackForm');
+            const closeBtn = document.getElementById('closeFeedback');
+            const cancelBtn = document.getElementById('cancelFeedback');
+            const submitBtn = document.getElementById('submitFeedback');
+            const overlay = document.querySelector('.feedback-overlay');
+
+            // Show feedback widget
+            function showFeedback() {
+                feedbackWidget.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                // Focus on textarea for better UX
+                setTimeout(() => {
+                    document.getElementById('feedbackMessage').focus();
+                }, 100);
+            }
+
+            // Hide feedback widget
+            function hideFeedback() {
+                feedbackWidget.style.display = 'none';
+                document.body.style.overflow = '';
+                // Reset form
+                feedbackForm.reset();
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit';
+            }
+
+            // Event listeners
+            feedbackTrigger.addEventListener('click', showFeedback);
+            closeBtn.addEventListener('click', hideFeedback);
+            cancelBtn.addEventListener('click', hideFeedback);
+            overlay.addEventListener('click', hideFeedback);
+
+            // Close on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && feedbackWidget.style.display === 'block') {
+                    hideFeedback();
+                }
+            });
+
+            // Handle form submission
+            feedbackForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const feedbackMessage = document.getElementById('feedbackMessage').value.trim();
+                const userEmail = document.getElementById('userEmail').value.trim();
+
+                if (!feedbackMessage) {
+                    alert('Please enter your feedback message.');
+                    return;
+                }
+
+                // Disable submit button and show loading state
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" opacity="0.3"/><path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" values="0 12 12;360 12 12"/></path></svg> Submitting...';
+
+                try {
+                    const response = await fetch('/submit-feedback', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            feedbackMessage: feedbackMessage,
+                            userEmail: userEmail
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        // Show success message
+                        alert('Thank you for your feedback! We appreciate your input and will review it carefully.');
+                        hideFeedback();
+                    } else {
+                        alert(result.message || 'Failed to submit feedback. Please try again.');
+                    }
+                } catch (error) {
+                    console.error('Feedback submission error:', error);
+                    alert('An error occurred while submitting your feedback. Please try again.');
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

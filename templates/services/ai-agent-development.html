@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Development – DreamFrame LLC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=20250621music">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="gradient-bg">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="container">
+                <div class="brand-container">
+                    <div class="brand-text">DreamFrame</div>
+                    <div class="glowing-star">★</div>
+                    <div class="brand-text">LLC</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="main-nav">
+            <div class="nav-container">
+                <div class="nav-tabs">
+                    <a href="{{ url_for('home') }}" class="nav-tab">Video Production</a>
+                    <a href="{{ url_for('website_development') }}" class="nav-tab">Website and App Development</a>
+                    <a href="{{ url_for('business_consultation') }}" class="nav-tab">Business Consultation</a>
+                    <a href="{{ url_for('services_overview') }}" class="nav-tab">Advertisement Creation</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero ai-agent-hero">
+            <div class="hero-content">
+                <h1>AI Agent Development for Company Workforce</h1>
+                <p class="hero-subtitle">Transform your business operations with intelligent AI agents that automate tasks, enhance productivity, and provide 24/7 customer support</p>
+                
+                <div class="service-features">
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <i class="fas fa-robot" style="color: #ff6b35;"></i>
+                            <h3>Custom AI Assistants</h3>
+                            <p>Intelligent agents tailored to your business needs</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-cogs" style="color: #00ffff;"></i>
+                            <h3>Workflow Automation</h3>
+                            <p>Streamline repetitive tasks and processes</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-headset" style="color: #ff6b35;"></i>
+                            <h3>24/7 Customer Support</h3>
+                            <p>Always-on intelligent customer service</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-brain" style="color: #00ffff;"></i>
+                            <h3>Machine Learning Integration</h3>
+                            <p>Advanced AI capabilities for complex tasks</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pricing-section">
+                    <h2>AI Agent Development Packages</h2>
+                    <div class="pricing-grid">
+                        <div class="pricing-card">
+                            <h3>Starter Agent</h3>
+                            <div class="price">$2,500</div>
+                            <ul>
+                                <li>Single-purpose AI agent</li>
+                                <li>Basic natural language processing</li>
+                                <li>Integration with 1 platform</li>
+                                <li>30 days support</li>
+                                <li>Documentation & training</li>
+                            </ul>
+                            <form action="/create-checkout-session" method="POST" style="margin-top: 20px;">
+                                <input type="hidden" name="price_id" value="price_ai_agent_starter">
+                                <input type="hidden" name="service_name" value="AI Agent Development - Starter">
+                                <button type="submit" class="btn primary">Get Started - $2,500</button>
+                            </form>
+                        </div>
+                        
+                        <div class="pricing-card featured">
+                            <h3>Professional Agent Suite</h3>
+                            <div class="price">$5,000</div>
+                            <ul>
+                                <li>Multi-function AI agent system</li>
+                                <li>Advanced conversation capabilities</li>
+                                <li>Integration with 3+ platforms</li>
+                                <li>Real-time learning capabilities</li>
+                                <li>90 days support & optimization</li>
+                                <li>Custom dashboard & analytics</li>
+                            </ul>
+                            <form action="/create-checkout-session" method="POST" style="margin-top: 20px;">
+                                <input type="hidden" name="price_id" value="price_ai_agent_professional">
+                                <input type="hidden" name="service_name" value="AI Agent Development - Professional">
+                                <button type="submit" class="btn primary">Start Project - $5,000</button>
+                            </form>
+                        </div>
+                        
+                        <div class="pricing-card">
+                            <h3>Enterprise AI Workforce</h3>
+                            <div class="price">$12,000</div>
+                            <ul>
+                                <li>Complete AI agent ecosystem</li>
+                                <li>Advanced machine learning models</li>
+                                <li>Unlimited platform integrations</li>
+                                <li>Custom AI training & fine-tuning</li>
+                                <li>6 months support & maintenance</li>
+                                <li>Dedicated AI specialist</li>
+                                <li>Performance monitoring & optimization</li>
+                            </ul>
+                            <form action="/create-checkout-session" method="POST" style="margin-top: 20px;">
+                                <input type="hidden" name="price_id" value="price_ai_agent_enterprise">
+                                <input type="hidden" name="service_name" value="AI Agent Development - Enterprise">
+                                <button type="submit" class="btn primary">Transform Business - $12,000</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-section">
+                    <a href="/contact" class="btn secondary">Contact Us for Custom AI Solutions</a>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

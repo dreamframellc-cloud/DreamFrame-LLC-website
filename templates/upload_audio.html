@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Background Music - DreamFrame LLC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=20250621music">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .upload-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .upload-form {
+            text-align: center;
+        }
+        .file-input {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .file-input:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .upload-btn {
+            background: white;
+            color: black;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 20px 10px;
+        }
+        .upload-btn:hover {
+            background: rgba(255, 255, 255, 0.8);
+        }
+        .message {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+        .success { background: rgba(0, 255, 0, 0.2); color: #90EE90; }
+        .error { background: rgba(255, 0, 0, 0.2); color: #FFB6C1; }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg">
+        <header class="main-header">
+            <div class="container">
+                <div class="brand-container">
+                    <a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 10px;">
+                        <div class="brand-text">DreamFrame</div>
+                        <div class="glowing-star">★</div>
+                        <div class="brand-suffix">LLC</div>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <div class="upload-container">
+            <h1 style="text-align: center; color: white; margin-bottom: 20px;">Upload Background Music</h1>
+            <p style="text-align: center; color: rgba(255, 255, 255, 0.8); margin-bottom: 30px;">
+                Upload an MP3 file to set as the website's background music. Recommended: ambient, futuristic, or electronic music.
+            </p>
+            
+            <div class="upload-form">
+                <div class="message" id="message"></div>
+                
+                <form id="audioUploadForm" enctype="multipart/form-data">
+                    <div class="file-input" onclick="document.getElementById('audioFile').click()">
+                        <i class="fas fa-music" style="font-size: 2rem; margin-bottom: 10px; color: white;"></i>
+                        <p style="color: white; margin: 10px 0;">Click to select audio file</p>
+                        <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.9rem;">Supports MP3, OGG, WAV, M4A</p>
+                        <input type="file" id="audioFile" name="audio_file" accept=".mp3,.ogg,.wav,.m4a" style="display: none;">
+                    </div>
+                    
+                    <div style="margin: 20px 0;">
+                        <span id="fileName" style="color: white;"></span>
+                    </div>
+                    
+                    <button type="submit" class="upload-btn">
+                        <i class="fas fa-upload"></i> Upload Music
+                    </button>
+                    <a href="{{ url_for('home') }}" class="upload-btn" style="text-decoration: none; display: inline-block;">
+                        <i class="fas fa-home"></i> Back to Home
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('audioFile').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name;
+            if (fileName) {
+                document.getElementById('fileName').textContent = 'Selected: ' + fileName;
+            }
+        });
+
+        document.getElementById('audioUploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            const fileInput = document.getElementById('audioFile');
+            const messageDiv = document.getElementById('message');
+            
+            if (!fileInput.files[0]) {
+                showMessage('Please select an audio file', 'error');
+                return;
+            }
+            
+            formData.append('audio_file', fileInput.files[0]);
+            
+            // Show loading
+            showMessage('Uploading...', 'success');
+            
+            fetch('/upload-audio', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage(data.message, 'success');
+                    // Clear form
+                    fileInput.value = '';
+                    document.getElementById('fileName').textContent = '';
+                } else {
+                    showMessage(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                showMessage('Upload failed: ' + error.message, 'error');
+            });
+        });
+
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = 'message ' + type;
+            messageDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Emails - DreamFrame Admin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .nav-links {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .nav-links a {
+            color: #4CAF50;
+            text-decoration: none;
+            margin: 0 15px;
+            padding: 8px 16px;
+            border: 1px solid #4CAF50;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .nav-links a:hover {
+            background: #4CAF50;
+            color: white;
+        }
+        .download-guide {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            border: none !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .download-guide:hover {
+            background: linear-gradient(135deg, #e55a2b, #e8831b);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+        }
+        .email-section {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        .email-item {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #4CAF50;
+        }
+        .email-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .from-email {
+            font-weight: bold;
+            color: #4CAF50;
+            font-size: 1.1em;
+        }
+        .timestamp {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9em;
+        }
+        .subject {
+            font-size: 1.2em;
+            margin: 10px 0;
+            color: #fff;
+        }
+        .content {
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        .status-new {
+            background: #ff9800;
+            color: white;
+        }
+        .status-replied {
+            background: #4CAF50;
+            color: white;
+        }
+        .status-processing {
+            background: #2196F3;
+            color: white;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 50px;
+            color: rgba(255,255,255,0.6);
+        }
+        .order-ref {
+            background: rgba(76,175,80,0.2);
+            padding: 8px 12px;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .stat-label {
+            color: rgba(255,255,255,0.8);
+            margin-top: 5px;
+        }
+        .clear-messages-btn {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 15px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .clear-messages-btn:hover {
+            background: linear-gradient(135deg, #c82333, #bd2130);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+        }
+    </style>
+
+    <!-- Meta Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+       fbq('init', '1234567890123456');  // <-- Your Pixel ID
+       fbq('track', 'PageView');
+    </script>
+    <!-- End Meta Pixel Code -->
+
+    <!-- GA4 base tag -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      gtag('js', new Date());
+      // Replace with your GA4 Measurement ID
+      gtag('config', 'G-XXXXXXXXXX', { send_page_view: true });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>📧 Customer Emails & Communications</h1>
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages" style="margin-bottom: 20px;">
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}" style="
+                            padding: 15px;
+                            border-radius: 8px;
+                            margin-bottom: 10px;
+                            background: {% if category == 'success' %}rgba(76, 175, 80, 0.2){% elif category == 'error' %}rgba(220, 53, 69, 0.2){% else %}rgba(33, 150, 243, 0.2){% endif %};
+                            border-left: 4px solid {% if category == 'success' %}#4CAF50{% elif category == 'error' %}#dc3545{% else %}#2196F3{% endif %};
+                            color: white;
+                        ">
+                            <strong>{% if category == 'success' %}✅{% elif category == 'error' %}❌{% else %}ℹ️{% endif %}</strong> {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/admin/setup-sms">SMS Setup</a>
+            <a href="/ai/agent-demo">AI Demo</a>
+            <a href="/admin/orders">Orders</a>
+            <a href="/admin/download-contact-guide" class="download-guide">📄 Download Contact System Guide</a>
+            <button onclick="clearMessages()" class="clear-messages-btn">🗑️ Clear All Messages</button>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">{{ messages|length }}</div>
+                <div class="stat-label">Total Messages</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ orders|length }}</div>
+                <div class="stat-label">Total Orders</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ messages|selectattr('created_at')|list|length }}</div>
+                <div class="stat-label">Recent Activity</div>
+            </div>
+        </div>
+        
+        <div class="email-section">
+            <h2>Recent Customer Messages</h2>
+            
+            {% if messages %}
+                {% for message in messages %}
+                <div class="email-item">
+                    <div class="email-header">
+                        <div>
+                            <div class="from-email">{{ message.email }}</div>
+                            <div class="timestamp" data-utc-time="{{ message.created_at.isoformat() }}">{{ message.created_at.strftime('%B %d, %Y at %I:%M %p') if message.created_at else 'Unknown date' }}</div>
+                        </div>
+                        <div>
+                            {% if message.order_id %}
+                                <div class="order-ref">Order: {{ message.order_id }}</div>
+                            {% endif %}
+                            <span class="status-badge status-new">New Message</span>
+                        </div>
+                    </div>
+                    
+                    {% if message.subject %}
+                    <div class="subject">{{ message.subject }}</div>
+                    {% endif %}
+                    
+                    <div class="content">
+                        {{ message.message|truncate(300) if message.message else 'No content available' }}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <h3>No customer messages yet</h3>
+                    <p>Customer emails will appear here when they contact support@dreamframe.com</p>
+                    <p>Make sure your SMS notifications are set up to get instant alerts!</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="email-section">
+            <h2>Recent Orders</h2>
+            
+            {% if orders %}
+                {% for order in orders %}
+                <div class="email-item">
+                    <div class="email-header">
+                        <div>
+                            <div class="from-email">{{ order.customer_email }}</div>
+                            <div class="timestamp" data-utc-time="{{ order.created_at.isoformat() }}">{{ order.created_at.strftime('%B %d, %Y at %I:%M %p') if order.created_at else 'Unknown date' }}</div>
+                        </div>
+                        <div>
+                            <div class="order-ref">{{ order.order_id }}</div>
+                            <span class="status-badge status-{{ order.status.value if order.status else 'new' }}">{{ order.status.value.title() if order.status else 'New' }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="subject">{{ order.service_type.value.replace('_', ' ').title() if order.service_type else 'Service Request' }}</div>
+                    
+                    <div class="content">
+                        <strong>Customer:</strong> {{ order.customer_name or 'Not provided' }}<br>
+                        <strong>Service:</strong> {{ order.service_type.value.replace('_', ' ').title() if order.service_type else 'Not specified' }}<br>
+                        {% if order.budget %}
+                        <strong>Budget:</strong> ${{ order.budget }}<br>
+                        {% endif %}
+                        {% if order.requirements %}
+                        <strong>Requirements:</strong> {{ order.requirements|truncate(200) }}
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <h3>No orders yet</h3>
+                    <p>Customer orders will appear here when processed by the AI system</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div style="margin-top: 40px; text-align: center; color: rgba(255,255,255,0.6);">
+            <p>All customer emails to support@dreamframe.com are automatically processed and stored here.</p>
+            <p>SMS notifications keep you instantly informed of new messages.</p>
+        </div>
+    </div>
+    
+    <script>
+    // Convert all timestamps from UTC to local timezone
+    document.addEventListener('DOMContentLoaded', function() {
+        const timestamps = document.querySelectorAll('.timestamp[data-utc-time]');
+        
+        timestamps.forEach(function(element) {
+            const utcTime = element.getAttribute('data-utc-time');
+            if (utcTime && utcTime !== 'None') {
+                try {
+                    // Parse UTC time and convert to local
+                    const date = new Date(utcTime + 'Z'); // Add Z to indicate UTC
+                    
+                    // Format to local timezone
+                    const options = {
+                        year: 'numeric',
+                        month: 'long', 
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: true,
+                        timeZoneName: 'short'
+                    };
+                    
+                    const localTime = date.toLocaleString('en-US', options);
+                    element.textContent = localTime;
+                } catch (e) {
+                    console.log('Error converting timestamp:', e);
+                    // Keep original timestamp if conversion fails
+                }
+            }
+        });
+    });
+    
+    // Clear messages function with confirmation
+    function clearMessages() {
+        const messageCount = {{ messages|length }};
+        
+        if (messageCount === 0) {
+            alert('No messages to clear.');
+            return;
+        }
+        
+        const confirmed = confirm(`Are you sure you want to permanently delete all ${messageCount} stored messages?\n\nThis action cannot be undone.`);
+        
+        if (confirmed) {
+            // Create a hidden form to submit the POST request
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/admin/emails/clear';
+            
+            // Add CSRF protection if needed (Flask-WTF)
+            const csrfToken = document.querySelector('meta[name=csrf-token]');
+            if (csrfToken) {
+                const csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = 'csrf_token';
+                csrfInput.value = csrfToken.getAttribute('content');
+                form.appendChild(csrfInput);
+            }
+            
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+    </script>
+</body>
+</html>

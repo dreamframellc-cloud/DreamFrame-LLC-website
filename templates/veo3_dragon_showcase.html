@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VEO 3 Dragon Showcase - DREAMFRAME LLC</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .showcase-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .hero-section {
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ffd700, #ff6b35, #f72585);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 8px rgba(255, 215, 0, 0.3);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.4rem;
+            color: #e0e0e0;
+            margin-bottom: 0.5rem;
+        }
+        
+        .veo3-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: #000;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin: 1rem 0;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+            animation: pulse 2s infinite;
+        }
+        
+        .video-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideInUp 1s ease-out 0.3s both;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+        
+        .dragon-video {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 15px;
+        }
+        
+        .video-overlay {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, #ff0080, #ff8c00);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(255, 0, 128, 0.4);
+        }
+        
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .spec-card {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .spec-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 255, 255, 0.1);
+        }
+        
+        .spec-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .spec-value {
+            font-size: 1rem;
+            color: #e0e0e0;
+        }
+        
+        .competition-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            margin: 2rem 0;
+            animation: slideInUp 1s ease-out 0.6s both;
+        }
+        
+        .competition-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .vs-text {
+            font-size: 1.2rem;
+            margin: 1rem 0;
+            color: #f0f0f0;
+        }
+        
+        .download-section {
+            margin: 3rem 0;
+            animation: slideInUp 1s ease-out 0.9s both;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b35, #f72585);
+            color: white;
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(247, 37, 133, 0.3);
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(247, 37, 133, 0.5);
+            text-decoration: none;
+            color: white;
+        }
+        
+        .back-btn {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: #000;
+        }
+        
+        .back-btn:hover {
+            color: #000;
+            box-shadow: 0 15px 35px rgba(79, 172, 254, 0.5);
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 6px 20px rgba(79, 172, 254, 0.6);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .showcase-container {
+                padding: 1rem;
+            }
+            
+            .specs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="showcase-container">
+        <div class="hero-section">
+            <h1 class="hero-title">VEO 3 Dragon Masterpiece</h1>
+            <p class="hero-subtitle">Professional AI Video Generation</p>
+            <div class="veo3-badge">Powered by Google VEO 3 Ultra Fast</div>
+        </div>
+        
+        <div class="video-section">
+            <div class="video-container">
+                <video class="dragon-video" controls autoplay muted loop>
+                    <source src="/veo3_dragon.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="video-overlay">VEO 3 Quality</div>
+            </div>
+            
+            <div class="specs-grid">
+                <div class="spec-card">
+                    <div class="spec-title">Model</div>
+                    <div class="spec-value">VEO 3 Ultra Fast</div>
+                </div>
+                <div class="spec-card">
+                    <div class="spec-title">Resolution</div>
+                    <div class="spec-value">1920x1080</div>
+                </div>
+                <div class="spec-card">
+                    <div class="spec-title">Frame Rate</div>
+                    <div class="spec-value">30 FPS</div>
+                </div>
+                <div class="spec-card">
+                    <div class="spec-title">Duration</div>
+                    <div class="spec-value">10 Seconds</div>
+                </div>
+                <div class="spec-card">
+                    <div class="spec-title">File Size</div>
+                    <div class="spec-value">2.6 MB</div>
+                </div>
+                <div class="spec-card">
+                    <div class="spec-title">Quality</div>
+                    <div class="spec-value">Professional</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="competition-section">
+            <h2 class="competition-title">Competitive Quality Standards</h2>
+            <p class="vs-text">
+                This VEO 3 dragon video demonstrates professional-grade AI video generation
+                capabilities that compete directly with industry leaders like Kling AI.
+            </p>
+            <p class="vs-text">
+                ✅ Professional cinematography<br>
+                ✅ Realistic dragon anatomy and fire effects<br>
+                ✅ Smooth motion and professional lighting<br>
+                ✅ High-quality rendering and optimization
+            </p>
+        </div>
+        
+        <div class="download-section">
+            <a href="/veo3_dragon.mp4" download="veo3_ultra_fast_dragon.mp4" class="download-btn">
+                Download VEO 3 Dragon Video
+            </a>
+            <a href="/" class="download-btn back-btn">
+                Back to Homepage
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        // Enhanced video loading and playback
+        document.addEventListener('DOMContentLoaded', function() {
+            const video = document.querySelector('.dragon-video');
+            
+            if (video) {
+                // Force video to play with user interaction fallback
+                const playVideo = () => {
+                    video.play().catch(e => {
+                        console.log('Autoplay blocked, will play on user interaction');
+                        video.muted = true;
+                        video.play().catch(e => console.log('Video play failed:', e));
+                    });
+                };
+                
+                // Try to play immediately
+                playVideo();
+                
+                // Add click handler for manual play
+                video.addEventListener('click', playVideo);
+                
+                // Log video loading progress
+                video.addEventListener('loadstart', () => console.log('VEO 3 video loading started'));
+                video.addEventListener('canplay', () => console.log('VEO 3 video ready to play'));
+                video.addEventListener('error', (e) => console.error('VEO 3 video error:', e));
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'GA_MEASUREMENT_ID');
+</script>
+
+<!-- Google Ads Conversion Tracking -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-CONVERSION_ID"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-CONVERSION_ID');
+</script>
+
+<!-- Facebook Pixel -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', 'FACEBOOK_PIXEL_ID');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=FACEBOOK_PIXEL_ID&ev=PageView&noscript=1"
+/></noscript>
+
+<!-- YouTube/Google Video Ads Tracking -->
+<script>
+  gtag('config', 'AW-CONVERSION_ID', {
+    'custom_map': {'custom_parameter_1': 'video_category'}
+  });
+</script>
+
+<!-- Conversion Events -->
+<script>
+// Track quote requests
+function trackQuoteRequest(service_type) {
+  gtag('event', 'conversion', {
+    'send_to': 'AW-CONVERSION_ID/QUOTE_REQUEST_LABEL',
+    'value': 1.0,
+    'currency': 'USD',
+    'custom_parameter_1': service_type
+  });
+  
+  // Facebook conversion
+  fbq('track', 'Lead', {
+    content_name: service_type,
+    content_category: 'video_production'
+  });
+}
+
+// Track phone calls
+function trackPhoneCall() {
+  gtag('event', 'conversion', {
+    'send_to': 'AW-CONVERSION_ID/PHONE_CALL_LABEL'
+  });
+  
+  fbq('track', 'Contact');
+}
+
+// Track purchases
+function trackPurchase(value, service_type, order_id) {
+  gtag('event', 'purchase', {
+    'transaction_id': order_id,
+    'value': value,
+    'currency': 'USD',
+    'items': [{
+      'item_id': service_type,
+      'item_name': service_type,
+      'category': 'video_production',
+      'quantity': 1,
+      'price': value
+    }]
+  });
+  
+  // Google Ads conversion
+  gtag('event', 'conversion', {
+    'send_to': 'AW-CONVERSION_ID/PURCHASE_LABEL',
+    'value': value,
+    'currency': 'USD',
+    'transaction_id': order_id
+  });
+  
+  // Facebook conversion
+  fbq('track', 'Purchase', {
+    value: value,
+    currency: 'USD',
+    content_ids: [service_type],
+    content_type: 'product'
+  });
+}
+
+// Track video views (for YouTube ads optimization)
+function trackVideoView(video_id, video_title) {
+  gtag('event', 'video_view', {
+    'video_id': video_id,
+    'video_title': video_title,
+    'custom_parameter_1': 'portfolio'
+  });
+}
+
+// Track form submissions
+function trackFormSubmission(form_type) {
+  gtag('event', 'form_submit', {
+    'form_type': form_type
+  });
+  
+  fbq('track', 'SubmitApplication', {
+    content_name: form_type
+  });
+}
+</script>
+
+<!-- Call Tracking (placeholder for call tracking service) -->
+<script>
+// Replace with actual call tracking service like CallRail, CallTrackingMetrics, etc.
+// This tracks phone number clicks
+document.addEventListener('DOMContentLoaded', function() {
+  const phoneLinks = document.querySelectorAll('a[href^="tel:"]');
+  phoneLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      trackPhoneCall();
+    });
+  });
+});
+</script>

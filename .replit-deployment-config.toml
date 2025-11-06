@@ -1,0 +1,6 @@
+# Required deployment configuration for .replit file
+# Copy this content to your .replit file to fix deployment issues
+
+[deployment]
+run = ["gunicorn", "--config", "gunicorn.conf.py", "wsgi_simple:application"]
+deploymentTarget = "cloudrun"

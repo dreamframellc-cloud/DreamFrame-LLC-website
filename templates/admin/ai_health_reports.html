@@ -1,0 +1,211 @@
+{% extends "admin/base.html" %}
+
+{% block title %}AI Health Reports{% endblock %}
+{% block page_title %}AI Payment System Health Reports{% endblock %}
+
+{% block toolbar %}
+<form method="POST" action="{{ url_for('admin.run_manual_health_check') }}" style="display: inline;">
+    <button type="submit" class="btn btn-primary">
+        <i class="fas fa-play me-2"></i>Run Manual Check
+    </button>
+</form>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- System Status Card -->
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-robot text-primary me-2"></i>
+                    AI Monitor Status
+                </h5>
+                <span class="badge bg-{% if scheduler_status.get('running') %}success{% else %}danger{% endif %}">
+                    {% if scheduler_status.get('running') %}Active{% else %}Inactive{% endif %}
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h6 class="text-muted">Last Run Status</h6>
+                            <span class="badge bg-{% if scheduler_status.get('last_run_status') == 'SUCCESS' %}success{% elif scheduler_status.get('last_run_status') == 'WARNING' %}warning{% else %}danger{% endif %} fs-6">
+                                {{ scheduler_status.get('last_run_status', 'Unknown') }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h6 class="text-muted">Consecutive Failures</h6>
+                            <span class="fs-4 {% if scheduler_status.get('consecutive_failures', 0) > 0 %}text-danger{% else %}text-success{% endif %}">
+                                {{ scheduler_status.get('consecutive_failures', 0) }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h6 class="text-muted">Total Reports</h6>
+                            <span class="fs-4 text-info">{{ reports|length }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h6 class="text-muted">Schedule</h6>
+                            <small class="text-muted">Daily at 8 AM & 8 PM</small>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if scheduler_status.get('error') %}
+                <div class="alert alert-warning mt-3">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Status Error:</strong> {{ scheduler_status.error }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Reports -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-history text-info me-2"></i>
+                    Recent Health Reports
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if reports %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Status</th>
+                                <th>Tests</th>
+                                <th>Success Rate</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for report in reports %}
+                            <tr>
+                                <td>
+                                    <i class="fas fa-clock text-muted me-2"></i>
+                                    {{ report.timestamp_formatted }}
+                                </td>
+                                <td>
+                                    {% set failed = report.summary.failed %}
+                                    {% set warnings = report.summary.warnings %}
+                                    {% if failed > 0 %}
+                                        <span class="badge bg-danger">
+                                            <i class="fas fa-times me-1"></i>{{ failed }} Failed
+                                        </span>
+                                    {% elif warnings > 0 %}
+                                        <span class="badge bg-warning">
+                                            <i class="fas fa-exclamation-triangle me-1"></i>{{ warnings }} Warning
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-check me-1"></i>All Passed
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="text-muted">{{ report.summary.total_tests }} tests</span>
+                                </td>
+                                <td>
+                                    {% set success_rate = (report.summary.passed / report.summary.total_tests * 100) if report.summary.total_tests > 0 else 0 %}
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar bg-{% if success_rate >= 80 %}success{% elif success_rate >= 60 %}warning{% else %}danger{% endif %}" 
+                                             style="width: {{ success_rate }}%">
+                                            {{ "%.1f"|format(success_rate) }}%
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('admin.view_health_report', filename=report.filename) }}" 
+                                       class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye me-1"></i>View Details
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-chart-line text-muted" style="font-size: 3rem;"></i>
+                    <h4 class="text-muted mt-3">No Health Reports Yet</h4>
+                    <p class="text-muted">Run a manual health check to generate your first report.</p>
+                    <form method="POST" action="{{ url_for('admin.run_manual_health_check') }}">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-play me-2"></i>Run First Health Check
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Info Card -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card border-info">
+            <div class="card-header bg-light">
+                <h6 class="mb-0">
+                    <i class="fas fa-info-circle text-info me-2"></i>
+                    About AI Health Monitoring
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>What it Monitors:</h6>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>Stripe API connectivity</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Payment page accessibility</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Checkout session creation</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Payment flow simulation</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Error handling systems</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>AI Analysis Features:</h6>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-robot text-primary me-2"></i>Intelligent problem diagnosis</li>
+                            <li><i class="fas fa-lightbulb text-warning me-2"></i>Automated recommendations</li>
+                            <li><i class="fas fa-shield-alt text-success me-2"></i>Risk level assessment</li>
+                            <li><i class="fas fa-bell text-info me-2"></i>Proactive failure prevention</li>
+                            <li><i class="fas fa-clock text-muted me-2"></i>Daily automated checks</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Auto-refresh page every 5 minutes to show updated status
+setTimeout(function() {
+    window.location.reload();
+}, 300000);
+
+// Add confirmation for manual check
+document.querySelector('form[action*="run-check"]').addEventListener('submit', function(e) {
+    if (!confirm('This will run a comprehensive payment system health check. Continue?')) {
+        e.preventDefault();
+    }
+});
+</script>
+{% endblock %}

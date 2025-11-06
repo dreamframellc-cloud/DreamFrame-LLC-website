@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VEO 3 Video Studio - DreamFrame LLC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .veo3-studio {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .studio-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .veo3-logo {
+            font-size: 3em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00d4aa, #00a8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .api-status {
+            padding: 10px 20px;
+            border-radius: 25px;
+            margin: 20px 0;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .api-valid {
+            background: linear-gradient(45deg, #00d4aa, #01a3a4);
+            color: white;
+        }
+
+        .api-invalid {
+            background: linear-gradient(45deg, #ff416c, #ff4757);
+            color: white;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .project-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #00d4aa;
+        }
+
+        .service-badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .videogram-badge {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+
+        .family-badge {
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+        }
+
+        .project-details {
+            margin: 15px 0;
+            color: #e0e0e0;
+        }
+
+        .generation-info {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+
+        .cost-estimate {
+            color: #00d4aa;
+            font-weight: bold;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .generate-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .generate-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .batch-controls {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .batch-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(45deg, #00d4aa, #01a3a4);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .batch-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 212, 170, 0.3);
+        }
+
+        .progress-indicator {
+            display: none;
+            background: rgba(0, 0, 0, 0.9);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .progress-content {
+            text-align: center;
+            color: white;
+        }
+
+        .progress-bar {
+            width: 300px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #00d4aa, #667eea);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .veo3-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="veo3-studio">
+        <div class="studio-header">
+            <div class="veo3-logo">VEO 3 STUDIO</div>
+            <p>Professional AI Video Generation powered by Google's VEO 3</p>
+            
+            {% if api_valid %}
+                <div class="api-status api-valid">✓ API Connected - Ready for Generation</div>
+            {% else %}
+                <div class="api-status api-invalid">⚠ API Key Required - Check Settings</div>
+            {% endif %}
+        </div>
+
+        <div class="veo3-features">
+            <div class="feature-card">
+                <div class="feature-icon">🎬</div>
+                <h3>4K Video Generation</h3>
+                <p>Create stunning 4K videos from photos with cinematic quality</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎵</div>
+                <h3>Native Audio</h3>
+                <p>Synchronized background music and sound effects</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Instant Processing</h3>
+                <p>Fast generation with professional results</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">✨</div>
+                <h3>AI-Powered</h3>
+                <p>Advanced AI brings photos to life with smooth animation</p>
+            </div>
+        </div>
+
+        {% if pending_projects %}
+        <div class="batch-controls">
+            <h3>Batch Processing</h3>
+            <p>Process multiple projects at once for efficiency</p>
+            <button class="batch-btn" onclick="selectAllProjects()">Select All</button>
+            <button class="batch-btn" onclick="generateSelected('videogram')">Generate VideoGrams</button>
+            <button class="batch-btn" onclick="generateSelected('family_memory')">Generate Family Memories</button>
+        </div>
+
+        <h2>Pending Projects ({{ pending_projects|length }})</h2>
+        <div class="projects-grid">
+            {% for project in pending_projects %}
+            <div class="project-card" data-project-id="{{ project.id }}">
+                <div class="project-header">
+                    <div class="project-title">{{ project.customer_name }}</div>
+                    <div class="service-badge {{ 'videogram-badge' if project.service_type == 'videogram' else 'family-badge' }}">
+                        {{ project.service_type.replace('_', ' ').title() }}
+                    </div>
+                </div>
+                
+                <div class="project-details">
+                    <p><strong>Email:</strong> {{ project.customer_email }}</p>
+                    <p><strong>Details:</strong> {{ project.project_details[:100] }}...</p>
+                    <p><strong>Created:</strong> {{ project.created_date.strftime('%Y-%m-%d %H:%M') }}</p>
+                </div>
+                
+                <div class="generation-info">
+                    <p><strong>Estimated Duration:</strong> 
+                        {% if project.service_type == 'videogram' %}5 seconds{% else %}30 seconds{% endif %}
+                    </p>
+                    <p class="cost-estimate">
+                        <strong>VEO 3 Cost:</strong> 
+                        ${% if project.service_type == 'videogram' %}3.75{% else %}22.50{% endif %}
+                    </p>
+                </div>
+                
+                <label>
+                    <input type="checkbox" class="project-select" value="{{ project.id }}">
+                    Select for batch processing
+                </label>
+                
+                <button class="generate-btn" onclick="generateSingle({{ project.id }}, '{{ project.service_type }}')"
+                        {% if not api_valid %}disabled{% endif %}>
+                    Generate with VEO 3
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div style="text-align: center; padding: 60px 20px;">
+            <h2>No Pending Projects</h2>
+            <p>All current projects have been completed. New customer projects will appear here.</p>
+            <a href="/admin/projects" style="color: #00d4aa; text-decoration: none;">← Back to Admin Panel</a>
+        </div>
+        {% endif %}
+
+        <div class="progress-indicator" id="progressIndicator">
+            <div class="progress-content">
+                <h3>Generating Video with VEO 3...</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p id="progressText">Initializing AI video generation...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectAllProjects() {
+            const checkboxes = document.querySelectorAll('.project-select');
+            const allSelected = Array.from(checkboxes).every(cb => cb.checked);
+            checkboxes.forEach(cb => cb.checked = !allSelected);
+        }
+
+        function generateSingle(projectId, serviceType) {
+            showProgress();
+            updateProgress(10, 'Connecting to VEO 3 API...');
+            
+            fetch('/veo3/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `project_id=${projectId}&service_type=${serviceType}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateProgress(100, 'Video generated successfully!');
+                    setTimeout(() => {
+                        hideProgress();
+                        alert(`VEO 3 video generated successfully!\nFile: ${data.video_path}\nCost: $${data.cost}`);
+                        location.reload();
+                    }, 1500);
+                } else {
+                    hideProgress();
+                    alert(`Generation failed: ${data.error}`);
+                }
+            })
+            .catch(error => {
+                hideProgress();
+                alert(`Error: ${error.message}`);
+            });
+        }
+
+        function generateSelected(serviceType) {
+            const selected = Array.from(document.querySelectorAll('.project-select:checked'))
+                                 .map(cb => cb.value);
+            
+            if (selected.length === 0) {
+                alert('Please select projects to process');
+                return;
+            }
+
+            showProgress();
+            updateProgress(10, `Processing ${selected.length} projects...`);
+
+            fetch('/veo3/batch-generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    project_ids: selected,
+                    service_type: serviceType
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateProgress(100, `Processed ${data.processed} projects successfully!`);
+                    setTimeout(() => {
+                        hideProgress();
+                        alert(`Batch processing complete!\nProcessed: ${data.processed} projects\nTotal cost: $${data.total_cost.toFixed(2)}`);
+                        location.reload();
+                    }, 1500);
+                } else {
+                    hideProgress();
+                    alert(`Batch processing failed: ${data.error}`);
+                }
+            })
+            .catch(error => {
+                hideProgress();
+                alert(`Error: ${error.message}`);
+            });
+        }
+
+        function showProgress() {
+            document.getElementById('progressIndicator').style.display = 'flex';
+        }
+
+        function hideProgress() {
+            document.getElementById('progressIndicator').style.display = 'none';
+        }
+
+        function updateProgress(percent, text) {
+            document.getElementById('progressFill').style.width = percent + '%';
+            document.getElementById('progressText').textContent = text;
+        }
+
+        // Simulate progress updates for better UX
+        function simulateProgress() {
+            let progress = 10;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 90) {
+                    clearInterval(interval);
+                    progress = 90;
+                }
+                updateProgress(progress, 'VEO 3 generating high-quality video...');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

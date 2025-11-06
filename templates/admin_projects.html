@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Customer Projects - DreamFrame LLC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f1e 100%);
+            border-radius: 20px;
+            color: white;
+        }
+        
+        .admin-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .admin-header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #00ffff, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00ffff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+        
+        .projects-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .projects-table th,
+        .projects-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .projects-table th {
+            background: rgba(0, 255, 255, 0.2);
+            color: #00ffff;
+            font-weight: bold;
+        }
+        
+        .projects-table tr:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .status-pending {
+            background: #ffa500;
+            color: #000;
+        }
+        
+        .status-in-progress {
+            background: #00bfff;
+            color: #000;
+        }
+        
+        .status-review {
+            background: #ffff00;
+            color: #000;
+        }
+        
+        .status-completed {
+            background: #00ff00;
+            color: #000;
+        }
+        
+        .status-delivered {
+            background: #90ee90;
+            color: #000;
+        }
+        
+        .project-type {
+            background: rgba(0, 255, 255, 0.2);
+            color: #00ffff;
+            padding: 0.2rem 0.6rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
+        }
+        
+        .view-btn {
+            background: linear-gradient(45deg, #00ffff, #0099ff);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        
+        .view-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
+        }
+        
+        .project-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f1e 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            color: white;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            color: #00ffff;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .project-detail {
+            margin-bottom: 1.5rem;
+        }
+        
+        .detail-label {
+            font-weight: bold;
+            color: #00ffff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .detail-value {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+        }
+        
+        .file-list {
+            margin-top: 1rem;
+        }
+        
+        .file-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.8rem;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .update-status {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+        }
+        
+        .update-status select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .update-btn {
+            background: linear-gradient(45deg, #00ff00, #00cc00);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .projects-table {
+                font-size: 0.8rem;
+            }
+            
+            .projects-table th,
+            .projects-table td {
+                padding: 0.5rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>Customer Projects Management</h1>
+            <p>Monitor and manage all customer video projects</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ projects|selectattr('status.value', 'equalto', 'pending')|list|length }}</div>
+                <div class="stat-label">🤖 AI Processing</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ projects|selectattr('status.value', 'equalto', 'in_progress')|list|length }}</div>
+                <div class="stat-label">🎬 In Production</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ projects|selectattr('status.value', 'equalto', 'completed')|list|length }}</div>
+                <div class="stat-label">✅ AI Delivered</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ projects|length }}</div>
+                <div class="stat-label">🚀 Total Automated</div>
+            </div>
+        </div>
+
+        <div class="ai-status-panel" style="background: rgba(0, 255, 255, 0.1); padding: 2rem; border-radius: 15px; margin: 2rem 0; border: 1px solid rgba(0, 255, 255, 0.3);">
+            <h3 style="color: #00ffff; margin-bottom: 1rem;">🤖 AI Project Manager Status</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 1rem; border-radius: 10px;">
+                    <div style="color: #00ff00; font-weight: bold;">✅ Auto-Processing: ACTIVE</div>
+                    <div style="font-size: 0.9rem; color: rgba(255,255,255,0.8);">AI analyzes all new submissions</div>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 1rem; border-radius: 10px;">
+                    <div style="color: #00ff00; font-weight: bold;">💬 Auto-Communication: ACTIVE</div>
+                    <div style="font-size: 0.9rem; color: rgba(255,255,255,0.8);">AI handles customer updates</div>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 1rem; border-radius: 10px;">
+                    <div style="color: #00ff00; font-weight: bold;">📊 Smart Analytics: ACTIVE</div>
+                    <div style="font-size: 0.9rem; color: rgba(255,255,255,0.8);">AI provides project insights</div>
+                </div>
+            </div>
+            
+            <!-- AI Processing Controls -->
+            <div style="text-align: center; padding: 1rem; background: rgba(255, 255, 255, 0.05); border-radius: 10px;">
+                <button id="forceProcessBtn" style="background: linear-gradient(45deg, #ff6b00, #ff8f00); color: white; border: none; padding: 12px 30px; border-radius: 25px; font-weight: bold; cursor: pointer; margin-right: 15px;">
+                    🚀 Force Process All Pending Projects
+                </button>
+                <span id="processingStatus" style="color: #00ff00; font-weight: bold;">Ready</span>
+                <div id="processingMessage" style="margin-top: 10px; color: #ffffff; font-size: 0.9em;"></div>
+            </div>
+        </div>
+
+        <table class="projects-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Video Title</th>
+                    <th>Type</th>
+                    <th>AI Status</th>
+                    <th>Files</th>
+                    <th>Created</th>
+                    <th>AI Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for project in projects %}
+                <tr>
+                    <td>#{{ project.id }}</td>
+                    <td>
+                        <div>{{ project.customer_name }}</div>
+                        <div style="font-size: 0.8rem; color: rgba(255,255,255,0.7);">{{ project.customer_email }}</div>
+                    </td>
+                    <td>{{ project.project_title }}</td>
+                    <td>
+                        <span class="project-type">{{ project.project_type.value|title|replace('_', ' ') }}</span>
+                    </td>
+                    <td>
+                        <span class="status-badge status-{{ project.status.value|replace('_', '-') }}">
+                            {{ project.status.value|title|replace('_', ' ') }}
+                        </span>
+                    </td>
+                    <td>{{ project.uploaded_files|length }} files</td>
+                    <td>{{ project.created_at.strftime('%m/%d/%Y') }}</td>
+                    <td>
+                        <button class="view-btn" onclick="viewProject({{ project.id }})">🤖 AI Manage</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Project Modal -->
+    <div id="projectModal" class="project-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Project Details</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalBody">
+                <!-- Project details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function viewProject(projectId) {
+            // For now, just show the project info from the table
+            // In a full implementation, you'd fetch detailed data via AJAX
+            const modal = document.getElementById('projectModal');
+            const modalBody = document.getElementById('modalBody');
+            
+            // Find project data from the table (simplified approach)
+            const projectRow = document.querySelector(`tr:has(td:first-child:contains('#${projectId}'))`);
+            
+            modalBody.innerHTML = `
+                <div class="project-detail">
+                    <div class="detail-label">Project ID</div>
+                    <div class="detail-value">#${projectId}</div>
+                </div>
+                <div class="project-detail">
+                    <div class="detail-label">Loading project details...</div>
+                    <div class="detail-value">Please implement full project detail loading via AJAX</div>
+                </div>
+                <div class="update-status">
+                    <h3 style="color: #00ffff; margin-bottom: 1rem;">Update Status</h3>
+                    <select id="statusSelect">
+                        <option value="pending">Pending</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="review">Review</option>
+                        <option value="completed">Completed</option>
+                        <option value="delivered">Delivered</option>
+                    </select>
+                    <button class="update-btn" onclick="updateStatus(${projectId})">Update Status</button>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+        
+        function closeModal() {
+            document.getElementById('projectModal').style.display = 'none';
+        }
+        
+        function updateStatus(projectId) {
+            const newStatus = document.getElementById('statusSelect').value;
+            alert(`Update project ${projectId} to status: ${newStatus}`);
+            // Implement actual status update via AJAX
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('projectModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+        
+        // Force processing functionality
+        document.getElementById('forceProcessBtn').addEventListener('click', async function() {
+            const btn = this;
+            const statusElement = document.getElementById('processingStatus');
+            const messageElement = document.getElementById('processingMessage');
+            
+            btn.disabled = true;
+            btn.textContent = '🔄 Processing...';
+            statusElement.textContent = 'Processing...';
+            statusElement.style.color = '#ffaa00';
+            
+            try {
+                const response = await fetch('/api/processing/force-process', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    statusElement.textContent = 'Success!';
+                    statusElement.style.color = '#00ff00';
+                    messageElement.textContent = result.message;
+                    
+                    // Refresh page after 2 seconds to show updated project statuses
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
+                } else {
+                    statusElement.textContent = 'Error';
+                    statusElement.style.color = '#ff0000';
+                    messageElement.textContent = result.error || 'Processing failed';
+                }
+            } catch (error) {
+                statusElement.textContent = 'Error';
+                statusElement.style.color = '#ff0000';
+                messageElement.textContent = 'Network error: ' + error.message;
+            }
+            
+            btn.disabled = false;
+            btn.textContent = '🚀 Force Process All Pending Projects';
+        });
+        
+        // Load processing status on page load
+        async function loadProcessingStatus() {
+            try {
+                const response = await fetch('/api/processing/status');
+                const status = await response.json();
+                
+                const statusElement = document.getElementById('processingStatus');
+                if (status.ai_processing_active) {
+                    statusElement.textContent = `Ready (${status.pending_count} pending)`;
+                    statusElement.style.color = '#00ff00';
+                } else {
+                    statusElement.textContent = 'Inactive';
+                    statusElement.style.color = '#ff0000';
+                }
+            } catch (error) {
+                console.error('Error loading processing status:', error);
+            }
+        }
+        
+        // Load status on page load
+        window.addEventListener('load', loadProcessingStatus);
+    </script>
+</body>
+</html>

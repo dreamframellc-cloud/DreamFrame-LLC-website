@@ -1,0 +1,101 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg-info/
+dist/
+build/
+
+# Flask
+instance/
+.webassets-cache
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+*.txt
+!requirements.txt
+!README.md
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Large media files (excluded from git)
+*.mp4
+*.mov
+*.MOV
+*.avi
+*.mkv
+*.webm
+*.flv
+
+# Large assets
+attached_assets/
+static/videos/
+static/completed_videos/
+uploads/
+completed_videos/
+
+# Vercel
+.vercel/
+
+# Railway
+.railway/
+
+# Node
+node_modules/
+package-lock.json
+
+# Large files
+*.pdf
+backup_*.mp4
+test_*.mp4
+jeremy_*.mp4
+veo3_*.mp4
+final_*.mp4
+*.jpeg
+*.jpg
+*.png
+!logo.png
+!favicon.ico
+
+# Config files with secrets
+google_credentials.json
+correct_credentials.json
+*.json
+!package.json
+!package-lock.json
+!requirements.txt
+
+# Documentation (keep only essential)
+*.md
+!README.md
+!RENDER_SETUP.md
+
+# Lock files
+uv.lock
+pyproject.toml
+.git.backup/
+.git.backup/
+.git.backup/

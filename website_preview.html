@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DreamFrame LLC - Website Preview & Features</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        .section {
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 10px;
+        }
+        .section h2 {
+            color: #00ffff;
+            border-bottom: 2px solid #00ffff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #00ffff;
+        }
+        .video-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        .video-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        .price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00ffff;
+            margin: 15px 0;
+        }
+        .nav-preview {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .nav-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+        }
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .tech-item {
+            background: rgba(0, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        .status.working { background: #10B981; color: white; }
+        .status.enhanced { background: #3B82F6; color: white; }
+        .status.complete { background: #8B5CF6; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">DREAM★FRAME LLC</div>
+            <div class="tagline">Transform Your Memories Into Cinematic Stories</div>
+        </div>
+
+        <div class="nav-preview">
+            <a href="/" class="nav-item">🏠 Home</a>
+            <a href="/gallery" class="nav-item">🎬 Gallery</a>
+            <a href="/pricing" class="nav-item">💰 Pricing</a>
+            <a href="/upload" class="nav-item">📤 Upload</a>
+            <a href="/invite" class="nav-item">👥 Invite</a>
+            <a href="/pricing-analysis" class="nav-item">📊 Analysis</a>
+        </div>
+
+        <div class="section">
+            <h2>📱 Website Status & Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>Core Functionality <span class="status working">✓ WORKING</span></h3>
+                    <ul>
+                        <li>Responsive video gallery with 6 videos</li>
+                        <li>Professional video player with controls</li>
+                        <li>Custom thumbnail display system</li>
+                        <li>Cross-platform mobile optimization</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>Enhanced UI/UX <span class="status enhanced">✓ ENHANCED</span></h3>
+                    <ul>
+                        <li>Smooth hover animations & transitions</li>
+                        <li>Interactive video cards with actions</li>
+                        <li>Favorite & share functionality</li>
+                        <li>View tracking & notifications</li>
+                        <li>Mobile navigation menu</li>
+                        <li>Keyboard shortcuts (Ctrl+K, Escape)</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>Voice Features <span class="status working">✓ WORKING</span></h3>
+                    <ul>
+                        <li>Voice-activated video tagging</li>
+                        <li>Speech recognition search</li>
+                        <li>Voice search functionality</li>
+                        <li>Audio-to-text conversion</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>Business Tools <span class="status complete">✓ COMPLETE</span></h3>
+                    <ul>
+                        <li>Professional pricing strategy</li>
+                        <li>Competitive market analysis</li>
+                        <li>PDF-ready business documents</li>
+                        <li>Client invitation system</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎬 Video Gallery (6 Videos)</h2>
+            <div class="video-list">
+                <div class="video-item">
+                    <h4>Avatar Intro</h4>
+                    <p>Professional avatar introduction video</p>
+                    <small>Duration: 0:45 | Status: ✓ Working</small>
+                </div>
+                <div class="video-item">
+                    <h4>Werewolf</h4>
+                    <p>Professional video production sample</p>
+                    <small>Duration: 1:30 | Status: ✓ Working</small>
+                </div>
+                <div class="video-item">
+                    <h4>Full Moon</h4>
+                    <p>Creative video showcase</p>
+                    <small>Duration: 1:15 | Status: ✓ Working</small>
+                </div>
+                <div class="video-item">
+                    <h4>Never Give Up</h4>
+                    <p>Extended video production showcase</p>
+                    <small>Duration: 5:30 | Status: ✓ Working</small>
+                </div>
+                <div class="video-item">
+                    <h4>Charge like a Bull</h4>
+                    <p>Custom video content</p>
+                    <small>Duration: 2:00 | Status: ✓ Working</small>
+                </div>
+                <div class="video-item">
+                    <h4>WWII Family</h4>
+                    <p>Historical family footage</p>
+                    <small>Duration: 3:45 | Status: ✓ Working (Your Upload)</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💰 Pricing Strategy</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Quick Clip</h3>
+                    <div class="price">$25</div>
+                    <p>5-second highlight videos<br>Perfect for social media</p>
+                </div>
+                <div class="pricing-card">
+                    <h3>VideoGrams</h3>
+                    <div class="price">$50</div>
+                    <p>30-second custom video messages<br>Professional quality</p>
+                </div>
+                <div class="pricing-card">
+                    <h3>Essential MemoryMotion</h3>
+                    <div class="price">$150</div>
+                    <p>60-90 second memory videos<br>Full cinematic experience</p>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 20px;">
+                <strong>Competitive Advantage:</strong> 40-75% below market rates while maintaining professional quality
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>🛠️ Technical Stack</h2>
+            <div class="tech-stack">
+                <span class="tech-item">Python Flask</span>
+                <span class="tech-item">HTML5 Video</span>
+                <span class="tech-item">CSS Grid & Flexbox</span>
+                <span class="tech-item">JavaScript ES6+</span>
+                <span class="tech-item">Web Speech API</span>
+                <span class="tech-item">Font Awesome Icons</span>
+                <span class="tech-item">Responsive Design</span>
+                <span class="tech-item">Cross-Platform</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📈 Performance & Analytics</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>User Experience</h3>
+                    <ul>
+                        <li>Fast loading with lazy image loading</li>
+                        <li>Smooth animations and transitions</li>
+                        <li>Touch-friendly mobile interface</li>
+                        <li>Keyboard accessibility</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>Video Tracking</h3>
+                    <ul>
+                        <li>View count tracking per video</li>
+                        <li>Favorite video management</li>
+                        <li>Play time analytics</li>
+                        <li>User interaction logging</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🚀 Next Steps & Deployment</h2>
+            <p>Your DreamFrame LLC website is fully functional and ready for business. All core features are working:</p>
+            <ul>
+                <li>✅ Professional video gallery with all 6 videos playing correctly</li>
+                <li>✅ Competitive pricing strategy with market analysis</li>
+                <li>✅ Enhanced user interface with modern interactions</li>
+                <li>✅ Voice-activated features for advanced usability</li>
+                <li>✅ Mobile-optimized responsive design</li>
+                <li>✅ Business documentation ready for clients</li>
+            </ul>
+            
+            <p style="margin-top: 20px; padding: 20px; background: rgba(0, 255, 255, 0.1); border-radius: 8px;">
+                <strong>Ready for Launch:</strong> Your website demonstrates professional video production capabilities with an accessible pricing model that positions DreamFrame LLC competitively in the market.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

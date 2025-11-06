@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generation Status - Vertex AI VEO 3</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .status-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+        
+        .status-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .status-pending {
+            color: #ffd93d;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-in-progress {
+            color: #2196F3;
+            animation: spin 2s linear infinite;
+        }
+        
+        .status-completed {
+            color: #4CAF50;
+        }
+        
+        .status-failed {
+            color: #f44336;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .status-title {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        
+        .status-message {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        
+        .order-details {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: left;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            font-weight: bold;
+            color: #ffd93d;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .action-buttons {
+            margin-top: 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 5px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffd93d;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        
+        .refresh-indicator {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-top: 15px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+            transition: background 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/vertex-ai" class="back-link">← Back to Vertex AI</a>
+        
+        <div class="header">
+            <h1>🎬 Generation Status</h1>
+            <p>Vertex AI Video Generation Progress</p>
+        </div>
+        
+        <div class="status-container">
+            <div class="status-icon" id="statusIcon">
+                {% if order.status.value == 'PENDING' %}⏳
+                {% elif order.status.value == 'IN_PROGRESS' %}🔄
+                {% elif order.status.value == 'COMPLETED' %}✅
+                {% elif order.status.value == 'FAILED' %}❌
+                {% endif %}
+            </div>
+            
+            <div class="status-title" id="statusTitle">{{ order.status.value.title() }}</div>
+            
+            <div class="status-message" id="statusMessage">
+                {% if order.status.value == 'PENDING' %}
+                    Your video generation request is queued and will start soon.
+                {% elif order.status.value == 'IN_PROGRESS' %}
+                    <div class="loading-spinner"></div>
+                    Vertex AI is creating your video...
+                {% elif order.status.value == 'COMPLETED' %}
+                    Your video is ready for download!
+                {% elif order.status.value == 'FAILED' %}
+                    Video generation encountered an error.
+                {% endif %}
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 
+                    {% if order.status.value == 'PENDING' %}20%
+                    {% elif order.status.value == 'IN_PROGRESS' %}60%
+                    {% elif order.status.value == 'COMPLETED' %}100%
+                    {% elif order.status.value == 'FAILED' %}0%
+                    {% endif %}"></div>
+            </div>
+            
+            <div class="order-details">
+                <div class="detail-row">
+                    <span class="detail-label">Order ID:</span>
+                    <span>{{ order.id }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Title:</span>
+                    <span>{{ order.title }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Status:</span>
+                    <span id="currentStatus">{{ order.status.value }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Generation Settings:</span>
+                    <span>{{ order.generation_settings or 'Vertex AI VEO 3' }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Created:</span>
+                    <span>{{ order.created_at.strftime('%Y-%m-%d %H:%M') if order.created_at else 'Unknown' }}</span>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                {% if order.status.value == 'COMPLETED' and order.generated_video_path %}
+                    <a href="/download-customer-video/{{ order.id }}" class="btn btn-primary">
+                        📥 Download Video
+                    </a>
+                {% endif %}
+                
+                <a href="/vertex-ai/generate" class="btn btn-secondary">
+                    🎬 Generate Another Video
+                </a>
+                
+                <a href="/vertex-ai/my-videos" class="btn btn-secondary">
+                    📱 My Videos
+                </a>
+            </div>
+            
+            {% if order.status.value in ['PENDING', 'IN_PROGRESS'] %}
+                <div class="refresh-indicator">
+                    Page auto-refreshes every 10 seconds
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <script>
+        // Auto-refresh for pending/in-progress orders
+        const orderStatus = '{{ order.status.value }}';
+        
+        if (orderStatus === 'PENDING' || orderStatus === 'IN_PROGRESS') {
+            setInterval(() => {
+                location.reload();
+            }, 10000); // Refresh every 10 seconds
+        }
+        
+        // Real-time status updates via API
+        function checkStatus() {
+            fetch('/vertex-ai/api/status/{{ order.id }}')
+                .then(response => response.json())
+                .then(data => {
+                    updateStatusDisplay(data);
+                })
+                .catch(error => {
+                    console.error('Status check failed:', error);
+                });
+        }
+        
+        function updateStatusDisplay(data) {
+            const statusIcon = document.getElementById('statusIcon');
+            const statusTitle = document.getElementById('statusTitle');
+            const statusMessage = document.getElementById('statusMessage');
+            const progressFill = document.getElementById('progressFill');
+            const currentStatus = document.getElementById('currentStatus');
+            
+            // Update status display
+            currentStatus.textContent = data.status;
+            
+            // Update icon and message based on status
+            switch(data.status) {
+                case 'PENDING':
+                    statusIcon.textContent = '⏳';
+                    statusIcon.className = 'status-icon status-pending';
+                    statusMessage.textContent = 'Your video generation request is queued and will start soon.';
+                    progressFill.style.width = '20%';
+                    break;
+                case 'IN_PROGRESS':
+                    statusIcon.textContent = '🔄';
+                    statusIcon.className = 'status-icon status-in-progress';
+                    statusMessage.innerHTML = '<div class="loading-spinner"></div>Vertex AI is creating your video...';
+                    progressFill.style.width = '60%';
+                    break;
+                case 'COMPLETED':
+                    statusIcon.textContent = '✅';
+                    statusIcon.className = 'status-icon status-completed';
+                    statusMessage.textContent = 'Your video is ready for download!';
+                    progressFill.style.width = '100%';
+                    
+                    // Add download button if video is available
+                    if (data.video_available && data.download_url) {
+                        location.reload(); // Refresh to show download button
+                    }
+                    break;
+                case 'FAILED':
+                    statusIcon.textContent = '❌';
+                    statusIcon.className = 'status-icon status-failed';
+                    statusMessage.textContent = 'Video generation encountered an error.';
+                    progressFill.style.width = '0%';
+                    break;
+            }
+            
+            statusTitle.textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1).toLowerCase();
+        }
+        
+        // Check status every 5 seconds for active orders
+        if (orderStatus === 'PENDING' || orderStatus === 'IN_PROGRESS') {
+            setInterval(checkStatus, 5000);
+        }
+    </script>
+</body>
+</html>

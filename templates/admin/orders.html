@@ -1,0 +1,179 @@
+{% extends "admin/base.html" %}
+
+{% block page_title %}Orders Management{% endblock %}
+
+{% block toolbar %}
+<div class="dropdown">
+    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        Filter by Status
+    </button>
+    <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{{ url_for('admin.orders') }}">All Orders</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('admin.orders', status='pending') }}">Pending</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('admin.orders', status='paid') }}">Paid</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('admin.orders', status='in_production') }}">In Production</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('admin.orders', status='review') }}">Review</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('admin.orders', status='completed') }}">Completed</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('admin.orders', status='cancelled') }}">Cancelled</a></li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">
+            Orders 
+            {% if status_filter %}
+                - {{ status_filter.replace('_', ' ').title() }}
+            {% else %}
+                - All
+            {% endif %}
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Service</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Delivery</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders.items %}
+                    <tr>
+                        <td>
+                            <code>{{ order.order_id }}</code>
+                        </td>
+                        <td>
+                            <div>
+                                <strong>{{ order.customer_name }}</strong><br>
+                                <small class="text-muted">{{ order.customer_email }}</small>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge bg-info">
+                                {{ order.service_type.value.replace('_', ' ').title() }}
+                            </span>
+                        </td>
+                        <td>
+                            <strong>${{ "%.2f"|format(order.amount/100) }}</strong>
+                        </td>
+                        <td>
+                            <span class="badge bg-{% if order.status.value == 'completed' %}success{% elif order.status.value == 'pending' %}warning{% elif order.status.value == 'cancelled' %}danger{% elif order.status.value == 'paid' %}info{% else %}primary{% endif %}">
+                                {{ order.status.value.replace('_', ' ').title() }}
+                            </span>
+                        </td>
+                        <td>
+                            <small>{{ order.created_at.strftime('%m/%d/%Y %H:%M') }}</small>
+                        </td>
+                        <td>
+                            {% if order.estimated_delivery %}
+                                <small>{{ order.estimated_delivery.strftime('%m/%d/%Y') }}</small>
+                            {% else %}
+                                <small class="text-muted">TBD</small>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a href="{{ url_for('admin.order_detail', order_id=order.id) }}" 
+                                   class="btn btn-outline-primary" title="View Details">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                {% if order.status.value in ['paid', 'in_production'] %}
+                                <button class="btn btn-outline-success" onclick="updateOrderStatus({{ order.id }}, 'in_production')" title="Start Production">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                                {% endif %}
+                                {% if order.status.value in ['in_production', 'review'] %}
+                                <button class="btn btn-outline-warning" onclick="updateOrderStatus({{ order.id }}, 'completed')" title="Mark Complete">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="8" class="text-center text-muted py-4">
+                            No orders found
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination -->
+        {% if orders.pages > 1 %}
+        <nav aria-label="Order pagination">
+            <ul class="pagination justify-content-center">
+                {% if orders.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.orders', page=orders.prev_num, status=status_filter) }}">Previous</a>
+                    </li>
+                {% endif %}
+                
+                {% for page_num in orders.iter_pages() %}
+                    {% if page_num %}
+                        {% if page_num != orders.page %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('admin.orders', page=page_num, status=status_filter) }}">{{ page_num }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ page_num }}</span>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">…</span>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if orders.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.orders', page=orders.next_num, status=status_filter) }}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function updateOrderStatus(orderId, status) {
+    if (confirm(`Are you sure you want to update this order status to ${status.replace('_', ' ')}?`)) {
+        fetch('/admin/orders/' + orderId + '/update_status', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'status=' + encodeURIComponent(status)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error updating order: ' + data.error);
+            }
+        })
+        .catch(error => {
+            alert('Error updating order: ' + error);
+        });
+    }
+}
+</script>
+{% endblock %}

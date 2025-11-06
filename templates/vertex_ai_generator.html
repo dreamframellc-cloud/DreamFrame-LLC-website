@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vertex AI VEO 3 Video Generator - DreamFrame</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #ffd93d;
+        }
+        
+        .cta-section {
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            color: white;
+            padding: 20px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            margin: 10px;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .specs {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+            backdrop-filter: blur(10px);
+        }
+        
+        .specs h3 {
+            color: #ffd93d;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .specs ul {
+            list-style: none;
+        }
+        
+        .specs li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .specs li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .status-active {
+            background: #4CAF50;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .navigation {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .nav-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: background 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎬 Vertex AI VEO 3</h1>
+            <p>Professional Video Generation with Google's Advanced AI</p>
+            <p><span class="status-indicator status-active"></span>System Active & Ready</p>
+        </div>
+        
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h3>Ultra-Fast Generation</h3>
+                <p>Create professional videos in 2-3 minutes using Google's cutting-edge VEO 3 technology</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>AI-Powered Creativity</h3>
+                <p>Transform your images into cinematic videos with intelligent motion and effects</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Cloud Processing</h3>
+                <p>Leverage Google Cloud's powerful infrastructure for reliable, scalable video generation</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Precision Control</h3>
+                <p>Fine-tune duration, motion intensity, and creative direction with advanced prompting</p>
+            </div>
+        </div>
+        
+        <div class="specs">
+            <h3>Technical Specifications</h3>
+            <ul>
+                <li>Resolution: HD 1280x720 with 30fps output</li>
+                <li>Duration: Flexible 3-30 second videos</li>
+                <li>Format: Professional MP4 with H.264 encoding</li>
+                <li>Motion: Intelligent scene analysis and smooth transitions</li>
+                <li>Quality: Commercial-grade output suitable for professional use</li>
+                <li>Integration: Full Google Cloud Vertex AI platform</li>
+                <li>Authentication: Secure credential management</li>
+                <li>Monitoring: Real-time generation progress tracking</li>
+            </ul>
+        </div>
+        
+        <div class="navigation">
+            <a href="/" class="nav-link">🏠 Home</a>
+            <a href="/my-videos" class="nav-link">📱 My Videos</a>
+            <a href="/vertex-ai/my-videos" class="nav-link">🎬 Vertex AI Videos</a>
+        </div>
+        
+        <div class="cta-section">
+            <a href="/vertex-ai/generate" class="cta-button">
+                🎬 Generate Video with VEO 3
+            </a>
+            
+            <a href="/vertex-ai/my-videos" class="cta-button">
+                📊 View My Vertex AI Videos
+            </a>
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px; opacity: 0.8;">
+            <p>Powered by Google Cloud Vertex AI & VEO 3 Technology</p>
+            <p>Professional video generation with enterprise-grade reliability</p>
+        </div>
+    </div>
+    
+    <script>
+        // Auto-refresh status indicators
+        setInterval(() => {
+            const indicators = document.querySelectorAll('.status-active');
+            indicators.forEach(indicator => {
+                indicator.style.animationDuration = Math.random() * 2 + 1 + 's';
+            });
+        }, 3000);
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

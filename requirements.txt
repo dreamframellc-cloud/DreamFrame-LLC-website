@@ -1,0 +1,31 @@
+# Requirements for Railway deployment
+# Railway supports all dependencies including heavy ML packages
+flask>=3.0.0
+gunicorn>=21.0.0
+werkzeug>=3.0.0
+flask-sqlalchemy>=3.0.0
+psycopg2-binary>=2.9.0
+stripe>=7.0.0
+openai>=1.0.0
+pillow>=10.0.0
+email-validator>=2.0.0
+sendgrid>=6.12.5
+anthropic>=0.25.0
+reportlab>=4.4.3
+requests>=2.32.4
+pyjwt>=2.10.1
+cryptography>=45.0.5
+twilio>=9.7.0
+flask-dance>=7.1.0
+flask-login>=0.6.3
+oauthlib>=3.3.1
+google-api-core>=2.25.1
+google-auth>=2.40.3
+google-cloud-storage>=3.2.0
+google-cloud-pubsub>=2.31.1
+sqlalchemy>=2.0.41
+schedule>=1.2.2
+flask-babel>=4.0.0
+numpy>=2.3.2
+opencv-python>=4.11.0.86
+

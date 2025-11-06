@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Policy - DreamFrame LLC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .policy-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .policy-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+        }
+        
+        .policy-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(240, 248, 255, 0.7);
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .policy-section h3 {
+            color: #2980b9;
+            margin-bottom: 1rem;
+        }
+        
+        .violation-examples {
+            background: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid #e74c3c;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+        }
+        
+        .safe-examples {
+            background: rgba(39, 174, 96, 0.1);
+            border-left: 4px solid #27ae60;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+        }
+        
+        .back-button {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: transform 0.3s ease;
+            margin-top: 2rem;
+        }
+        
+        .back-button:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="policy-container">
+        <div class="policy-header">
+            <h1>🛡️ DreamFrame Content Policy</h1>
+            <p>Ensuring Safe, Creative, and Legal Video Generation</p>
+        </div>
+
+        <div class="policy-section">
+            <h3>🚫 Prohibited Content</h3>
+            <p>To maintain a safe and legal platform, we prohibit the following types of content:</p>
+            
+            <div class="violation-examples">
+                <h4>Celebrity & Public Figure Restrictions</h4>
+                <ul>
+                    <li>Real celebrities, actors, musicians, or public figures</li>
+                    <li>Political figures or historical personalities</li>
+                    <li>Requests that mimic or impersonate real people</li>
+                    <li>Content using phrases like "looks like [celebrity name]"</li>
+                </ul>
+            </div>
+
+            <div class="violation-examples">
+                <h4>Copyrighted Material</h4>
+                <ul>
+                    <li>Disney characters (Mickey Mouse, Marvel heroes, Star Wars)</li>
+                    <li>Movie franchises (Harry Potter, Lord of the Rings, etc.)</li>
+                    <li>Gaming characters (Mario, Pokemon, Sonic)</li>
+                    <li>TV show characters and branded content</li>
+                    <li>Music artists and their distinctive styles</li>
+                </ul>
+            </div>
+
+            <div class="violation-examples">
+                <h4>Harmful Content</h4>
+                <ul>
+                    <li>Violence, weapons, or aggressive behavior</li>
+                    <li>Adult, sexual, or inappropriate content</li>
+                    <li>Hate speech or discriminatory material</li>
+                    <li>Self-harm or dangerous activities</li>
+                    <li>Illegal substances or criminal activities</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="policy-section">
+            <h3>✅ Encouraged Content</h3>
+            <p>We love creating videos with these types of content:</p>
+            
+            <div class="safe-examples">
+                <h4>Creative & Original</h4>
+                <ul>
+                    <li>Original characters and scenes</li>
+                    <li>Nature and landscape videos</li>
+                    <li>Abstract art and creative concepts</li>
+                    <li>Professional portraits and photography</li>
+                    <li>Family-friendly animations</li>
+                </ul>
+            </div>
+
+            <div class="safe-examples">
+                <h4>Safe Alternatives</h4>
+                <ul>
+                    <li>Instead of "Taylor Swift": try "professional singer"</li>
+                    <li>Instead of "Mickey Mouse": try "friendly cartoon character"</li>
+                    <li>Instead of "violent fight": try "dynamic action scene"</li>
+                    <li>Instead of "looks like Brad Pitt": try "handsome person"</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="policy-section">
+            <h3>🤖 Automated Content Filtering</h3>
+            <p>Our AI-powered content safety system automatically:</p>
+            <ul>
+                <li>Scans all video generation requests</li>
+                <li>Detects policy violations before processing</li>
+                <li>Suggests safe alternatives when possible</li>
+                <li>Protects both creators and our platform</li>
+                <li>Logs all safety assessments for review</li>
+            </ul>
+        </div>
+
+        <div class="policy-section">
+            <h3>📞 Need Help?</h3>
+            <p>If you're unsure about content guidelines or have questions:</p>
+            <ul>
+                <li>Contact us through the support form</li>
+                <li>Review our suggested alternatives</li>
+                <li>Focus on original, creative concepts</li>
+                <li>Avoid referencing real people or copyrighted material</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="{{ url_for('index') }}" class="back-button">← Back to Home</a>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem; color: #7f8c8d; font-size: 0.9rem;">
+            <p>Content Policy effective as of August 2025</p>
+            <p>DreamFrame LLC - Professional Video Production Platform</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fast Turnaround Service - DreamFrame LLC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <style>
+        .fast-turnaround-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border-radius: 20px;
+        }
+        
+        .turnaround-hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #00ffff, #00cccc);
+            border-radius: 15px;
+            color: black;
+        }
+        
+        .turnaround-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+        
+        .turnaround-hero p {
+            font-size: 1.2rem;
+            margin-bottom: 0;
+        }
+        
+        .speed-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .speed-card {
+            background: #333;
+            border: 2px solid #444;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .speed-card:hover {
+            border-color: #00ffff;
+            background: #404040;
+            transform: translateY(-5px);
+        }
+        
+        .speed-card.rush {
+            border-color: #ff4444;
+        }
+        
+        .speed-card.express {
+            border-color: #ffaa00;
+        }
+        
+        .speed-card.standard {
+            border-color: #00ff00;
+        }
+        
+        .speed-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .speed-title {
+            color: #00ffff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .speed-time {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .speed-price {
+            color: #ffff00;
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .speed-features {
+            color: #ccc;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            text-align: left;
+        }
+        
+        .speed-features ul {
+            margin: 0;
+            padding-left: 1rem;
+        }
+        
+        .automation-showcase {
+            background: #2a2a2a;
+            border: 1px solid #00ffff;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .automation-title {
+            color: #00ffff;
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .automation-levels {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .automation-level {
+            background: #333;
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+        
+        .automation-level h3 {
+            color: #00ffff;
+            margin-bottom: 1rem;
+        }
+        
+        .automation-process {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+        
+        .automation-process li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .capacity-dashboard {
+            background: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .capacity-title {
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .capacity-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .capacity-stat {
+            text-align: center;
+            padding: 1rem;
+            background: #333;
+            border-radius: 10px;
+        }
+        
+        .stat-number {
+            color: #00ffff;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+        
+        .quote-calculator {
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+            border: 2px solid #00ffff;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .calculator-title {
+            color: #00ffff;
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .calculator-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            color: white;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .form-group select, .form-group input {
+            padding: 0.8rem;
+            border: 1px solid #444;
+            border-radius: 8px;
+            background: #333;
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .form-group select:focus, .form-group input:focus {
+            outline: none;
+            border-color: #00ffff;
+            box-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+        }
+        
+        .calculate-btn {
+            background: linear-gradient(135deg, #00ffff, #00cccc);
+            color: black;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.4);
+        }
+        
+        .quote-result {
+            display: none;
+            background: #333;
+            border: 1px solid #00ffff;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .quote-price {
+            color: #ffff00;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .quote-details {
+            color: #ccc;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .order-now-btn {
+            background: linear-gradient(135deg, #ff4444, #cc0000);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .order-now-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 68, 68, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .fast-turnaround-container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+            
+            .turnaround-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .speed-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .calculator-form {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fast-turnaround-container">
+        <div class="turnaround-hero">
+            <h1>⚡ Fast Turnaround Service</h1>
+            <p>Get your professional videos delivered in hours, not days</p>
+        </div>
+        
+        <div class="speed-options">
+            <div class="speed-card rush" onclick="selectSpeed('rush')">
+                <div class="speed-icon">🚀</div>
+                <div class="speed-title">RUSH</div>
+                <div class="speed-time">2-4 Hours</div>
+                <div class="speed-price">2x Price</div>
+                <div class="speed-features">
+                    <ul>
+                        <li>Full AI automation</li>
+                        <li>Priority queue position</li>
+                        <li>Real-time progress tracking</li>
+                        <li>Instant delivery notification</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="speed-card express" onclick="selectSpeed('express')">
+                <div class="speed-icon">⚡</div>
+                <div class="speed-title">EXPRESS</div>
+                <div class="speed-time">Same Day</div>
+                <div class="speed-price">1.5x Price</div>
+                <div class="speed-features">
+                    <ul>
+                        <li>AI-assisted production</li>
+                        <li>Same-day delivery guarantee</li>
+                        <li>Quality review included</li>
+                        <li>Email progress updates</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="speed-card standard" onclick="selectSpeed('standard')">
+                <div class="speed-icon">📅</div>
+                <div class="speed-title">STANDARD</div>
+                <div class="speed-time">1-2 Days</div>
+                <div class="speed-price">Standard Price</div>
+                <div class="speed-features">
+                    <ul>
+                        <li>Human creative oversight</li>
+                        <li>Multiple revision rounds</li>
+                        <li>Enhanced quality checks</li>
+                        <li>Standard delivery timeline</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="automation-showcase">
+            <h2 class="automation-title">🤖 Advanced Automation Pipeline</h2>
+            <div class="automation-levels">
+                <div class="automation-level">
+                    <h3>Full Automation (RUSH)</h3>
+                    <ol class="automation-process">
+                        <li>AI Content Analysis (2 min)</li>
+                        <li>Auto Frame Extraction (1 min)</li>
+                        <li>AI Video Editing (10 min)</li>
+                        <li>Auto Music Sync (3 min)</li>
+                        <li>Brand Overlay Application (1 min)</li>
+                        <li>Quality Validation (2 min)</li>
+                        <li>Final Render (5 min)</li>
+                    </ol>
+                </div>
+                
+                <div class="automation-level">
+                    <h3>AI-Assisted (EXPRESS)</h3>
+                    <ol class="automation-process">
+                        <li>AI Content Analysis (3 min)</li>
+                        <li>Assisted Editing Prep (5 min)</li>
+                        <li>Human Creative Review (15 min)</li>
+                        <li>AI Refinement (8 min)</li>
+                        <li>Final Human Approval (5 min)</li>
+                        <li>Automated Delivery (2 min)</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        
+        <div class="capacity-dashboard">
+            <h2 class="capacity-title">📊 Current Production Capacity</h2>
+            <div class="capacity-stats">
+                <div class="capacity-stat">
+                    <div class="stat-number">{{ capacity.total_daily_capacity }}</div>
+                    <div class="stat-label">Projects/Day</div>
+                </div>
+                <div class="capacity-stat">
+                    <div class="stat-number">{{ capacity.rush_order_capacity }}</div>
+                    <div class="stat-label">Rush Orders/Day</div>
+                </div>
+                <div class="capacity-stat">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">On-Time Delivery</div>
+                </div>
+                <div class="capacity-stat">
+                    <div class="stat-number">4.8★</div>
+                    <div class="stat-label">Quality Rating</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="quote-calculator">
+            <h2 class="calculator-title">💰 Instant Quote Calculator</h2>
+            <div class="calculator-form">
+                <div class="form-group">
+                    <label for="projectType">Video Type</label>
+                    <select id="projectType" name="projectType">
+                        <option value="videogram">VideoGram (5s)</option>
+                        <option value="quick_clip">Quick Clip (15s)</option>
+                        <option value="family_memory">Family Memory (60s)</option>
+                        <option value="military_tribute">Military Tribute (120s)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="priority">Delivery Speed</label>
+                    <select id="priority" name="priority">
+                        <option value="rush">RUSH (2-4 hours)</option>
+                        <option value="express">EXPRESS (same day)</option>
+                        <option value="standard">STANDARD (1-2 days)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="complexity">Complexity Level</label>
+                    <select id="complexity" name="complexity">
+                        <option value="1">Simple (1x)</option>
+                        <option value="2">Moderate (2x)</option>
+                        <option value="3">Complex (3x)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button class="calculate-btn" onclick="calculateQuote()">
+                🧮 Calculate Quote
+            </button>
+            
+            <div class="quote-result" id="quoteResult">
+                <div class="quote-price" id="quotePrice">$150</div>
+                <div class="quote-details" id="quoteDetails">
+                    VideoGram • RUSH Priority • Delivered in 2.5 hours
+                </div>
+                <button class="order-now-btn" onclick="orderNow()">
+                    🚀 Order Now
+                </button>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="/pricing" style="color: #00ffff; text-decoration: none; font-size: 1.1rem;">
+                ← Back to Standard Pricing
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        let selectedSpeed = null;
+        
+        function selectSpeed(speed) {
+            selectedSpeed = speed;
+            
+            // Update priority selector
+            document.getElementById('priority').value = speed;
+            
+            // Highlight selected card
+            document.querySelectorAll('.speed-card').forEach(card => {
+                card.style.borderColor = '#444';
+            });
+            
+            document.querySelector(`.speed-card.${speed}`).style.borderColor = '#00ffff';
+        }
+        
+        function calculateQuote() {
+            const projectType = document.getElementById('projectType').value;
+            const priority = document.getElementById('priority').value;
+            const complexity = document.getElementById('complexity').value;
+            
+            // Show loading
+            const button = document.querySelector('.calculate-btn');
+            const originalText = button.textContent;
+            button.textContent = '🔄 Calculating...';
+            button.disabled = true;
+            
+            // Make API call
+            fetch('/express-quote', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    project_type: projectType,
+                    priority: priority,
+                    complexity_score: parseInt(complexity)
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    displayQuote(data.quote);
+                } else {
+                    alert('Error calculating quote: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Network error calculating quote');
+            })
+            .finally(() => {
+                button.textContent = originalText;
+                button.disabled = false;
+            });
+        }
+        
+        function displayQuote(quote) {
+            document.getElementById('quotePrice').textContent = `$${quote.express_price}`;
+            document.getElementById('quoteDetails').innerHTML = `
+                ${quote.project_type.replace('_', ' ').toUpperCase()} • 
+                ${quote.priority.toUpperCase()} Priority • 
+                Delivered in ${quote.turnaround_info.estimated_hours} hours<br>
+                <small>Standard price: $${quote.base_price} | Express premium: +$${quote.price_difference}</small>
+            `;
+            
+            document.getElementById('quoteResult').style.display = 'block';
+            
+            // Store quote data for ordering
+            window.currentQuote = quote;
+        }
+        
+        function orderNow() {
+            if (window.currentQuote) {
+                // Redirect to payment with quote data
+                const params = new URLSearchParams({
+                    service: window.currentQuote.project_type,
+                    priority: window.currentQuote.priority,
+                    price: window.currentQuote.express_price,
+                    turnaround: window.currentQuote.turnaround_info.estimated_hours
+                });
+                
+                window.location.href = `/payment/express?${params.toString()}`;
+            }
+        }
+        
+        // Initialize with default values
+        document.addEventListener('DOMContentLoaded', function() {
+            selectSpeed('express');
+        });
+    </script>
+</body>
+</html>

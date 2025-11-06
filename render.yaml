@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: dreamframe-llc
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --config gunicorn.conf.py wsgi_simple:application
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: PYTHONUNBUFFERED
+        value: 1
+
+databases:
+  - name: dreamframe-db
+    databaseName: dreamframe
+    user: dreamframe
+

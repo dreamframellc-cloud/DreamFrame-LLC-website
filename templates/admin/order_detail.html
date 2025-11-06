@@ -1,0 +1,238 @@
+{% extends "admin/base.html" %}
+
+{% block page_title %}Order #{{ order.order_id }}{% endblock %}
+
+{% block toolbar %}
+<a href="{{ url_for('admin.orders') }}" class="btn btn-outline-secondary">
+    <i class="fas fa-arrow-left me-2"></i>Back to Orders
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Order Details -->
+    <div class="col-lg-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Order Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-sm">
+                            <tr>
+                                <th width="40%">Order ID:</th>
+                                <td><code>{{ order.order_id }}</code></td>
+                            </tr>
+                            <tr>
+                                <th>Customer:</th>
+                                <td>{{ order.customer_name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Email:</th>
+                                <td>{{ order.customer_email }}</td>
+                            </tr>
+                            <tr>
+                                <th>Phone:</th>
+                                <td>{{ order.customer_phone or 'Not provided' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Service:</th>
+                                <td>
+                                    <span class="badge bg-info">
+                                        {{ order.service_type.value.replace('_', ' ').title() }}
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-sm">
+                            <tr>
+                                <th width="40%">Amount:</th>
+                                <td><strong>${{ "%.2f"|format(order.amount/100) }}</strong></td>
+                            </tr>
+                            <tr>
+                                <th>Status:</th>
+                                <td>
+                                    <span class="badge bg-{% if order.status.value == 'completed' %}success{% elif order.status.value == 'pending' %}warning{% elif order.status.value == 'cancelled' %}danger{% elif order.status.value == 'paid' %}info{% else %}primary{% endif %}">
+                                        {{ order.status.value.replace('_', ' ').title() }}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Created:</th>
+                                <td>{{ order.created_at.strftime('%m/%d/%Y %H:%M') }}</td>
+                            </tr>
+                            <tr>
+                                <th>Updated:</th>
+                                <td>{{ order.updated_at.strftime('%m/%d/%Y %H:%M') }}</td>
+                            </tr>
+                            <tr>
+                                <th>Estimated Delivery:</th>
+                                <td>
+                                    {% if order.estimated_delivery %}
+                                        {{ order.estimated_delivery.strftime('%m/%d/%Y') }}
+                                    {% else %}
+                                        <em>Not set</em>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                {% if order.requirements %}
+                <hr>
+                <h6>Customer Requirements:</h6>
+                <div class="bg-light p-3 rounded">
+                    {% for key, value in order.requirements.items() %}
+                        {% if value %}
+                        <div class="mb-2">
+                            <strong>{{ key.replace('_', ' ').title() }}:</strong> {{ value }}
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Messages -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Customer Communication</h5>
+            </div>
+            <div class="card-body">
+                <div class="messages-container" style="max-height: 400px; overflow-y: auto;">
+                    {% for message in messages %}
+                    <div class="message mb-3 p-3 rounded {% if message.is_from_customer %}bg-light{% else %}bg-primary text-white{% endif %}">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="message-content flex-grow-1">
+                                <p class="mb-1">{{ message.message_text }}</p>
+                                {% if message.ai_response and not message.is_from_customer %}
+                                <small class="{% if message.is_from_customer %}text-muted{% else %}text-white-50{% endif %}">
+                                    AI Response: {{ message.ai_response }}
+                                </small>
+                                {% endif %}
+                            </div>
+                            <small class="{% if message.is_from_customer %}text-muted{% else %}text-white-50{% endif %} ms-2">
+                                {{ message.created_at.strftime('%m/%d %H:%M') }}
+                            </small>
+                        </div>
+                    </div>
+                    {% else %}
+                    <p class="text-muted">No messages yet</p>
+                    {% endfor %}
+                </div>
+                
+                <!-- Admin Reply Form -->
+                <hr>
+                <form id="adminReplyForm">
+                    <div class="mb-3">
+                        <label for="adminMessage" class="form-label">Admin Reply:</label>
+                        <textarea class="form-control" id="adminMessage" rows="3" placeholder="Type your reply to the customer..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Reply</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Management -->
+    <div class="col-lg-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Status Management</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('admin.update_order_status', order_id=order.id) }}">
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Update Status:</label>
+                        <select class="form-select" name="status" id="status">
+                            <option value="pending" {% if order.status.value == 'pending' %}selected{% endif %}>Pending</option>
+                            <option value="paid" {% if order.status.value == 'paid' %}selected{% endif %}>Paid</option>
+                            <option value="in_production" {% if order.status.value == 'in_production' %}selected{% endif %}>In Production</option>
+                            <option value="review" {% if order.status.value == 'review' %}selected{% endif %}>Review</option>
+                            <option value="completed" {% if order.status.value == 'completed' %}selected{% endif %}>Completed</option>
+                            <option value="cancelled" {% if order.status.value == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Notes (optional):</label>
+                        <textarea class="form-control" name="notes" id="notes" rows="3" placeholder="Add notes about this status update..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Update Status</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Payment Information -->
+        {% if order.stripe_session_id or order.stripe_payment_intent_id %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Payment Information</h5>
+            </div>
+            <div class="card-body">
+                {% if order.stripe_session_id %}
+                <div class="mb-2">
+                    <strong>Session ID:</strong><br>
+                    <code class="small">{{ order.stripe_session_id }}</code>
+                </div>
+                {% endif %}
+                {% if order.stripe_payment_intent_id %}
+                <div class="mb-2">
+                    <strong>Payment Intent:</strong><br>
+                    <code class="small">{{ order.stripe_payment_intent_id }}</code>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- File Management -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Files</h5>
+            </div>
+            <div class="card-body">
+                {% if order.uploaded_files %}
+                    <h6>Customer Files:</h6>
+                    <ul class="list-unstyled">
+                        {% for file in order.uploaded_files %}
+                        <li><i class="fas fa-file me-2"></i>{{ file }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                
+                {% if order.final_video_path %}
+                    <h6>Final Video:</h6>
+                    <p><i class="fas fa-video me-2"></i>{{ order.final_video_path }}</p>
+                {% else %}
+                    <p class="text-muted">No final video uploaded yet</p>
+                {% endif %}
+                
+                <button class="btn btn-outline-primary btn-sm w-100 mt-2">
+                    <i class="fas fa-upload me-2"></i>Upload Files
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('adminReplyForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const message = document.getElementById('adminMessage').value;
+    if (!message.trim()) return;
+    
+    // Here you would send the admin reply via AJAX
+    // For now, just show a placeholder
+    alert('Admin reply functionality will be implemented');
+    document.getElementById('adminMessage').value = '';
+});
+</script>
+{% endblock %}

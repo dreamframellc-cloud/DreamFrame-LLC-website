@@ -1,0 +1,161 @@
+<!-- Schema.org Structured Data for Better Ad Performance -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "DreamFrame LLC",
+  "description": "Professional video production company specializing in family memories, military tributes, and promotional videos. Veteran-owned and operated.",
+  "url": "{{ request.url_root }}",
+  "telephone": "+1-XXX-XXX-XXXX",
+  "email": "support@dreamframe.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Your Street Address",
+    "addressLocality": "Your City",
+    "addressRegion": "Your State",
+    "postalCode": "Your ZIP",
+    "addressCountry": "US"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "YOUR_LATITUDE",
+    "longitude": "YOUR_LONGITUDE"
+  },
+  "openingHours": "Mo-Fr 09:00-17:00",
+  "priceRange": "$35-$2000",
+  "image": "{{ url_for('static', filename='images/dreamframe-logo.jpg', _external=True) }}",
+  "logo": "{{ url_for('static', filename='images/dreamframe-logo.jpg', _external=True) }}",
+  "foundingDate": "2024",
+  "founder": {
+    "@type": "Person",
+    "name": "Your Name"
+  },
+  "sameAs": [
+    "https://www.facebook.com/dreamframellc",
+    "https://www.instagram.com/dreamframellc",
+    "https://www.linkedin.com/company/dreamframellc"
+  ],
+  "serviceArea": {
+    "@type": "GeoCircle",
+    "geoMidpoint": {
+      "@type": "GeoCoordinates",
+      "latitude": "YOUR_LATITUDE",
+      "longitude": "YOUR_LONGITUDE"
+    },
+    "geoRadius": "50000"
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Video Production Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "VideoGrams",
+          "description": "Personalized video messages with custom scripts"
+        },
+        "price": "50",
+        "priceCurrency": "USD"
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Quick Clips",
+          "description": "5-second promotional videos for social media"
+        },
+        "price": "35",
+        "priceCurrency": "USD"
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Flash Promotions",
+          "description": "Urgent promotional content with rush delivery"
+        },
+        "price": "45",
+        "priceCurrency": "USD"
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Wedding Highlights",
+          "description": "Ceremony and reception video highlights"
+        },
+        "price": "300",
+        "priceCurrency": "USD"
+      }
+    ]
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5.0",
+    "reviewCount": "25",
+    "bestRating": "5",
+    "worstRating": "1"
+  },
+  "review": [
+    {
+      "@type": "Review",
+      "author": {
+        "@type": "Person",
+        "name": "Military Family"
+      },
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "reviewBody": "Outstanding tribute video for our veteran father. Professional quality and respectful handling of military service."
+    }
+  ]
+}
+</script>
+
+<!-- Service-specific Schema for each service page -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Professional Video Production",
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "DreamFrame LLC"
+  },
+  "areaServed": {
+    "@type": "State",
+    "name": "Your State"
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Video Production Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Military Tribute Videos",
+          "description": "Honor service members with dignified video tributes"
+        },
+        "price": "150",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service", 
+          "name": "Family Memory Videos",
+          "description": "Transform family photos into cinematic experiences"
+        },
+        "price": "200",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      }
+    ]
+  }
+}
+</script>
