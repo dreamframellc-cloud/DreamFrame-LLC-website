@@ -113,8 +113,6 @@ def set_language(language):
     # Redirect back to the page they came from or homepage
     return redirect(request.referrer or url_for('home'))
 
-global ai_project_manager
-global ai_video_manager
 # Import AI Project Manager and authentic VEO 3 system
 from ai_project_manager import AIProjectManager
 from authentic_veo3_vertex import AuthenticVEO3
@@ -123,7 +121,6 @@ from authentic_veo3_vertex import AuthenticVEO3
 ai_project_manager = None
 ai_video_manager = None
 with app.app_context():
-    global ai_project_manager, ai_video_manager
     try:
         db.create_all()
         print("Database tables created successfully")
