@@ -1,0 +1,72 @@
+# Render ignore file - excludes files from deployment
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Development files
+*.log
+*.sqlite
+*.db
+.env.local
+.env.development
+
+# Test files
+tests/
+test_*.py
+*_test.py
+
+# Documentation (optional - keep if you want)
+# *.md
+# docs/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Git
+.git/
+.gitignore
+
+# Deployment configs for other platforms
+.vercel/
+vercel.json
+railway.json
+.replit
+
+# Large media files (use cloud storage instead)
+static/videos/
+static/audio/
+uploads/
+processed/
+
+# Backup files
+*.bak
+*.backup
+

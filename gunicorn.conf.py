@@ -1,7 +1,7 @@
 import os
 
-# Server socket
-bind = f"0.0.0.0:{os.environ.get('PORT', '5000')}"
+# Server socket - Render automatically sets PORT
+bind = f"0.0.0.0:{os.environ.get('PORT', '10000')}"
 backlog = 2048
 
 # Worker processes - optimized for Cloud Run
@@ -25,7 +25,7 @@ access_log_format = '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
 # Process naming
 proc_name = 'dreamframe-gunicorn'
 
-# Server mechanics - Cloud Run optimized
+# Server mechanics - Render/Railway optimized
 daemon = False
 pidfile = None
 user = None
