@@ -115,6 +115,10 @@ def set_language(language):
 
 global ai_project_manager
 global ai_video_manager
+# Import AI Project Manager and authentic VEO 3 system
+from ai_project_manager import AIProjectManager
+from authentic_veo3_vertex import AuthenticVEO3
+
 # Initialize database tables with app context
 ai_project_manager = None
 ai_video_manager = None
@@ -148,10 +152,6 @@ with app.app_context():
         ai_project_manager = None
         print(f"Error initializing AI Project Manager: {e}")
     
-# Import AI Project Manager, AI Video Manager, and authentic VEO 3 system
-from ai_project_manager import AIProjectManager
-from authentic_veo3_vertex import AuthenticVEO3
-
 # Import VEO 3 Fast Integration (primary system)
 try:
     from ultra_fast_veo3 import UltraFastVEO3
