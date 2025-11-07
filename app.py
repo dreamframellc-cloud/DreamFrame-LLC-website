@@ -113,8 +113,11 @@ def set_language(language):
     # Redirect back to the page they came from or homepage
     return redirect(request.referrer or url_for('home'))
 
+global ai_project_manager
+global ai_video_manager
 # Initialize database tables with app context
 ai_project_manager = None
+ai_video_manager = None
 with app.app_context():
     try:
         db.create_all()
