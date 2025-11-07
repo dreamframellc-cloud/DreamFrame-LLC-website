@@ -114,6 +114,7 @@ def set_language(language):
     return redirect(request.referrer or url_for('home'))
 
 # Initialize database tables with app context
+ai_project_manager = None
 with app.app_context():
     try:
         db.create_all()
@@ -135,6 +136,15 @@ with app.app_context():
         print("🤖 AI Video Manager initialized and managing all processes")
     except Exception as e:
         print(f"Error starting AI Video Manager: {e}")
+
+    # Initialize AI Project Manager within app context
+    try:
+        global ai_project_manager
+        ai_project_manager = AIProjectManager()
+        print("📽️ AI Project Manager initialized successfully")
+    except Exception as e:
+        ai_project_manager = None
+        print(f"Error initializing AI Project Manager: {e}")
     
 # Import AI Project Manager, AI Video Manager, and authentic VEO 3 system
 from ai_project_manager import AIProjectManager
@@ -668,7 +678,6 @@ def share_project_video(project_id):
 from enhanced_payment_system import payment_processor
 from stripe_integration import StripePaymentHandler, get_service_pricing
 from ai_transaction_manager import AITransactionManager
-from ai_project_manager import ai_project_manager
 
 # Initialize transaction manager
 transaction_manager = AITransactionManager()
