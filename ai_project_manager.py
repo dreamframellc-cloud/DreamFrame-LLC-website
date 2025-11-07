@@ -423,5 +423,7 @@ class AIProjectManager:
             self.logger.error(f"Error generating analytics: {str(e)}")
             return {'error': str(e)}
 
-# Initialize AI Project Manager
-ai_project_manager = AIProjectManager()
+# The Flask app will instantiate AIProjectManager once an application context
+# is available. Keep this placeholder to avoid import-time side effects during
+# deployment (e.g., when Gunicorn loads the module before Flask is ready).
+ai_project_manager = None
