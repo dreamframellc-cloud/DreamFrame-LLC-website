@@ -130,16 +130,15 @@ with app.app_context():
     # Initialize AI Video Manager for process management
     try:
         from ai_video_manager import AIVideoManager
-        global ai_video_manager
         ai_video_manager = AIVideoManager()
         ai_video_manager.start_management()
         print("🤖 AI Video Manager initialized and managing all processes")
     except Exception as e:
+        ai_video_manager = None
         print(f"Error starting AI Video Manager: {e}")
 
     # Initialize AI Project Manager within app context
     try:
-        global ai_project_manager
         ai_project_manager = AIProjectManager()
         print("📽️ AI Project Manager initialized successfully")
     except Exception as e:
