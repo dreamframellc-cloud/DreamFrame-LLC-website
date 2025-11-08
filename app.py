@@ -1,24 +1,32 @@
 from flask import Flask
+
 from ai_project_manager import AIProjectManager
+
 
 app = Flask(__name__)
 
-# we create this later, inside the app context
+# This will be populated the first time the server begins handling traffic.
 ai_project_manager = None
 
-@app.before_serving
-def init_ai_manager():
-    """Initialize AI manager once the server is ready to serve requests."""
+
+@app.before_request
+def ensure_ai_manager_initialized() -> None:
+    """Lazily initialize the AI project manager inside a Flask app context."""
     global ai_project_manager
-    if ai_project_manager is None:
-        ai_project_manager = AIProjectManager()
-with app.app_context():
-            # Guard against missing initialize_all implementation
-            initializer = getattr(ai_project_manager, "initialize_all", None)
-            if callable(initializer):
-                initializer()
-            print("✅ AI Project Manager initialized inside Flask app context")
+
+    if ai_project_manager is not None:
+        return
+
+    ai_project_manager = AIProjectManager()
+
+    # Guard against the manager not exposing an `initialize_all` helper.
+    initializer = getattr(ai_project_manager, "initialize_all", None)
+    if callable(initializer):
+        initializer()
+
+    app.logger.info("✅ AI Project Manager initialized inside Flask app context")
+
 
 @app.route("/")
-def home():
+def home() -> str:
     return "DreamFrame LLC backend is running on Render!"
