@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask
 
 from ai_project_manager import AIProjectManager
 
@@ -34,11 +34,4 @@ def home() -> str:
 
 @app.route("/status")
 def status():
-    """Return live health and AI system status."""
-    status_info = {
-        "status": "ok",
-        "ai_manager_initialized": ai_project_manager is not None,
-        "environment": "Render Cloud",
-        "service": "DreamFrame LLC Backend",
-    }
-    return jsonify(status_info), 200
+    return {"status": "ok", "service": "DreamFrame LLC backend", "uptime": "active"}, 200
