@@ -142,14 +142,25 @@ with app.app_context():
         ai_video_manager = None
         print(f"Error starting AI Video Manager: {e}")
 
-    # Initialize AI Project Manager within app context
+# AI Project Manager will be initialized lazily the first time it's needed.
+
+@app.before_request
+def ensure_ai_project_manager_initialized():
+    global ai_project_manager
+    if ai_project_manager is not None:
+        return
+
     try:
-        ai_project_manager = AIProjectManager()
-        print("📽️ AI Project Manager initialized successfully")
-    except Exception as e:
+        manager = AIProjectManager()
+        initializer = getattr(manager, 'initialize_all', None)
+        if callable(initializer):
+            initializer()
+        ai_project_manager = manager
+        app.logger.info("📽️ AI Project Manager initialized inside Flask request context")
+    except Exception as exc:
         ai_project_manager = None
-        print(f"Error initializing AI Project Manager: {e}")
-    
+        app.logger.error(f"Error initializing AI Project Manager lazily: {exc}")
+
 # Import VEO 3 Fast Integration (primary system)
 try:
     from ultra_fast_veo3 import UltraFastVEO3
