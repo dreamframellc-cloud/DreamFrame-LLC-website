@@ -145,31 +145,21 @@ with app.app_context():
 # AI Project Manager will be initialized lazily the first time it's needed.
 
 @app.before_request
-def ensure_ai_things_ready():
-    """Ensure AI managers are created only when Flask has a request context."""
-    global ai_project_manager, ai_video_manager
-
-    if ai_project_manager is not None and ai_video_manager is not None:
+def ensure_ai_project_manager_initialized():
+    global ai_project_manager
+    if ai_project_manager is not None:
         return
 
     try:
-        pm = AIProjectManager()
-        from ai_video_manager import AIVideoManager
-        vm = AIVideoManager()
-
-        init_pm = getattr(pm, 'initialize_all', None)
-        if callable(init_pm):
-            init_pm()
-
-        init_vm = getattr(vm, 'initialize_all', None)
-        if callable(init_vm):
-            init_vm()
-
-        ai_project_manager = pm
-        ai_video_manager = vm
-        app.logger.info("✅ AI managers initialized inside request context")
+        manager = AIProjectManager()
+        initializer = getattr(manager, 'initialize_all', None)
+        if callable(initializer):
+            initializer()
+        ai_project_manager = manager
+        app.logger.info("📽️ AI Project Manager initialized inside Flask request context")
     except Exception as exc:
-        app.logger.error(f"Could not init AI managers lazily: {exc}")
+        ai_project_manager = None
+        app.logger.error(f"Error initializing AI Project Manager lazily: {exc}")
 
 # Import VEO 3 Fast Integration (primary system)
 try:
@@ -5217,3 +5207,5 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     debug_mode = os.environ.get('FLASK_ENV') == 'development'
     app.run(host='0.0.0.0', port=port, debug=debug_mode)
+
+
