@@ -54,6 +54,7 @@ instance/
 attached_assets/
 static/videos/
 static/completed_videos/
+!static/robots.txt
 uploads/
 completed_videos/
 

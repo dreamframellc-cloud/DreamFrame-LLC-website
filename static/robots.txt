@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://dreamframe-llc.onrender.com/sitemap.xml
