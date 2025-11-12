@@ -131,35 +131,35 @@ with app.app_context():
         print(f"Full traceback: {traceback.format_exc()}")
         # Don't fail completely - allow app to start even if DB init fails
         # Routes will handle DB errors gracefully
-    
-    # Initialize AI Video Manager for process management
-    try:
-        from ai_video_manager import AIVideoManager
-        ai_video_manager = AIVideoManager()
-        ai_video_manager.start_management()
-        print("🤖 AI Video Manager initialized and managing all processes")
-    except Exception as e:
-        ai_video_manager = None
-        print(f"Error starting AI Video Manager: {e}")
 
-# AI Project Manager will be initialized lazily the first time it's needed.
+# AI managers will be initialized lazily the first time they're needed.
 
 @app.before_request
-def ensure_ai_project_manager_initialized():
-    global ai_project_manager
-    if ai_project_manager is not None:
+def ensure_ai_things_ready():
+    """Ensure AI managers are created only when Flask has a request context."""
+    global ai_project_manager, ai_video_manager
+
+    if ai_project_manager is not None and ai_video_manager is not None:
         return
 
     try:
-        manager = AIProjectManager()
-        initializer = getattr(manager, 'initialize_all', None)
-        if callable(initializer):
-            initializer()
-        ai_project_manager = manager
-        app.logger.info("📽️ AI Project Manager initialized inside Flask request context")
+        # Initialize AI Project Manager
+        if ai_project_manager is None:
+            manager = AIProjectManager()
+            initializer = getattr(manager, 'initialize_all', None)
+            if callable(initializer):
+                initializer()
+            ai_project_manager = manager
+            app.logger.info("📽️ AI Project Manager initialized inside Flask request context")
+        
+        # Initialize AI Video Manager
+        if ai_video_manager is None:
+            from ai_video_manager import AIVideoManager
+            ai_video_manager = AIVideoManager()
+            ai_video_manager.start_management()
+            app.logger.info("🤖 AI Video Manager initialized and managing all processes")
     except Exception as exc:
-        ai_project_manager = None
-        app.logger.error(f"Error initializing AI Project Manager lazily: {exc}")
+        app.logger.error(f"Error initializing AI managers lazily: {exc}")
 
 # Import VEO 3 Fast Integration (primary system)
 try:
@@ -182,9 +182,6 @@ except ImportError as e:
 
 # Import Content Safety System
 from content_safety_system import validate_video_prompt, is_content_safe_for_generation, content_safety
-
-# Initialize AI Video Manager after database setup
-ai_video_manager = None
 
 def generate_customer_video_with_ai_management(video_order_id: int, image_path: str, prompt: str):
     """Generate video with AI management and content safety checks (VEO 3 Fast primary + VEO 2 fallback)"""

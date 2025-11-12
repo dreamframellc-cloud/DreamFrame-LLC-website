@@ -12,7 +12,7 @@ import json
 from datetime import datetime, timedelta
 from typing import Optional, Dict, Any
 from models import VideoOrder, db
-from app import app
+# Lazy import to avoid circular dependency - app will be imported when needed
 
 class AIVideoManager:
     """AI bot that manages the entire video generation process"""
@@ -43,6 +43,8 @@ class AIVideoManager:
         """Main AI management loop"""
         while self.active:
             try:
+                # Lazy import to avoid circular dependency
+                from app import app
                 with app.app_context():
                     # Check all active video orders
                     active_videos = VideoOrder.query.filter_by(status='IN_PRODUCTION').all()
@@ -285,6 +287,8 @@ class AIVideoManager:
             try:
                 time.sleep(300)  # Run every 5 minutes
                 
+                # Lazy import to avoid circular dependency
+                from app import app
                 with app.app_context():
                     # Analyze recent completions
                     recent_videos = VideoOrder.query.filter(
@@ -322,26 +326,19 @@ class AIVideoManager:
         except Exception as e:
             print(f"🤖 Performance check error: {str(e)}")
 
-# Global AI manager instance
-ai_manager = AIVideoManager()
-
-def start_ai_management():
-    """Start the AI video management system"""
-    ai_manager.start_management()
-    return True
-
-def get_ai_manager():
-    """Get the AI manager instance"""
-    return ai_manager
+# No module-level instantiation - will be created lazily in app.py
+# This avoids circular import issues and Flask application context errors
 
 if __name__ == "__main__":
     print("🤖 Starting AI Video Manager...")
-    start_ai_management()
-    
+    manager = AIVideoManager()
+    manager.start_management()
     # Keep running
     try:
         while True:
             time.sleep(60)
             print("🤖 AI Video Manager running...")
     except KeyboardInterrupt:
+        print("🤖 Stopping AI Video Manager...")
+        manager.active = False
         print("🤖 AI Video Manager stopped")
